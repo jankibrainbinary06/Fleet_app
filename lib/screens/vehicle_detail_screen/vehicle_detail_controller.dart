@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:new_project/apis/get_all_transporters_api.dart';
 import 'package:new_project/common/widgets/toasts.dart';
 import 'package:new_project/screens/vehicle_detail_screen/api/vehical_api.dart';
 import 'package:new_project/utils/color_res.dart';
@@ -191,5 +192,16 @@ class VehicleDetailController extends GetxController {
     // TODO: implement onInit
     super.onInit();
   }
-
+  // List<GetIncomingModel> getAllTraList = [];
+  // getIncomingAPi() async {
+  //   try {
+  //     loader.value = true;
+  //     getAllTraList = await GetAllTraApi.getAllTragApi();
+  //
+  //     loader.value = false;
+  //   } catch (e) {
+  //     print(e.toString());
+  //     loader.value = false;
+  //   }
+  // }
 }
