@@ -431,12 +431,77 @@ class IncomingQRScreen extends StatelessWidget {
                                                                     ['image']
                                                                 .toString() !=
                                                             '')
-                                                        ? Image.memory(
+                                                        ?
+
+                                                    // base64Decode(controller
+                                                    //     .barcodeData[
+                                                    // index]['image']).toString().contains('base64,')?
+                                                    // Image.memory(
+                                                    //   base64Decode(controller
+                                                    //       .barcodeData[
+                                                    //   index]['image'].replaceAll(RegExp('^data:image\\/\\w+;base64,'), '')),
+                                                    //   fit: BoxFit.cover,
+                                                    // ):
+                                                    Image.memory(
                                                             base64Decode(controller
                                                                     .barcodeData[
-                                                                index]['image']),
+                                                                index]['image'].replaceAll(RegExp('^data:image\\/\\w+;base64,'), '')),
                                                             fit: BoxFit.cover,
                                                           )
+
+                                                        : const SizedBox(),
+                                                  ),
+                                                ),
+                                                SizedBox(width: 10,),
+                                                GestureDetector(
+                                                  onTap: () {},
+                                                  child: Container(
+                                                    height: 80,
+                                                    width: 80,
+                                                    decoration: BoxDecoration(
+                                                        color: ColorRes
+                                                            .appPrimary
+                                                            .withOpacity(0.1),
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                          5,
+                                                        ),
+                                                        border: Border.all(
+                                                            width: 0.5,
+                                                            color: ColorRes
+                                                                .appPrimary
+                                                                .withOpacity(
+                                                                0.6))),
+                                                    alignment: Alignment.center,
+                                                    // child: Text(
+                                                    //   'Api Image',
+                                                    //   style: subTitle,
+                                                    // ),
+                                                    child: (controller
+                                                        .barcodeData[
+                                                    index]
+                                                    ['apiQRImage']
+                                                        .toString() !=
+                                                        '')
+                                                        ?
+
+                                                    // base64Decode(controller
+                                                    //     .barcodeData[
+                                                    // index]['image']).toString().contains('base64,')?
+                                                    // Image.memory(
+                                                    //   base64Decode(controller
+                                                    //       .barcodeData[
+                                                    //   index]['image'].replaceAll(RegExp('^data:image\\/\\w+;base64,'), '')),
+                                                    //   fit: BoxFit.cover,
+                                                    // ):
+                                                    Image.memory(
+                                                      base64Decode(controller
+                                                          .barcodeData[
+                                                      index]['apiQRImage'].replaceAll(RegExp('^data:image\\/\\w+;base64,'), '')),
+                                                      fit: BoxFit.cover,
+                                                    )
+
                                                         : const SizedBox(),
                                                   ),
                                                 ),

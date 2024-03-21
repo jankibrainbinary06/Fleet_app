@@ -172,6 +172,16 @@ String orgid ='';
     await materialPhotoAPi();
 
     for (int i = 0; i < barcodeData.length; i++) {
+      String pickedIMageBse64='';
+      if(imageFileList[i].path.isNotEmpty){
+        File pickedImageFile = File(imageFileList[i].path);
+
+        List<int> pickedImageBYte = await pickedImageFile.readAsBytes();
+         pickedIMageBse64 = base64Encode(pickedImageBYte);
+      }
+
+
+
       Uint8List? imageData;
       ByteData? qrImageData =
           await _generateQRCodeImage(barcodeData[i]['value']);
@@ -183,11 +193,13 @@ String orgid ='';
       }
 
       var data = {
-        barcodeData[i]['name']: base64Encode(imageData!),
-        "${barcodeData[i]['name']}_barcode:": barcodeData[i]['value'],
+        barcodeData[i]['name']: pickedIMageBse64,
+        "${barcodeData[i]['name']}_barcode": barcodeData[i]['value'],
+        "${barcodeData[i]['name']}_qr": base64Encode(imageData!),
+
       };
 
-      if (barcodeData[i]['value'] != '') {
+      if (barcodeData[i]['value'] != ''&& imageFileList[i].path.isNotEmpty) {
         statusList[i] = 'loader';
         await updateTransactionAPi(data);
         if (updateTransactionModel.message == 'Data Saved') {
@@ -366,6 +378,7 @@ String orgid ='';
                 color: ColorRes.white,
               ),
               GestureDetector(
+
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
