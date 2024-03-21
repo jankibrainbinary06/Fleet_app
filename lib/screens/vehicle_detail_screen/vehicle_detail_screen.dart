@@ -62,8 +62,119 @@ class VehicleDetailScreen extends StatelessWidget {
                             controller: controller.vehicalNumberController,
                           ),
                           const SizedBox(
-                            height: 20,
+                            height: 10,
+                            
+                            
+                            
+                            
                           ),
+
+
+
+
+
+                          GestureDetector(
+                            onTap: () {
+                              if (controller.isDrop) {
+                                controller.isDrop = false;
+                              } else {
+                                controller.isDrop = true;
+                              }
+                              controller.update(['vehicle']);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 16),
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              height: 47,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    5,
+                                  ),
+                                  color: ColorRes.appPrimary.withOpacity(
+                                    0.1,
+                                  ),
+                                  border: Border.all(
+                                      color: ColorRes.appPrimary, width: 0.4)),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    controller.selectedName,
+                                    style: subTitle.copyWith(
+                                        color: controller.selectedName == 'Select'
+                                            ? Colors.black
+                                            : ColorRes.appPrimary),
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.arrow_drop_down_sharp,
+                                    size: 30,
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          
+
+                          SizedBox(height: 3,),
+
+
+                          // controller.isDrop == true
+                          //     ? Container(
+                          //   margin: EdgeInsets.symmetric(horizontal: 16),
+                          //   padding: EdgeInsets.symmetric(horizontal: 10),
+                          //   decoration: BoxDecoration(
+                          //       borderRadius: BorderRadius.circular(
+                          //         5,
+                          //       ),
+                          //       color: ColorRes.cF6F6F6,
+                          //       border: Border.all(
+                          //           color: ColorRes.cE8E8E8, width: 0.4)),
+                          //   child: ListView.separated(
+                          //       padding: EdgeInsets.zero,
+                          //       shrinkWrap: true,
+                          //       physics: NeverScrollableScrollPhysics(),
+                          //       itemBuilder: (context, index) {
+                          //         return GestureDetector(
+                          //           onTap: () {
+                          //             controller.selectedName = controller
+                          //                 .getAllOrgModel[index]
+                          //                 .companyName ??
+                          //                 "";
+                          //             controller.selectedNameId = controller
+                          //                 .getAllOrgModel[index].pk.toString() ??
+                          //                 "";
+                          //             controller.isDrop = false;
+                          //             controller.update(['vehicle']);
+                          //           },
+                          //           child: Padding(
+                          //             padding: const EdgeInsets.symmetric(
+                          //               vertical: 10,
+                          //             ),
+                          //             child: Text(
+                          //               controller.getAllOrgModel[index]
+                          //                   .companyName ??
+                          //                   '',
+                          //               style: subTitle.copyWith(
+                          //                 color: ColorRes.cBDBDBD,
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         );
+                          //       },
+                          //       separatorBuilder: (context, index) {
+                          //         return Container(
+                          //             height: 1, color: ColorRes.cE8E8E8);
+                          //       },
+                          //       itemCount: controller.getAllOrgModel.length),
+                          // )
+                          //     : const SizedBox(),
+                          
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          
+                          
                           Row(
                             children: [
                               Text(

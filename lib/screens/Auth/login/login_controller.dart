@@ -21,8 +21,6 @@ class LoginController extends GetxController {
   validateForm(BuildContext context) async {
     if (mobileNoController.text.isEmpty) {
       errorToast("Mobile number can't be empty");
-    } else if (mobileNoController.text.length != 10) {
-      errorToast("Invalid mobile number");
     } else if (passwordController.text.isEmpty) {
       errorToast("Password can't be empty");
     } else {

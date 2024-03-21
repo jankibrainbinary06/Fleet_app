@@ -21,6 +21,8 @@ class VehicleDetailController extends GetxController {
   RxBool loader = false.obs;
   List<String> extensionList = [];
   List<String> imagebase64List = [];
+  bool isDrop = false ;
+  String selectedName ='Select';
 
   bool validation() {
     if (vehicalNumberController.text.isEmpty) {
@@ -42,6 +44,8 @@ class VehicleDetailController extends GetxController {
       return true;
     }
   }
+
+
 
   Future<void> fileToBase64() async {
     extensionList.clear();
@@ -66,6 +70,7 @@ class VehicleDetailController extends GetxController {
     imagebase64List.add(base64Encode(image3Bytes));
     imagebase64List.add(base64Encode(image4Bytes));
   }
+
 
   Future<void> saveVehical() async {
     try {
@@ -179,4 +184,12 @@ class VehicleDetailController extends GetxController {
           );
         });
   }
+
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+  }
+
 }
