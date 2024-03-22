@@ -853,16 +853,24 @@ searchResultController.orgid =orgId;
                         ],
                       ),
                       controller.isBarcode
-                          ? Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(15)),
-                              height: Get.height,
-                              width: Get.width,
-                              child: QRView(
-                                  key: controller.qrKey,
-                                  onQRViewCreated: controller.onQRViewCreated),
-                            )
+                          ?
+                      WillPopScope(
+                        onWillPop: () async{
+                          controller.isBarcode = false;
+                          controller.update(['qr']);
+                          return false;
+                        },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(15)),
+                                height: Get.height,
+                                width: Get.width,
+                                child: QRView(
+                                    key: controller.qrKey,
+                                    onQRViewCreated: controller.onQRViewCreated),
+                              ),
+                          )
                           : SizedBox(),
                     ],
                   );

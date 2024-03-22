@@ -11,4 +11,7 @@ class Endpoints {
   static const getAllOrg = '$baseUrl/get-all-orgs/';
   static const getTransaction = '$baseUrl/get-transaction/';
   static const completeTransaction = '$baseUrl/complete-transaction/';
+  static const getAllTransporters = '$baseUrl/get-all-transporters/';
+
+
 }

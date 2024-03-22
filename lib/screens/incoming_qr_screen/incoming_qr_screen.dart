@@ -1205,14 +1205,21 @@ class IncomingQRScreen extends StatelessWidget {
                       ],
                     ),
                     controller.isBarcode
-                        ? Container(
-                            height: Get.height,
-                            width: Get.width,
-                            color: Colors.transparent,
-                            child: QRView(
-                                key: controller.qrKey,
-                                onQRViewCreated: controller.onQRViewCreated),
-                          )
+                        ? WillPopScope(
+                      onWillPop: () async{
+                        controller.isBarcode = false;
+                        controller.update(['incomingQr']);
+                        return false;
+                      },
+                          child: Container(
+                              height: Get.height,
+                              width: Get.width,
+                              color: Colors.transparent,
+                              child: QRView(
+                                  key: controller.qrKey,
+                                  onQRViewCreated: controller.onQRViewCreated),
+                            ),
+                        )
                         : const SizedBox(),
                   ],
                 );

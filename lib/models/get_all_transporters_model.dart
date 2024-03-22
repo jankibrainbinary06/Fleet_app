@@ -1,10 +1,9 @@
 // To parse this JSON data, do
 //
-//     final getalltransporters = getalltransportersFromJson(jsonString);
+//     final getTransporterModel = getTransporterModelFromJson(jsonString);
 
 import 'dart:convert';
 
-List<dynamic> getalltransportersFromJson(String str) => List<dynamic>.from(json.decode(str).map((x) => x));
+List<String> getTransporterModelFromJson(String str) => List<String>.from(json.decode(str).map((x) => x));
 
-String getalltransportersToJson(List<dynamic> data) => json.encode(List<dynamic>.from(data.map((x) => x)));
-
+String getTransporterModelToJson(List<String> data) => json.encode(List<dynamic>.from(data.map((x) => x)));

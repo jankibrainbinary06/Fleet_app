@@ -119,192 +119,197 @@ class VehicleDetailScreen extends StatelessWidget {
                           SizedBox(height: 3,),
 
 
-                          // controller.isDrop == true
-                          //     ? Container(
-                          //   margin: EdgeInsets.symmetric(horizontal: 16),
-                          //   padding: EdgeInsets.symmetric(horizontal: 10),
-                          //   decoration: BoxDecoration(
-                          //       borderRadius: BorderRadius.circular(
-                          //         5,
-                          //       ),
-                          //       color: ColorRes.cF6F6F6,
-                          //       border: Border.all(
-                          //           color: ColorRes.cE8E8E8, width: 0.4)),
-                          //   child: ListView.separated(
-                          //       padding: EdgeInsets.zero,
-                          //       shrinkWrap: true,
-                          //       physics: NeverScrollableScrollPhysics(),
-                          //       itemBuilder: (context, index) {
-                          //         return GestureDetector(
-                          //           onTap: () {
-                          //             controller.selectedName = controller
-                          //                 .getAllOrgModel[index]
-                          //                 .companyName ??
-                          //                 "";
-                          //             controller.selectedNameId = controller
-                          //                 .getAllOrgModel[index].pk.toString() ??
-                          //                 "";
-                          //             controller.isDrop = false;
-                          //             controller.update(['vehicle']);
-                          //           },
-                          //           child: Padding(
-                          //             padding: const EdgeInsets.symmetric(
-                          //               vertical: 10,
-                          //             ),
-                          //             child: Text(
-                          //               controller.getAllOrgModel[index]
-                          //                   .companyName ??
-                          //                   '',
-                          //               style: subTitle.copyWith(
-                          //                 color: ColorRes.cBDBDBD,
-                          //               ),
-                          //             ),
-                          //           ),
-                          //         );
-                          //       },
-                          //       separatorBuilder: (context, index) {
-                          //         return Container(
-                          //             height: 1, color: ColorRes.cE8E8E8);
-                          //       },
-                          //       itemCount: controller.getAllOrgModel.length),
-                          // )
-                          //     : const SizedBox(),
+
                           
                           const SizedBox(
                             height: 10,
                           ),
                           
                           
-                          Row(
+                          Stack(
                             children: [
-                              Text(
-                                Strings.vehicleNUmberPhoto,
-                                style: subTitle,
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Text(
-                                Strings.driverPhoto,
-                                style: subTitle,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        controller.imageDialog(context, 4);
-                                      },
-                                      child: controller
-                                              .vehicleNumberPath.isEmpty
-                                          ? Container(
-                                              height: 150,
-                                              width: Get.width,
-                                              decoration: BoxDecoration(
-                                                  color: ColorRes.appPrimary
-                                                      .withOpacity(0.1),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    20,
-                                                  ),
-                                                  border: Border.all(
-                                                      width: 0.5,
-                                                      color: ColorRes.appPrimary
-                                                          .withOpacity(0.6))),
-                                              child: const Icon(
-                                                Icons.image,
-                                                color: ColorRes.appPrimary,
-                                                size: 70,
-                                              ))
-                                          : ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              child: Container(
-                                                height: 150,
-                                                width: Get.width,
-                                                decoration: BoxDecoration(
-                                                    color: ColorRes.appPrimary
-                                                        .withOpacity(0.1),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      20,
-                                                    ),
-                                                    border: Border.all(
-                                                        width: 0.5,
-                                                        color: ColorRes
-                                                            .appPrimary
-                                                            .withOpacity(0.6))),
-                                                child: Image.file(
-                                                  File(controller
-                                                      .vehicleNumberPath),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
                               Column(
                                 children: [
-                                  const SizedBox(
-                                    height: 10,
+                                  Row(
+                                    children: [
+                                      Text(
+                                        Strings.vehicleNUmberPhoto,
+                                        style: subTitle,
+                                      ),
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Text(
+                                        Strings.driverPhoto,
+                                        style: subTitle,
+                                      ),
+                                    ],
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      vehicleDetailController.imageDialog(
-                                          context, 1);
-                                    },
-                                    child: controller.profileImagePath.isEmpty
-                                        ? Container(
-                                            height: 150,
-                                            width: 150,
-                                            decoration: BoxDecoration(
-                                                color: ColorRes.appPrimary
-                                                    .withOpacity(0.1),
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                    width: 0.5,
-                                                    color: ColorRes.appPrimary
-                                                        .withOpacity(0.6))),
-                                            child: const Icon(
-                                              Icons.person,
-                                              color: ColorRes.appPrimary,
-                                              size: 70,
-                                            ))
-                                        : ClipOval(
-                                            child: Container(
-                                              height: 150,
-                                              width: 150,
-                                              decoration: BoxDecoration(
-                                                  color: ColorRes.appPrimary
-                                                      .withOpacity(0.1),
-                                                  shape: BoxShape.circle,
-                                                  border: Border.all(
-                                                      width: 0.5,
-                                                      color: ColorRes.appPrimary
-                                                          .withOpacity(0.6))),
-                                              child: Image.file(
-                                                File(
-                                                  controller.profileImagePath,
-                                                ),
-                                                fit: BoxFit.cover,
-                                              ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            const SizedBox(
+                                              height: 10,
                                             ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                controller.imageDialog(context, 4);
+                                              },
+                                              child: controller
+                                                      .vehicleNumberPath.isEmpty
+                                                  ? Container(
+                                                      height: 150,
+                                                      width: Get.width,
+                                                      decoration: BoxDecoration(
+                                                          color: ColorRes.appPrimary
+                                                              .withOpacity(0.1),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                            20,
+                                                          ),
+                                                          border: Border.all(
+                                                              width: 0.5,
+                                                              color: ColorRes.appPrimary
+                                                                  .withOpacity(0.6))),
+                                                      child: const Icon(
+                                                        Icons.image,
+                                                        color: ColorRes.appPrimary,
+                                                        size: 70,
+                                                      ))
+                                                  : ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(20),
+                                                      child: Container(
+                                                        height: 150,
+                                                        width: Get.width,
+                                                        decoration: BoxDecoration(
+                                                            color: ColorRes.appPrimary
+                                                                .withOpacity(0.1),
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                              20,
+                                                            ),
+                                                            border: Border.all(
+                                                                width: 0.5,
+                                                                color: ColorRes
+                                                                    .appPrimary
+                                                                    .withOpacity(0.6))),
+                                                        child: Image.file(
+                                                          File(controller
+                                                              .vehicleNumberPath),
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Column(
+                                        children: [
+                                          const SizedBox(
+                                            height: 10,
                                           ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              vehicleDetailController.imageDialog(
+                                                  context, 1);
+                                            },
+                                            child: controller.profileImagePath.isEmpty
+                                                ? Container(
+                                                    height: 150,
+                                                    width: 150,
+                                                    decoration: BoxDecoration(
+                                                        color: ColorRes.appPrimary
+                                                            .withOpacity(0.1),
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                            width: 0.5,
+                                                            color: ColorRes.appPrimary
+                                                                .withOpacity(0.6))),
+                                                    child: const Icon(
+                                                      Icons.person,
+                                                      color: ColorRes.appPrimary,
+                                                      size: 70,
+                                                    ))
+                                                : ClipOval(
+                                                    child: Container(
+                                                      height: 150,
+                                                      width: 150,
+                                                      decoration: BoxDecoration(
+                                                          color: ColorRes.appPrimary
+                                                              .withOpacity(0.1),
+                                                          shape: BoxShape.circle,
+                                                          border: Border.all(
+                                                              width: 0.5,
+                                                              color: ColorRes.appPrimary
+                                                                  .withOpacity(0.6))),
+                                                      child: Image.file(
+                                                        File(
+                                                          controller.profileImagePath,
+                                                        ),
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
+                              controller.isDrop == true
+                                  ? Container(
+                                margin: EdgeInsets.symmetric(horizontal: 16),
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                      5,
+                                    ),
+                                    color: ColorRes.cF6F6F6,
+                                    border: Border.all(
+                                        color: ColorRes.cE8E8E8, width: 0.4)),
+                                child: ListView.separated(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          controller.selectedName = controller
+                                              .getTransporters[index]
+                                              ??"";
+
+                                          controller.isDrop = false;
+                                          controller.update(['vehicle']);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 10,
+                                          ),
+                                          child: Text(
+                                            controller.getTransporters[index]
+                                                ??'',
+                                            style: subTitle.copyWith(
+                                              color: ColorRes.cBDBDBD,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return Container(
+                                          height: 1, color: ColorRes.cE8E8E8);
+                                    },
+                                    itemCount: controller.getTransporters.length),
+                              )
+                                  : const SizedBox(),
                             ],
                           ),
                           const SizedBox(

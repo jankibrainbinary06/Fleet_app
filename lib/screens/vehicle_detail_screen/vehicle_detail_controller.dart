@@ -29,7 +29,10 @@ class VehicleDetailController extends GetxController {
     if (vehicalNumberController.text.isEmpty) {
       errorToast("Please enter vehicle number");
       return false;
-    } else if (vehicleNumberPath.isEmpty) {
+    }
+
+
+    else if (vehicleNumberPath.isEmpty) {
       errorToast("Please select vehicle number photo");
       return false;
     } else if (profileImagePath.isEmpty) {
@@ -83,6 +86,7 @@ class VehicleDetailController extends GetxController {
         "license_front": imagebase64List[1],
         "license_back": imagebase64List[2],
         'number_plate': imagebase64List[3],
+        'transporter_name': selectedName,
       };
       await VehicalApi.saveVehicalApi(
         body: body,
@@ -189,19 +193,19 @@ class VehicleDetailController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
+    getTransportersApi();
     super.onInit();
   }
-  // List<GetIncomingModel> getAllTraList = [];
-  // getIncomingAPi() async {
-  //   try {
-  //     loader.value = true;
-  //     getAllTraList = await GetAllTraApi.getAllTragApi();
-  //
-  //     loader.value = false;
-  //   } catch (e) {
-  //     print(e.toString());
-  //     loader.value = false;
-  //   }
-  // }
+  List getTransporters = [];
+  getTransportersApi() async {
+    try {
+      loader.value = true;
+      getTransporters = await GetAllTraApi.getAllTragApi();
+print(getTransporters);
+      loader.value = false;
+    } catch (e) {
+      print(e.toString());
+      loader.value = false;
+    }
+  }
 }
