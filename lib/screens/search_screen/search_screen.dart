@@ -102,6 +102,7 @@ class SearchScreen extends StatelessWidget {
                                 },
                               ),
                             )
+
                           : SizedBox(),
                       controller.isDrop == true
                           ? Container(
@@ -111,7 +112,7 @@ class SearchScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(
                                     5,
                                   ),
-                                  color: ColorRes.cF6F6F6,
+                                  color: ColorRes.appPrimary,
                                   border: Border.all(
                                       color: ColorRes.cE8E8E8, width: 0.4)),
                               child: ListView.separated(
@@ -140,7 +141,7 @@ class SearchScreen extends StatelessWidget {
                                                   .companyName ??
                                               '',
                                           style: subTitle.copyWith(
-                                            color: ColorRes.cBDBDBD,
+                                            color: ColorRes.white,
                                           ),
                                         ),
                                       ),

@@ -16,18 +16,21 @@ import 'package:new_project/utils/string_res.dart';
 import 'package:new_project/utils/text_styles.dart';
 
 class VehicleDetailScreen extends StatelessWidget {
-  VehicleDetailScreen({Key? key,required this.orgId, required this.vehicleNumber})
+  VehicleDetailScreen(
+      {Key? key, required this.orgId, required this.vehicleNumber})
       : super(key: key);
 
   final String vehicleNumber;
   final String orgId;
   final VehicleDetailController vehicleDetailController =
       Get.put(VehicleDetailController());
+
   @override
   Widget build(BuildContext context) {
-  vehicleDetailController.orgId =orgId;
+    vehicleDetailController.orgId = orgId;
     vehicleDetailController.vehicalNumberController.text = vehicleNumber;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: ColorRes.white,
       body: Obx(() {
         return Stack(
@@ -63,16 +66,7 @@ class VehicleDetailScreen extends StatelessWidget {
                           ),
                           const SizedBox(
                             height: 10,
-                            
-                            
-                            
-                            
                           ),
-
-
-
-
-
                           GestureDetector(
                             onTap: () {
                               if (controller.isDrop) {
@@ -100,9 +94,10 @@ class VehicleDetailScreen extends StatelessWidget {
                                   Text(
                                     controller.selectedName,
                                     style: subTitle.copyWith(
-                                        color: controller.selectedName == 'Select'
-                                            ? Colors.black
-                                            : ColorRes.appPrimary),
+                                        color:
+                                            controller.selectedName == 'Select'
+                                                ? Colors.black
+                                                : ColorRes.appPrimary),
                                   ),
                                   Spacer(),
                                   Icon(
@@ -114,18 +109,12 @@ class VehicleDetailScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          
-
-                          SizedBox(height: 3,),
-
-
-
-                          
+                          SizedBox(
+                            height: 3,
+                          ),
                           const SizedBox(
                             height: 10,
                           ),
-                          
-                          
                           Stack(
                             children: [
                               Column(
@@ -155,7 +144,8 @@ class VehicleDetailScreen extends StatelessWidget {
                                             ),
                                             GestureDetector(
                                               onTap: () {
-                                                controller.imageDialog(context, 4);
+                                                controller.imageDialog(
+                                                    context, 4);
                                               },
                                               child: controller
                                                       .vehicleNumberPath.isEmpty
@@ -163,39 +153,50 @@ class VehicleDetailScreen extends StatelessWidget {
                                                       height: 150,
                                                       width: Get.width,
                                                       decoration: BoxDecoration(
-                                                          color: ColorRes.appPrimary
+                                                          color: ColorRes
+                                                              .appPrimary
                                                               .withOpacity(0.1),
                                                           borderRadius:
-                                                              BorderRadius.circular(
+                                                              BorderRadius
+                                                                  .circular(
                                                             20,
                                                           ),
                                                           border: Border.all(
                                                               width: 0.5,
-                                                              color: ColorRes.appPrimary
-                                                                  .withOpacity(0.6))),
+                                                              color: ColorRes
+                                                                  .appPrimary
+                                                                  .withOpacity(
+                                                                      0.6))),
                                                       child: const Icon(
                                                         Icons.image,
-                                                        color: ColorRes.appPrimary,
+                                                        color:
+                                                            ColorRes.appPrimary,
                                                         size: 70,
                                                       ))
                                                   : ClipRRect(
                                                       borderRadius:
-                                                          BorderRadius.circular(20),
+                                                          BorderRadius.circular(
+                                                              20),
                                                       child: Container(
                                                         height: 150,
                                                         width: Get.width,
-                                                        decoration: BoxDecoration(
-                                                            color: ColorRes.appPrimary
-                                                                .withOpacity(0.1),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                              20,
-                                                            ),
-                                                            border: Border.all(
-                                                                width: 0.5,
+                                                        decoration:
+                                                            BoxDecoration(
                                                                 color: ColorRes
                                                                     .appPrimary
-                                                                    .withOpacity(0.6))),
+                                                                    .withOpacity(
+                                                                        0.1),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  20,
+                                                                ),
+                                                                border: Border.all(
+                                                                    width: 0.5,
+                                                                    color: ColorRes
+                                                                        .appPrimary
+                                                                        .withOpacity(
+                                                                            0.6))),
                                                         child: Image.file(
                                                           File(controller
                                                               .vehicleNumberPath),
@@ -217,24 +218,29 @@ class VehicleDetailScreen extends StatelessWidget {
                                           ),
                                           GestureDetector(
                                             onTap: () {
-                                              vehicleDetailController.imageDialog(
-                                                  context, 1);
+                                              vehicleDetailController
+                                                  .imageDialog(context, 1);
                                             },
-                                            child: controller.profileImagePath.isEmpty
+                                            child: controller
+                                                    .profileImagePath.isEmpty
                                                 ? Container(
                                                     height: 150,
                                                     width: 150,
                                                     decoration: BoxDecoration(
-                                                        color: ColorRes.appPrimary
+                                                        color: ColorRes
+                                                            .appPrimary
                                                             .withOpacity(0.1),
                                                         shape: BoxShape.circle,
                                                         border: Border.all(
                                                             width: 0.5,
-                                                            color: ColorRes.appPrimary
-                                                                .withOpacity(0.6))),
+                                                            color: ColorRes
+                                                                .appPrimary
+                                                                .withOpacity(
+                                                                    0.6))),
                                                     child: const Icon(
                                                       Icons.person,
-                                                      color: ColorRes.appPrimary,
+                                                      color:
+                                                          ColorRes.appPrimary,
                                                       size: 70,
                                                     ))
                                                 : ClipOval(
@@ -242,16 +248,21 @@ class VehicleDetailScreen extends StatelessWidget {
                                                       height: 150,
                                                       width: 150,
                                                       decoration: BoxDecoration(
-                                                          color: ColorRes.appPrimary
+                                                          color: ColorRes
+                                                              .appPrimary
                                                               .withOpacity(0.1),
-                                                          shape: BoxShape.circle,
+                                                          shape:
+                                                              BoxShape.circle,
                                                           border: Border.all(
                                                               width: 0.5,
-                                                              color: ColorRes.appPrimary
-                                                                  .withOpacity(0.6))),
+                                                              color: ColorRes
+                                                                  .appPrimary
+                                                                  .withOpacity(
+                                                                      0.6))),
                                                       child: Image.file(
                                                         File(
-                                                          controller.profileImagePath,
+                                                          controller
+                                                              .profileImagePath,
                                                         ),
                                                         fit: BoxFit.cover,
                                                       ),
@@ -262,200 +273,281 @@ class VehicleDetailScreen extends StatelessWidget {
                                       ),
                                     ],
                                   ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        Strings.licenceFrontPic,
+                                        style: subTitle,
+                                      ),
+                                      const SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(
+                                        Strings.licenceBackPic,
+                                        style: subTitle,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                controller.imageDialog(context, 2);
+                                              },
+                                              child: controller.licenceFrontPath.isEmpty
+                                                  ? Container(
+                                                  height: 150,
+                                                  width: Get.width,
+                                                  decoration: BoxDecoration(
+                                                      color: ColorRes.appPrimary
+                                                          .withOpacity(0.1),
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                        20,
+                                                      ),
+                                                      border: Border.all(
+                                                          width: 0.5,
+                                                          color: ColorRes.appPrimary
+                                                              .withOpacity(0.6))),
+                                                  child: const Icon(
+                                                    Icons.image,
+                                                    color: ColorRes.appPrimary,
+                                                    size: 70,
+                                                  ))
+                                                  : ClipRRect(
+                                                borderRadius:
+                                                BorderRadius.circular(20),
+                                                child: Container(
+                                                  height: 150,
+                                                  width: Get.width,
+                                                  decoration: BoxDecoration(
+                                                      color: ColorRes.appPrimary
+                                                          .withOpacity(0.1),
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                        20,
+                                                      ),
+                                                      border: Border.all(
+                                                          width: 0.5,
+                                                          color: ColorRes
+                                                              .appPrimary
+                                                              .withOpacity(0.6))),
+                                                  child: Image.file(
+                                                    File(controller
+                                                        .licenceFrontPath),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                controller.imageDialog(context, 3);
+                                              },
+                                              child: controller.licenceBackPath.isEmpty
+                                                  ? Container(
+                                                height: 150,
+                                                width: Get.width,
+                                                decoration: BoxDecoration(
+                                                    color: ColorRes.appPrimary
+                                                        .withOpacity(0.1),
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                      20,
+                                                    ),
+                                                    border: Border.all(
+                                                        width: 0.5,
+                                                        color: ColorRes.appPrimary
+                                                            .withOpacity(0.6))),
+                                                child: const Icon(
+                                                  Icons.image,
+                                                  color: ColorRes.appPrimary,
+                                                  size: 70,
+                                                ),
+                                              )
+                                                  : ClipRRect(
+                                                borderRadius:
+                                                BorderRadius.circular(20),
+                                                child: Container(
+                                                  height: 150,
+                                                  width: Get.width,
+                                                  decoration: BoxDecoration(
+                                                      color: ColorRes.appPrimary
+                                                          .withOpacity(0.1),
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                        20,
+                                                      ),
+                                                      border: Border.all(
+                                                          width: 0.5,
+                                                          color: ColorRes
+                                                              .appPrimary
+                                                              .withOpacity(0.6))),
+                                                  child: Image.file(
+                                                    File(controller
+                                                        .licenceBackPath),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
                               controller.isDrop == true
                                   ? Container(
-                                margin: EdgeInsets.symmetric(horizontal: 16),
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                      5,
-                                    ),
-                                    color: ColorRes.cF6F6F6,
-                                    border: Border.all(
-                                        color: ColorRes.cE8E8E8, width: 0.4)),
-                                child: ListView.separated(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          controller.selectedName = controller
-                                              .getTransporters[index]
-                                              ??"";
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 16),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
+                                          color: ColorRes.appPrimary,
+                                          border: Border.all(
+                                              color: ColorRes.cE8E8E8,
+                                              width: 0.4)),
+                                      child: ListView.separated(
+                                          padding: EdgeInsets.zero,
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                if (controller.getTransporters[
+                                                        index] ==
+                                                    '+ Add New') {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return Dialog(
+                                                        child: Container(
+                                                          height:200,
+                                                          width: 360.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              10,
+                                                            ),
+                                                          ),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                            child: Column(
+                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              children: [
+                                                                Text('Add Name',style: blackSubTitle.copyWith(fontSize: 20),),
+                                                                SizedBox(height: 20,),
+                                                                CommonTextField(controller: controller.transporterNameController,
 
-                                          controller.isDrop = false;
-                                          controller.update(['vehicle']);
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 10,
-                                          ),
-                                          child: Text(
-                                            controller.getTransporters[index]
-                                                ??'',
-                                            style: subTitle.copyWith(
-                                              color: ColorRes.cBDBDBD,
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      return Container(
-                                          height: 1, color: ColorRes.cE8E8E8);
-                                    },
-                                    itemCount: controller.getTransporters.length),
-                              )
+                                                                 hintText: 'Transporter name',
+
+
+                                                                ),
+                                                                SizedBox(height: 20,),
+                                                                CommonButton(
+                                                                  width: 200,
+                                                                  height: 70,
+
+                                                                  text: Strings
+                                                                      .save,
+                                                                  onTap: () {
+                                                                    List list=[];
+                                                                    for(int i =0 ; i<controller.getTransporters.length; i++){
+                                                                      if(controller.getTransporters[i]!='+ Add New'){
+                                                                        list.add(controller.getTransporters[i]);
+
+                                                                      }
+
+                                                                    }
+
+                                                                    controller.getTransporters= list;
+                                                                    controller.getTransporters.add(controller.transporterNameController.text);
+                                                                    controller.getTransporters.add('+ Add New');
+                                                                    controller.selectedName = controller.transporterNameController.text;
+                                                                    controller.isDrop= false;
+                                                                    controller.update(['vehicle']);
+                                                                    Get.back();
+                                                                    controller.transporterNameController.clear();
+                                                                  },
+                                                                ),
+                                                                SizedBox(height: 10,),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  controller
+                                                      .selectedName = controller
+                                                              .getTransporters[
+                                                          index] ??
+                                                      "";
+
+                                                  controller.isDrop = false;
+                                                  controller
+                                                      .update(['vehicle']);
+                                                }
+                                              },
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 10,
+                                                ),
+                                                child: Text(
+                                                  controller.getTransporters[
+                                                          index] ??
+                                                      '',
+                                                  style: subTitle.copyWith(
+                                                    color: ColorRes.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) {
+                                            return Container(
+                                                height: 1,
+                                                color: ColorRes.cE8E8E8);
+                                          },
+                                          itemCount: controller
+                                              .getTransporters.length),
+                                    )
                                   : const SizedBox(),
                             ],
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                Strings.licenceFrontPic,
-                                style: subTitle,
-                              ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Text(
-                                Strings.licenceBackPic,
-                                style: subTitle,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        controller.imageDialog(context, 2);
-                                      },
-                                      child: controller.licenceFrontPath.isEmpty
-                                          ? Container(
-                                              height: 150,
-                                              width: Get.width,
-                                              decoration: BoxDecoration(
-                                                  color: ColorRes.appPrimary
-                                                      .withOpacity(0.1),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    20,
-                                                  ),
-                                                  border: Border.all(
-                                                      width: 0.5,
-                                                      color: ColorRes.appPrimary
-                                                          .withOpacity(0.6))),
-                                              child: const Icon(
-                                                Icons.image,
-                                                color: ColorRes.appPrimary,
-                                                size: 70,
-                                              ))
-                                          : ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              child: Container(
-                                                height: 150,
-                                                width: Get.width,
-                                                decoration: BoxDecoration(
-                                                    color: ColorRes.appPrimary
-                                                        .withOpacity(0.1),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      20,
-                                                    ),
-                                                    border: Border.all(
-                                                        width: 0.5,
-                                                        color: ColorRes
-                                                            .appPrimary
-                                                            .withOpacity(0.6))),
-                                                child: Image.file(
-                                                  File(controller
-                                                      .licenceFrontPath),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        controller.imageDialog(context, 3);
-                                      },
-                                      child: controller.licenceBackPath.isEmpty
-                                          ? Container(
-                                              height: 150,
-                                              width: Get.width,
-                                              decoration: BoxDecoration(
-                                                  color: ColorRes.appPrimary
-                                                      .withOpacity(0.1),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    20,
-                                                  ),
-                                                  border: Border.all(
-                                                      width: 0.5,
-                                                      color: ColorRes.appPrimary
-                                                          .withOpacity(0.6))),
-                                              child: const Icon(
-                                                Icons.image,
-                                                color: ColorRes.appPrimary,
-                                                size: 70,
-                                              ),
-                                            )
-                                          : ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              child: Container(
-                                                height: 150,
-                                                width: Get.width,
-                                                decoration: BoxDecoration(
-                                                    color: ColorRes.appPrimary
-                                                        .withOpacity(0.1),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      20,
-                                                    ),
-                                                    border: Border.all(
-                                                        width: 0.5,
-                                                        color: ColorRes
-                                                            .appPrimary
-                                                            .withOpacity(0.6))),
-                                                child: Image.file(
-                                                  File(controller
-                                                      .licenceBackPath),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+
                           const SizedBox(
                             height: 30,
                           ),

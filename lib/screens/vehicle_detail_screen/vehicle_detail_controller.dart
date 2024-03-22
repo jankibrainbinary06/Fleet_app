@@ -14,6 +14,7 @@ import 'package:new_project/utils/text_styles.dart';
 
 class VehicleDetailController extends GetxController {
   TextEditingController vehicalNumberController = TextEditingController();
+  TextEditingController transporterNameController = TextEditingController();
   String profileImagePath = '';
   String licenceFrontPath = '';
   String licenceBackPath = '';
@@ -30,12 +31,17 @@ class VehicleDetailController extends GetxController {
       errorToast("Please enter vehicle number");
       return false;
     }
-
+else if(selectedName=="Select"){
+      errorToast("Please select transporter name");
+      return false;
+    }
 
     else if (vehicleNumberPath.isEmpty) {
       errorToast("Please select vehicle number photo");
       return false;
-    } else if (profileImagePath.isEmpty) {
+    }
+
+    else if (profileImagePath.isEmpty) {
       errorToast("Please select driver photo");
       return false;
     } else if (licenceFrontPath.isEmpty) {
@@ -201,7 +207,9 @@ class VehicleDetailController extends GetxController {
     try {
       loader.value = true;
       getTransporters = await GetAllTraApi.getAllTragApi();
-print(getTransporters);
+      print(getTransporters);
+      getTransporters.add('+ Add New');
+
       loader.value = false;
     } catch (e) {
       print(e.toString());
