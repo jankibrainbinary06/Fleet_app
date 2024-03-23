@@ -43,10 +43,14 @@ class LoginScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+
                       SizedBox(
                         height: height * 0.1,
                         width: width,
                       ),
+
+                      Image.asset('assets/images/logo.png',height : 200, width: Get.width,fit: BoxFit.fill,),
+
                       SizedBox(
                         height: height * 0.005,
                       ),
