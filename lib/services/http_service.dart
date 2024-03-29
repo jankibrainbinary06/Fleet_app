@@ -33,7 +33,7 @@ class HttpService {
       if (kDebugMode) {
         print("Url => $url");
         print("Header => $header");
-        print("Body => $body");
+      //  print("Body => $body");
       }
       return http.post(
         Uri.parse(url),

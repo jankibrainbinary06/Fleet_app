@@ -57,7 +57,8 @@ else if(selectedName=="Select"){
 
 
 
-  Future<void> fileToBase64() async {
+  Future<void> fileToBase64() async
+  {
     extensionList.clear();
     imagebase64List.clear();
 
@@ -70,11 +71,11 @@ else if(selectedName=="Select"){
     File file2 = File(licenceFrontPath);
     File file3 = File(licenceBackPath);
     File file4 = File(vehicleNumberPath);
-    List<int> image1Bytes = await file1.readAsBytes();
-    List<int> image2Bytes = await file2.readAsBytes();
-    List<int> image3Bytes = await file3.readAsBytes();
-    List<int> image4Bytes = await file4.readAsBytes();
-    debugPrint("==+++++++++++++: ${base64Encode(image1Bytes)}");
+    List<int> image1Bytes = await file1.readAsBytesSync();
+    List<int> image2Bytes = await file2.readAsBytesSync();
+    List<int> image3Bytes = await file3.readAsBytesSync();
+    List<int> image4Bytes = await file4.readAsBytesSync();
+    //debugPrint("==+++++++++++++: ${base64Encode(image1Bytes)}");
     imagebase64List.add(base64Encode(image1Bytes));
     imagebase64List.add(base64Encode(image2Bytes));
     imagebase64List.add(base64Encode(image3Bytes));
@@ -88,7 +89,7 @@ else if(selectedName=="Select"){
       await fileToBase64();
       Map<String, String> body = {
         "vehicle_no": vehicalNumberController.text,
-        "driver_photo": imagebase64List[0],
+        "driver_photo":imagebase64List[0],
         "license_front": imagebase64List[1],
         "license_back": imagebase64List[2],
         'number_plate': imagebase64List[3],
@@ -135,7 +136,7 @@ else if(selectedName=="Select"){
                   Get.back();
                   final ImagePicker picker = ImagePicker();
                   final image =
-                      await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+                      await picker.pickImage(source: ImageSource.camera, imageQuality: 5,);
 
                   if (image != null) {
                     if (i == 1) {
@@ -168,7 +169,7 @@ else if(selectedName=="Select"){
                   Get.back();
                   final ImagePicker picker = ImagePicker();
                   final image =
-                      await picker.pickImage(source: ImageSource.gallery,imageQuality: 50);
+                      await picker.pickImage(source: ImageSource.gallery,imageQuality: 5);
 
                   if (image != null) {
                     if (i == 1) {

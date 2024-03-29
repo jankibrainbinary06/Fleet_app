@@ -792,7 +792,8 @@ class SearchResultScreen extends StatelessWidget {
                                                           : controller.statusList[
                                                                       index] ==
                                                                   'verified'
-                                                              ? Icon(
+                                                              ?
+                                                                    Icon(
                                                                   Icons
                                                                       .check_circle,
                                                                   color: Colors

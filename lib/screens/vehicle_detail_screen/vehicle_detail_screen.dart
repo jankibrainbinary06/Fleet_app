@@ -569,7 +569,7 @@ class VehicleDetailScreen extends StatelessWidget {
               },
             ),
             vehicleDetailController.loader.value
-                ? const Center(child: FullScreenLoader())
+                ? const Center(child: FullScreenLoader(enableBgColor: true,))
                 : const SizedBox(),
           ],
         );
