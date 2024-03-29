@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project/utils/color_res.dart';
@@ -52,7 +53,7 @@ class NewAppBar extends StatelessWidget {
             GestureDetector(
               onTap: ontap2,
               child: SizedBox(
-                width: Get.width * 0.2,
+                width: Get.width * 0.18,
                 child: Text(
                   text2,
                   textAlign: TextAlign.end,

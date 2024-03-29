@@ -135,7 +135,7 @@ else if(selectedName=="Select"){
                   Get.back();
                   final ImagePicker picker = ImagePicker();
                   final image =
-                      await picker.pickImage(source: ImageSource.camera);
+                      await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
 
                   if (image != null) {
                     if (i == 1) {
@@ -168,7 +168,7 @@ else if(selectedName=="Select"){
                   Get.back();
                   final ImagePicker picker = ImagePicker();
                   final image =
-                      await picker.pickImage(source: ImageSource.gallery);
+                      await picker.pickImage(source: ImageSource.gallery,imageQuality: 50);
 
                   if (image != null) {
                     if (i == 1) {

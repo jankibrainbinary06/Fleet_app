@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:new_project/common/widgets/button.dart';
+import 'package:new_project/common/widgets/loader.dart';
 import 'package:new_project/common/widgets/new_appbar.dart';
 import 'package:new_project/common/widgets/text_fields.dart';
 import 'package:new_project/screens/search_result_screen/search_result_screen.dart';
@@ -218,11 +219,15 @@ class SearchScreen extends StatelessWidget {
                                   height: 50,
                                   text: Strings.createVehicle,
                                   onTap: () {
+
                                     Get.to(() => VehicleDetailScreen(
                                       orgId:  controller.selectedOrgId,
                                           vehicleNumber:
                                               controller.searchController.text,
-                                        ));
+                                        ),
+                                    );
+
+                                    // controller.searchController.clear();
                                   },
                                 ),
                               )
@@ -231,9 +236,7 @@ class SearchScreen extends StatelessWidget {
                 ],
               ),
               Obx(() => controller.loader.value
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
+                  ? FullScreenLoader(enableBgColor: true,)
                   : const SizedBox()),
             ],
           );

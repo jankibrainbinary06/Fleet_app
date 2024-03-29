@@ -25,6 +25,7 @@ class IncomingQRScreen extends StatelessWidget {
       Get.put(IncomingQRController());
 
   bool isApiCall = false;
+
   @override
   Widget build(BuildContext context) {
     incomingQRController.markedId = id;
@@ -43,16 +44,66 @@ class IncomingQRScreen extends StatelessWidget {
               builder: (controller) {
                 return Stack(
                   children: [
+                    controller.isMainFlash == false
+                        ? Container(
+                            height: 1,
+                            width: 1,
+                            child: QRView(
+                                key: controller.qrKey,
+                                onQRViewCreated: controller.onQRViewCreated2),
+                          )
+                        : SizedBox(),
                     Column(
                       children: [
-                        NewAppBar(
-                          text1: Strings.back,
-                          text2: '',
-                          title: vehicleNumber,
-                          ontap1: () {
-                            Get.back();
-                          },
-                          ontap2: () {},
+                        Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Container(
+                              width: Get.width,
+                              child: NewAppBar(
+                                text1: Strings.back,
+                                text2: '',
+                                title: vehicleNumber,
+                                ontap1: () {
+                                  Get.back();
+                                },
+                                ontap2: () {},
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                controller.isMainFlash = true;
+
+
+
+
+
+                                if (controller.homeFlash == true  ) {
+
+                                    controller.homeFlash= false  ;
+
+                                } else {
+
+
+                                  controller.homeFlash= true ;
+
+                                }
+                                controller.update(['incomingQr']);
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 10, bottom: 23),
+                                child: controller.homeFlash == true
+                                    ? Icon(
+                                        Icons.flashlight_on_rounded,
+                                        size: 30,
+                                      )
+                                    : Icon(
+                                        Icons.flashlight_off,
+                                        size: 30,
+                                      ),
+                              ),
+                            ),
+                          ],
                         ),
                         Expanded(
                           child: SingleChildScrollView(
@@ -248,6 +299,7 @@ class IncomingQRScreen extends StatelessWidget {
                                             ? 10
                                             : 0,
                                   ),
+
                                   (controller.materialPhoto.length != 0)
                                       ? GridView.builder(
                                           padding: EdgeInsets.zero,
@@ -433,26 +485,35 @@ class IncomingQRScreen extends StatelessWidget {
                                                             '')
                                                         ?
 
-                                                    // base64Decode(controller
-                                                    //     .barcodeData[
-                                                    // index]['image']).toString().contains('base64,')?
-                                                    // Image.memory(
-                                                    //   base64Decode(controller
-                                                    //       .barcodeData[
-                                                    //   index]['image'].replaceAll(RegExp('^data:image\\/\\w+;base64,'), '')),
-                                                    //   fit: BoxFit.cover,
-                                                    // ):
-                                                    Image.memory(
+                                                        // base64Decode(controller
+                                                        //     .barcodeData[
+                                                        // index]['image']).toString().contains('base64,')?
+                                                        // Image.memory(
+                                                        //   base64Decode(controller
+                                                        //       .barcodeData[
+                                                        //   index]['image'].replaceAll(RegExp('^data:image\\/\\w+;base64,'), '')),
+                                                        //   fit: BoxFit.cover,
+                                                        // ):
+                                                        Image.memory(
                                                             base64Decode(controller
-                                                                    .barcodeData[
-                                                                index]['image'].replaceAll(RegExp('^data:image\\/\\w+;base64,'), '')),
-                                                            fit: BoxFit.cover,
+                                                                .barcodeData[
+                                                                    index]
+                                                                    ['image']
+                                                                .replaceAll(
+                                                                    RegExp(
+                                                                        '^data:image\\/\\w+;base64,'),
+                                                                    '')),
+                                                            fit:
+                                                                BoxFit.fitWidth,
+                                                            height: 80,
+                                                            width: 80,
                                                           )
-
                                                         : const SizedBox(),
                                                   ),
                                                 ),
-                                                SizedBox(width: 10,),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
                                                 GestureDetector(
                                                   onTap: () {},
                                                   child: Container(
@@ -463,8 +524,8 @@ class IncomingQRScreen extends StatelessWidget {
                                                             .appPrimary
                                                             .withOpacity(0.1),
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(
+                                                            BorderRadius
+                                                                .circular(
                                                           5,
                                                         ),
                                                         border: Border.all(
@@ -472,36 +533,40 @@ class IncomingQRScreen extends StatelessWidget {
                                                             color: ColorRes
                                                                 .appPrimary
                                                                 .withOpacity(
-                                                                0.6))),
+                                                                    0.6))),
                                                     alignment: Alignment.center,
                                                     // child: Text(
                                                     //   'Api Image',
                                                     //   style: subTitle,
                                                     // ),
                                                     child: (controller
-                                                        .barcodeData[
-                                                    index]
-                                                    ['apiQRImage']
-                                                        .toString() !=
-                                                        '')
+                                                                .barcodeData[
+                                                                    index][
+                                                                    'apiQRImage']
+                                                                .toString() !=
+                                                            '')
                                                         ?
 
-                                                    // base64Decode(controller
-                                                    //     .barcodeData[
-                                                    // index]['image']).toString().contains('base64,')?
-                                                    // Image.memory(
-                                                    //   base64Decode(controller
-                                                    //       .barcodeData[
-                                                    //   index]['image'].replaceAll(RegExp('^data:image\\/\\w+;base64,'), '')),
-                                                    //   fit: BoxFit.cover,
-                                                    // ):
-                                                    Image.memory(
-                                                      base64Decode(controller
-                                                          .barcodeData[
-                                                      index]['apiQRImage'].replaceAll(RegExp('^data:image\\/\\w+;base64,'), '')),
-                                                      fit: BoxFit.cover,
-                                                    )
-
+                                                        // base64Decode(controller
+                                                        //     .barcodeData[
+                                                        // index]['image']).toString().contains('base64,')?
+                                                        // Image.memory(
+                                                        //   base64Decode(controller
+                                                        //       .barcodeData[
+                                                        //   index]['image'].replaceAll(RegExp('^data:image\\/\\w+;base64,'), '')),
+                                                        //   fit: BoxFit.cover,
+                                                        // ):
+                                                        Image.memory(
+                                                            base64Decode(controller
+                                                                .barcodeData[
+                                                                    index][
+                                                                    'apiQRImage']
+                                                                .replaceAll(
+                                                                    RegExp(
+                                                                        '^data:image\\/\\w+;base64,'),
+                                                                    '')),
+                                                            fit: BoxFit.cover,
+                                                          )
                                                         : const SizedBox(),
                                                   ),
                                                 ),
@@ -808,12 +873,11 @@ class IncomingQRScreen extends StatelessWidget {
 
                                                 /// ---- scan barcode -----
                                                 controller.barcodeDataImage[
-                                                            index] !=
-                                                        ''
-                                                    &&
-                                                    controller.statusList[
-                                                    index] !=
-                                                        'error'
+                                                                index] !=
+                                                            '' &&
+                                                        controller.statusList[
+                                                                index] !=
+                                                            'error'
                                                     ? GestureDetector(
                                                         onTap: () async {
                                                           controller
@@ -857,6 +921,17 @@ class IncomingQRScreen extends StatelessWidget {
                                                               index;
                                                           controller.isBarcode =
                                                               true;
+
+
+                                                          if(controller.homeFlash== true ){
+                                                            controller.isFlash =
+                                                                true ;
+                                                          }
+                                                          else {
+                                                            controller.isFlash =
+                                                            false  ;
+                                                          }
+
                                                           controller.update(
                                                               ['incomingQr']);
                                                         },
@@ -991,6 +1066,15 @@ class IncomingQRScreen extends StatelessWidget {
                                                     controller.initialIndex =
                                                         index;
                                                     controller.isBarcode = true;
+
+                                                    if(controller.homeFlash== true ){
+                                                      controller.isFlash =
+                                                      true ;
+                                                    }
+                                                    else {
+                                                      controller.isFlash =
+                                                      false  ;
+                                                    }
                                                     controller
                                                         .update(['incomingQr']);
                                                   },
@@ -1055,10 +1139,11 @@ class IncomingQRScreen extends StatelessWidget {
                                             height: 5,
                                           ),
                                           (controller.barcodeData[index]
-                                                      ['value'] !=
-                                                  '' && controller.statusList[index] !=
-                                              'error'
-                                               )
+                                                          ['value'] !=
+                                                      '' &&
+                                                  controller
+                                                          .statusList[index] !=
+                                                      'error')
                                               ? Container(
                                                   decoration: BoxDecoration(
                                                       border: Border.all(
@@ -1206,20 +1291,57 @@ class IncomingQRScreen extends StatelessWidget {
                     ),
                     controller.isBarcode
                         ? WillPopScope(
-                      onWillPop: () async{
-                        controller.isBarcode = false;
-                        controller.update(['incomingQr']);
-                        return false;
-                      },
-                          child: Container(
-                              height: Get.height,
-                              width: Get.width,
-                              color: Colors.transparent,
-                              child: QRView(
-                                  key: controller.qrKey,
-                                  onQRViewCreated: controller.onQRViewCreated),
+                            onWillPop: () async {
+                              controller.isBarcode = false;
+                              controller.update(['incomingQr']);
+                              return false;
+                            },
+                            child: Stack(
+                              alignment: Alignment.topRight,
+                              children: [
+                                Container(
+                                  height: Get.height,
+                                  width: Get.width,
+                                  color: Colors.transparent,
+                                  child: QRView(
+                                      key: controller.qrKey,
+                                      onQRViewCreated:
+                                          controller.onQRViewCreated),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 40, right: 20),
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      controller.controller!.toggleFlash();
+                                      if (controller.isFlash == true) {
+                                        controller.isFlash = false;
+                                      } else {
+                                        controller.isFlash = true;
+                                      }
+                                      controller.update(['incomingQr']);
+                                    },
+                                    child: Container(
+                                      height: 60,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                          color: ColorRes.appPrimary,
+                                          shape: BoxShape.circle),
+                                      child: controller.isFlash == true
+                                          ? Icon(
+                                              Icons.flashlight_on_rounded,
+                                              size: 30,
+                                            )
+                                          : Icon(
+                                              Icons.flashlight_off,
+                                              size: 30,
+                                            ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                        )
+                          )
                         : const SizedBox(),
                   ],
                 );

@@ -1,5 +1,6 @@
 class Endpoints {
-  static const baseUrl = 'https://sparkdeath324.pythonanywhere.com';
+  // static const baseUrl = 'https://sparkdeath324.pythonanywhere.com';
+  static const baseUrl = 'https://fleetx.weirdlabs.co.in';
 
   static const login = '$baseUrl/login/';
   static const search = '$baseUrl/search/?query=';
@@ -12,6 +13,5 @@ class Endpoints {
   static const getTransaction = '$baseUrl/get-transaction/';
   static const completeTransaction = '$baseUrl/complete-transaction/';
   static const getAllTransporters = '$baseUrl/get-all-transporters/';
-
 
 }

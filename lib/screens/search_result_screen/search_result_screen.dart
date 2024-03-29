@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,15 +9,21 @@ import 'package:new_project/common/widgets/button.dart';
 import 'package:new_project/common/widgets/loader.dart';
 import 'package:new_project/common/widgets/new_appbar.dart';
 import 'package:new_project/screens/search_result_screen/search_result_controller.dart';
+import 'package:new_project/screens/search_screen/search_screen_controller.dart';
 import 'package:new_project/utils/color_res.dart';
 import 'package:new_project/utils/fonts.dart';
 import 'package:new_project/utils/string_res.dart';
 import 'package:new_project/utils/text_styles.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:torch_light/torch_light.dart';
 
 class SearchResultScreen extends StatelessWidget {
-  SearchResultScreen({Key? key, required this.orgId,required this.id, required this.vehicleNumber})
+  SearchResultScreen(
+      {Key? key,
+      required this.orgId,
+      required this.id,
+      required this.vehicleNumber})
       : super(key: key);
 
   final String id;
@@ -26,8 +33,9 @@ class SearchResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SearchResultController searchResultController =
-        Get.put(SearchResultController(id: id));
-searchResultController.orgid =orgId;
+        Get.put(SearchResultController(id: id, orgIdMain:orgId ));
+    searchResultController.orgid = orgId;
+// searchResultController.onInit();
     return Scaffold(
         backgroundColor: ColorRes.white,
         body: Obx(() {
@@ -38,16 +46,54 @@ searchResultController.orgid =orgId;
                 builder: (controller) {
                   return Stack(
                     children: [
+                      controller.isMainFlash == false
+                          ? Container(
+                              height: 1,
+                              width: 1,
+                              child: QRView(
+                                  key: controller.qrKey,
+                                  onQRViewCreated: controller.onQRViewCreated2),
+                            )
+                          : SizedBox(),
                       Column(
                         children: [
-                          NewAppBar(
-                            text1: Strings.back,
-                            text2: '',
-                            title: vehicleNumber,
-                            ontap1: () {
-                              Get.back();
-                            },
-                            ontap2: () {},
+                          Stack(
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              NewAppBar(
+                                text1: Strings.back,
+                                text2: '',
+                                title: vehicleNumber,
+                                ontap1: () {
+                                  Get.back();
+                                },
+                                ontap2: () {},
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  controller.isMainFlash = true;
+                                  if (controller.homeFlash == true) {
+                                    controller.homeFlash = false;
+                                  } else {
+                                    controller.homeFlash = true;
+                                  }
+                                  controller.update(['qr']);
+                                },
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(right: 10, bottom: 23),
+                                  child: controller.homeFlash == true
+                                      ? Icon(
+                                          Icons.flashlight_on_rounded,
+                                          size: 30,
+                                        )
+                                      : Icon(
+                                          Icons.flashlight_off,
+                                          size: 30,
+                                        ),
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(
                             height: 20,
@@ -533,7 +579,11 @@ searchResultController.orgid =orgId;
                                                           ),
                                                         )
                                                       : GestureDetector(
-                                                          onTap: () {
+                                                          onTap: () async {
+
+                                                            controller.isMainFlash = true;
+                                                            controller.update(['qr']);
+
                                                             controller
                                                                 .selectedData = controller
                                                                     .barcodeData[
@@ -541,9 +591,22 @@ searchResultController.orgid =orgId;
                                                             controller
                                                                     .initialIndex =
                                                                 index;
+
                                                             controller
                                                                     .isBarcode =
                                                                 true;
+
+                                                            if (controller
+                                                                    .homeFlash ==
+                                                                true) {
+                                                              controller
+                                                                      .isFlash =
+                                                                  true;
+                                                            } else {
+                                                              controller
+                                                                      .isFlash =
+                                                                  false;
+                                                            }
                                                             controller
                                                                 .update(['qr']);
                                                           },
@@ -656,38 +719,56 @@ searchResultController.orgid =orgId;
                                                           ),
                                                   ),
                                                   SizedBox(width: 5),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      controller.selectedData =
-                                                          controller
-                                                                  .barcodeData[
-                                                              index]['name'];
-                                                      controller.initialIndex =
-                                                          index;
-                                                      controller.isBarcode =
-                                                          true;
-                                                      controller.update(['qr']);
-                                                    },
-                                                    child: Container(
-                                                      height: 30,
-                                                      width: 70,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                        border: Border.all(
-                                                            width: 0.5,
-                                                            color: ColorRes
-                                                                .appPrimary),
-                                                        color: ColorRes
-                                                            .appPrimary
-                                                            .withOpacity(0.2),
-                                                      ),
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Text(
-                                                        'Scan',
-                                                        style: subTitle,
+                                                  Expanded(
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        controller.isMainFlash = true;
+                                                        controller.update(['qr']);
+                                                        controller
+                                                                .selectedData =
+                                                            controller
+                                                                    .barcodeData[
+                                                                index]['name'];
+                                                        controller
+                                                                            .initialIndex =
+                                                            index;
+                                                        controller.isBarcode =
+                                                            true;
+
+                                                        if (controller
+                                                                .homeFlash ==
+                                                            true) {
+                                                          controller.isFlash =
+                                                              true;
+                                                        } else {
+                                                          controller.isFlash =
+                                                              false;
+                                                        }
+                                                        controller
+                                                            .update(['qr']);
+                                                      },
+                                                      child: Container(
+                                                        height: 30,
+                                                        width: 70,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                          border: Border.all(
+                                                              width: 0.5,
+                                                              color: ColorRes
+                                                                  .appPrimary),
+                                                          color: ColorRes
+                                                              .appPrimary
+                                                              .withOpacity(0.2),
+                                                        ),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          'Scan',
+                                                          style: subTitle,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
@@ -837,7 +918,11 @@ searchResultController.orgid =orgId;
                                           width: 200,
                                           text: Strings.save,
                                           onTap: () {
-                                            controller.validation();
+                                            Get.back();
+                                            final SearchController1 search = Get.put(SearchController1());
+                                            search.searchController.clear();
+                                            search.update(['search']);
+                                            // controller.validation();
                                           },
                                         ),
                                       ],
@@ -853,31 +938,71 @@ searchResultController.orgid =orgId;
                         ],
                       ),
                       controller.isBarcode
-                          ?
-                      WillPopScope(
-                        onWillPop: () async{
-                          controller.isBarcode = false;
-                          controller.update(['qr']);
-                          return false;
-                        },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(15)),
-                                height: Get.height,
-                                width: Get.width,
-                                child: QRView(
-                                    key: controller.qrKey,
-                                    onQRViewCreated: controller.onQRViewCreated),
+                          ? WillPopScope(
+                              onWillPop: () async {
+                                controller.isBarcode = false;
+                                controller.update(['qr']);
+                                return false;
+                              },
+                              child: Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(
+                                        15,
+                                      ),
+                                    ),
+                                    height: Get.height,
+                                    width: Get.width,
+                                    child: QRView(
+                                        cameraFacing: CameraFacing.back,
+                                        key: controller.qrKey,
+                                        onQRViewCreated:
+                                            controller.onQRViewCreated),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 40, right: 20),
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        controller.controller!.toggleFlash();
+                                        if (controller.isFlash == true) {
+                                          controller.isFlash = false;
+                                        } else {
+                                          controller.isFlash = true;
+                                        }
+                                        controller.update(['qr']);
+                                      },
+                                      child: Container(
+                                        height: 60,
+                                        width: 50,
+                                        decoration: BoxDecoration(
+                                            color: ColorRes.appPrimary,
+                                            shape: BoxShape.circle),
+                                        child: controller.isFlash == true
+                                            ? Icon(
+                                                Icons.flashlight_on_rounded,
+                                                size: 30,
+                                              )
+                                            : Icon(
+                                                Icons.flashlight_off,
+                                                size: 30,
+                                              ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                          )
+                            )
                           : SizedBox(),
                     ],
                   );
                 },
               ),
               searchResultController.loader.value
-                  ? Center(child: FullScreenLoader())
+                  ? SizedBox()
                   : SizedBox(),
             ],
           );

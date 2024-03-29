@@ -33,6 +33,8 @@ class IncomingQRController extends GetxController {
   RxBool loader = false.obs;
   int initialIndex = 0;
   String markedId = '';
+  bool isFlash = false;
+  bool homeFlash = false ;
   List<String> statusList = List.generate(14, (index) => '');
   List<File> imageFileList = List.generate(14, (index) => File(''));
 
@@ -138,7 +140,7 @@ class IncomingQRController extends GetxController {
 
   String dp1 ='';
   String dp2 ='';
-
+  bool isMainFlash = false;
   List materialPhoto =[];
 
   Map<String, dynamic> map = {};
@@ -320,7 +322,7 @@ print(materialPhoto);
 
   String savedImagePath = '';
 
-  void onQRViewCreated(QRViewController controller) {
+  void onQRViewCreated2(QRViewController controller) {
     this.controller = controller;
     controller!.scannedDataStream.listen(
       (scanData) async {
@@ -334,6 +336,56 @@ print(materialPhoto);
         //   'value': resultData,
         //   'image': resultData,
         // };
+
+        barcodeData[initialIndex]['value'] =resultData;
+        barcodeDataImage[initialIndex] = resultData;
+        debugPrint("----------------------------------------$resultData");
+        update(["incomingQr"]);
+        isScanHandled = true;
+        if (result != null) {
+          debugPrint("$result");
+          isBarcode = false;
+          update(["incomingQr"]);
+          map = {
+            'barcode': barcodeData[initialIndex]['name'],
+            'barcode_value': resultData,
+            "barcode_image": imageFileList[initialIndex].path
+          };
+
+          if(imageFileList[initialIndex].path !='') {
+            await markedVerifiedAPi(map);
+          }
+        } else {
+          debugPrint("qr code give error");
+
+          Get.snackbar('Error', 'QR not found!',
+              colorText: Colors.white, backgroundColor: Colors.red);
+        }
+      },
+    );
+  } void onQRViewCreated(QRViewController controller)  {
+    this.controller = controller;
+
+    if( homeFlash == true  ){
+      controller.toggleFlash();
+
+    }
+    else {
+
+    }
+    controller!.scannedDataStream.listen(
+      (scanData) async {
+        update(["incomingQr"]);
+        result = scanData;
+        debugPrint(isScanHandled.toString());
+        String resultData = result?.code ?? "";
+
+        // barcodeData[initialIndex] = {
+        //   'name': barcodeData[initialIndex]['name'],
+        //   'value': resultData,
+        //   'image': resultData,
+        // };
+
         barcodeData[initialIndex]['value'] =resultData;
         barcodeDataImage[initialIndex] = resultData;
         debugPrint("----------------------------------------$resultData");
@@ -424,7 +476,7 @@ print(materialPhoto);
                   Get.back();
                   final ImagePicker picker = ImagePicker();
                   final image =
-                      await picker.pickImage(source: ImageSource.camera);
+                      await picker.pickImage(source: ImageSource.camera,imageQuality: 30);
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -459,7 +511,7 @@ print(materialPhoto);
                   Get.back();
                   final ImagePicker picker = ImagePicker();
                   final image =
-                      await picker.pickImage(source: ImageSource.gallery);
+                      await picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);

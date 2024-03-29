@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -21,8 +22,9 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class SearchResultController extends GetxController {
   final String? id;
+  final String? orgIdMain;
 
-  SearchResultController({this.id});
+  SearchResultController({this.id, this.orgIdMain});
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
@@ -34,6 +36,12 @@ class SearchResultController extends GetxController {
   int initialIndex = 0;
   List<String> statusList = List.generate(14, (index) => '');
   List<File> imageFileList = List.generate(14, (index) => File(''));
+  // CameraController? cameraController;
+  bool isFlash = false ;
+bool isMainFlash = false ;
+bool homeFlash= false ;
+
+
 String orgid ='';
   List barcodeData = [
     {
@@ -115,11 +123,17 @@ String orgid ='';
   File devicePhoto1 = File('');
   File devicePhoto2 = File('');
 
+  // late List<CameraDescription> cameras;
+
   @override
-  void onInit() {
-    // if (id != null) {
-    //   createTransactionAPi();
-    // }
+  Future<void> onInit() async {
+    if (id != null&& orgIdMain!=null) {
+      createTransactionAPi();
+    }
+    // cameras = await availableCameras();
+    // cameraController = CameraController(cameras[0], ResolutionPreset.max);
+    //
+    // cameraController!.initialize();
     super.onInit();
   }
 
@@ -130,11 +144,11 @@ String orgid ='';
         String base64String = base64Encode(imageBytes);
         Map map = {'mp${i + 1}': base64String};
         await updateTransactionAPi(map);
-
         update(['qr']);
       } else {}
     }
   }
+
 
   devicePhotoApi() async {
     if (devicePhoto1.path.isNotEmpty) {
@@ -142,7 +156,10 @@ String orgid ='';
       String base64String = base64Encode(imageBytes);
       Map map = {'dp1': base64String};
       await updateTransactionAPi(map);
-    } else {}
+    }
+    else {
+
+    }
     if (devicePhoto2.path.isNotEmpty) {
       Uint8List imageBytes = await devicePhoto2.readAsBytes();
       String base64String = base64Encode(imageBytes);
@@ -165,7 +182,7 @@ String orgid ='';
 
   onTapSave() async {
     if (id != null) {
-      await createTransactionAPi();
+      // await createTransactionAPi();
     }
     await devicePhotoApi();
 
@@ -179,8 +196,6 @@ String orgid ='';
         List<int> pickedImageBYte = await pickedImageFile.readAsBytes();
          pickedIMageBse64 = base64Encode(pickedImageBYte);
       }
-
-
 
       Uint8List? imageData;
       ByteData? qrImageData =
@@ -213,6 +228,7 @@ String orgid ='';
 
       update(['qr']);
     }
+    Get.back();
     update(['qr']);
   }
 
@@ -223,7 +239,7 @@ String orgid ='';
     try {
       loader.value = true;
       createTransactionModel =
-          await CreateTransactionApi.createTransactionApi(id!, orgid,);
+          await CreateTransactionApi.createTransactionApi(id!, orgIdMain!,);
       updateid =
           createTransactionModel.transactionDetails?.outgoingPk.toString() ??
               '';
@@ -260,8 +276,10 @@ String orgid ='';
 
   String savedImagePath = '';
 
-  void onQRViewCreated(QRViewController controller) {
+  void onQRViewCreated2(QRViewController controller)  {
+
     this.controller = controller;
+
     controller!.scannedDataStream.listen(
       (scanData) async {
         update(["qr"]);
@@ -295,8 +313,8 @@ String orgid ='';
           //   barcodeData[initialIndex]['name']: base64Encode(imageData!),
           //   "${barcodeData[initialIndex]['name']}_barcode:": resultData,
           // };
-
           // await updateTransactionAPi(map);
+
         } else {
           debugPrint("qr code give error");
 
@@ -307,6 +325,105 @@ String orgid ='';
     );
   }
 
+  void onQRViewCreated(QRViewController controller)  {
+
+    this.controller = controller;
+    // if( homeFlash == false  ){
+    //
+    // }
+    // else {
+    //   controller.toggleFlash();
+    // }
+    controller!.scannedDataStream.listen(
+          (scanData) async {
+            if(scanData!=null){
+              update(["qr"]);
+              result = scanData;
+              debugPrint(isScanHandled.toString());
+              String resultData = result?.code ?? "";
+
+              barcodeData[initialIndex] = {
+                'name': barcodeData[initialIndex]['name'],
+                'value': resultData,
+                'image': resultData,
+              };
+              barcodeDataImage[initialIndex] = resultData;
+              debugPrint("----------------------------------------$resultData");
+              update(["qr"]);
+              isScanHandled = true;
+              if (result != null) {
+                debugPrint("$result");
+                isBarcode = false;
+                update(["qr"]);
+
+                if(imageFileList[initialIndex].path.isNotEmpty){
+                  statusList[initialIndex] = 'loader';
+
+                  String pickedIMageBse64='';
+                  File pickedImageFile = File(imageFileList[initialIndex].path);
+
+                  List<int> pickedImageBYte = await pickedImageFile.readAsBytes();
+                  pickedIMageBse64 = base64Encode(pickedImageBYte);
+                  Uint8List? imageData;
+                  ByteData? qrImageData =
+                  await _generateQRCodeImage(resultData);
+                  if (qrImageData != null) {
+                    imageData = qrImageData.buffer.asUint8List();
+                    byteImageList[initialIndex] = imageData;
+
+                    update(["qr"]);
+                  }
+
+                  var data = {
+                    barcodeData[initialIndex]['name']: pickedIMageBse64,
+                    "${barcodeData[initialIndex]['name']}_barcode": resultData,
+                    "${barcodeData[initialIndex]['name']}_qr": base64Encode(imageData!),
+
+                  };
+                  await updateTransactionAPi(data);
+                  if (updateTransactionModel.message == 'Data Saved') {
+                    statusList[initialIndex] = 'verified';
+                    showToast('Data saved!');
+                  } else {
+                    statusList[initialIndex] = 'error';
+                    errorToast('Something went wrong!');
+                  }
+                  update(["qr"]);
+
+                }
+
+                // Uint8List? imageData;
+                // ByteData? qrImageData = await _generateQRCodeImage(resultData);
+                // if (qrImageData != null) {
+                //   imageData = qrImageData.buffer.asUint8List();
+                //   byteImageList[initialIndex] = imageData;
+                //
+                //   update(["qr"]);
+                // }
+                //
+                // map = {
+                //   barcodeData[initialIndex]['name']: base64Encode(imageData!),
+                //   "${barcodeData[initialIndex]['name']}_barcode:": resultData,
+                // };
+                // await updateTransactionAPi(map);
+
+
+              }
+              else {
+                debugPrint("qr code give error");
+
+                Get.snackbar('Error', 'QR not found!',
+                    colorText: Colors.white, backgroundColor: Colors.red);
+              }
+            }
+
+            else {
+              Get.snackbar('Error', "Barcode code found");
+            }
+
+      },
+    );
+  }
   Future<File> base64ToFile(String base64String) async {
     Uint8List bytes = base64Decode(base64String);
     Directory tempDir = await getTemporaryDirectory();
@@ -357,11 +474,54 @@ String orgid ='';
                   Get.back();
                   final ImagePicker picker = ImagePicker();
                   final image =
-                      await picker.pickImage(source: ImageSource.camera);
+                      await picker.pickImage(source: ImageSource.camera, imageQuality: 25,);
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
+
                     update(['qr']);
+                    if( barcodeData[initialIndex]['value']!= ''){
+
+                      String pickedIMageBse64='';
+                      if(imageFileList[initialIndex].path.isNotEmpty){
+                        File pickedImageFile = File(imageFileList[initialIndex].path);
+
+                        List<int> pickedImageBYte = await pickedImageFile.readAsBytes();
+                        pickedIMageBse64 = base64Encode(pickedImageBYte);
+                      }
+
+
+
+                      Uint8List? imageData;
+                      ByteData? qrImageData =
+                      await _generateQRCodeImage(barcodeData[initialIndex]['value']);
+                      if (qrImageData != null) {
+                        imageData = qrImageData.buffer.asUint8List();
+                        byteImageList[initialIndex] = imageData;
+
+                        update(["qr"]);
+                      }
+
+                      var data = {
+                        barcodeData[initialIndex]['name']: pickedIMageBse64,
+                        "${barcodeData[initialIndex]['name']}_barcode": barcodeData[initialIndex]['value'],
+                        "${barcodeData[initialIndex]['name']}_qr": base64Encode(imageData!),
+
+                      };
+
+                      statusList[initialIndex] = 'loader';
+                      await updateTransactionAPi(data);
+                      if (updateTransactionModel.message == 'Data Saved') {
+                        statusList[initialIndex] = 'verified';
+                        showToast('Data saved!');
+                      } else {
+                        statusList[initialIndex] = 'error';
+                        errorToast('Something went wrong!');
+                      }
+                      update(["qr"]);
+
+                    }
+
                   }
                 },
                 child: ListTile(
@@ -380,14 +540,59 @@ String orgid ='';
               GestureDetector(
 
                 onTap: () async {
+
                   Get.back();
                   final ImagePicker picker = ImagePicker();
+
                   final image =
-                      await picker.pickImage(source: ImageSource.gallery);
+                      await picker.pickImage(source: ImageSource.gallery,imageQuality: 25);
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
+
                     update(['qr']);
+                    if( barcodeData[initialIndex]['value']!= ''){
+
+                      String pickedIMageBse64='';
+                      if(imageFileList[initialIndex].path.isNotEmpty){
+                        File pickedImageFile = File(imageFileList[initialIndex].path);
+
+                        List<int> pickedImageBYte = await pickedImageFile.readAsBytes();
+                        pickedIMageBse64 = base64Encode(pickedImageBYte);
+                      }
+
+
+
+                      Uint8List? imageData;
+                      ByteData? qrImageData =
+                      await _generateQRCodeImage(barcodeData[initialIndex]['value']);
+                      if (qrImageData != null) {
+                        imageData = qrImageData.buffer.asUint8List();
+                        byteImageList[initialIndex] = imageData;
+
+                        update(["qr"]);
+                      }
+
+                      var data = {
+                        barcodeData[initialIndex]['name']: pickedIMageBse64,
+                        "${barcodeData[initialIndex]['name']}_barcode": barcodeData[initialIndex]['value'],
+                        "${barcodeData[initialIndex]['name']}_qr": base64Encode(imageData!),
+
+                      };
+
+                      statusList[initialIndex] = 'loader';
+                      await updateTransactionAPi(data);
+                      if (updateTransactionModel.message == 'Data Saved') {
+                        statusList[initialIndex] = 'verified';
+                        showToast('Data saved!');
+                      } else {
+                        statusList[initialIndex] = 'error';
+                        errorToast('Something went wrong!');
+                      }
+                      update(["qr"]);
+
+                    }
+
                   }
                 },
                 child: ListTile(
@@ -423,13 +628,18 @@ String orgid ='';
                   Get.back();
                   final ImagePicker picker = ImagePicker();
                   final image =
-                      await picker.pickImage(source: ImageSource.camera);
+                      await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
 
                   if (image != null) {
                     materialPhotoList[index] = File(image.path);
                     if (materialPhotoList.length < 8) {
                       materialPhotoList.add(File(''));
                     }
+                    Uint8List imageBytes = await materialPhotoList[index].readAsBytes();
+                    String base64String = base64Encode(imageBytes);
+                    Map map = {'mp${index + 1}': base64String};
+                    await updateTransactionAPi(map);
+                    update(['qr']);
 
                     update(['qr']);
                   }
@@ -452,13 +662,17 @@ String orgid ='';
                   Get.back();
                   final ImagePicker picker = ImagePicker();
                   final image =
-                      await picker.pickImage(source: ImageSource.gallery);
-
+                      await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
                   if (image != null) {
                     materialPhotoList[index] = File(image.path);
                     if (materialPhotoList.length < 8) {
                       materialPhotoList.add(File(''));
                     }
+                    Uint8List imageBytes = await materialPhotoList[index].readAsBytes();
+                    String base64String = base64Encode(imageBytes);
+                    Map map = {'mp${index + 1}': base64String};
+                    await updateTransactionAPi(map);
+                    update(['qr']);
 
                     update(['qr']);
                   }
@@ -496,13 +710,24 @@ String orgid ='';
                   Get.back();
                   final ImagePicker picker = ImagePicker();
                   final image =
-                      await picker.pickImage(source: ImageSource.camera);
+                      await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
 
                   if (image != null) {
                     if (index == 1) {
+
                       devicePhoto1 = File(image.path);
+
+                      Uint8List imageBytes = await devicePhoto1.readAsBytes();
+                      String base64String = base64Encode(imageBytes);
+                      Map map = {'dp1': base64String};
+                      await updateTransactionAPi(map);
+
                     } else if (index == 2) {
                       devicePhoto2 = File(image.path);
+                      Uint8List imageBytes = await devicePhoto2.readAsBytes();
+                      String base64String = base64Encode(imageBytes);
+                      Map map = {'dp2': base64String};
+                      await updateTransactionAPi(map);
                     } else {}
                     update(['qr']);
                   }
@@ -525,13 +750,24 @@ String orgid ='';
                   Get.back();
                   final ImagePicker picker = ImagePicker();
                   final image =
-                      await picker.pickImage(source: ImageSource.gallery);
+                      await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
 
                   if (image != null) {
                     if (index == 1) {
+
                       devicePhoto1 = File(image.path);
+
+                      Uint8List imageBytes = await devicePhoto1.readAsBytes();
+                      String base64String = base64Encode(imageBytes);
+                      Map map = {'dp1': base64String};
+                      await updateTransactionAPi(map);
+
                     } else if (index == 2) {
                       devicePhoto2 = File(image.path);
+                      Uint8List imageBytes = await devicePhoto2.readAsBytes();
+                      String base64String = base64Encode(imageBytes);
+                      Map map = {'dp2': base64String};
+                      await updateTransactionAPi(map);
                     } else {}
                     update(['qr']);
                   }
