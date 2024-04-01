@@ -49,31 +49,27 @@ class _NewAppBarState extends State<NewAppBar> {
           children: [
             GestureDetector(
               onTap: widget.ontap1,
-              child: SizedBox(
-                width: Get.width * 0.22,
-
-                child: Text(
-                  widget.text1,
-                  textAlign: TextAlign.start,
-                  style: subTitle.copyWith(color: Colors.white),
-                ),
+              child: Text(
+                widget.text1,
+                textAlign: TextAlign.start,
+                style: subTitle.copyWith(color: Colors.white),
               ),
             ),
             Text(
               widget.title,
               style: largeText(color: ColorRes.white),
             ),
-            GestureDetector(
-              onTap: widget.ontap2,
-              child: SizedBox(
-                width: Get.width * 0.18,
-                child: Text(
-                  widget.text2,
-                  textAlign: TextAlign.end,
-                  style: subTitle,
-                ),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: widget.ontap2,
+            //   child: SizedBox(
+            //     width: Get.width * 0.18,
+            //     child: Text(
+            //       widget.text2,
+            //       textAlign: TextAlign.end,
+            //       style: subTitle,
+            //     ),
+            //   ),
+            // ),
 
             GestureDetector(
               onTap: () async {
