@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_project/common/widgets/button.dart';
 import 'package:new_project/common/widgets/new_appbar.dart';
+import 'package:new_project/global.dart';
 import 'package:new_project/screens/incoming_screen/incoming_screen.dart';
 import 'package:new_project/screens/search_screen/search_screen.dart';
 import 'package:new_project/utils/asset_res.dart';
@@ -16,6 +17,7 @@ class DashBoardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Global().toggle();
     return WillPopScope(
       onWillPop: ()async{
         return false;

@@ -7,6 +7,7 @@ import 'package:new_project/common/widgets/button.dart';
 import 'package:new_project/common/widgets/loader.dart';
 import 'package:new_project/common/widgets/new_appbar.dart';
 import 'package:new_project/common/widgets/text_fields.dart';
+import 'package:new_project/global.dart';
 import 'package:new_project/screens/search_result_screen/search_result_screen.dart';
 import 'package:new_project/screens/search_screen/search_screen_controller.dart';
 import 'package:new_project/screens/vehicle_detail_screen/vehicle_detail_screen.dart';
@@ -20,6 +21,8 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Global().toggle();
+
     return WillPopScope(
       onWillPop: ()async{
         return false;

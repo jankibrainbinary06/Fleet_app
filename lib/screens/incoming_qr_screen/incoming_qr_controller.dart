@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -26,6 +27,11 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class IncomingQRController extends GetxController {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  final GlobalKey qrKey1 = GlobalKey(debugLabel: 'QR');
+  String markedId = '';
+
+  IncomingQRController({required this.markedId});
+
   QRViewController? controller;
   bool isScanHandled = false;
   Barcode? result;
@@ -33,7 +39,6 @@ class IncomingQRController extends GetxController {
   bool isBarcode = false;
   RxBool loader = false.obs;
   int initialIndex = 0;
-  String markedId = '';
   bool isFlash = false;
   bool homeFlash = false;
   List<String> statusList = List.generate(14, (index) => '');
@@ -41,6 +46,11 @@ class IncomingQRController extends GetxController {
 
   List<String> apiImageForQr = List.generate(14, (index) => '');
   RxBool isButtonEnabled = false.obs;
+
+
+
+
+
   enableButton() {
     print(statusList);
     int count = 0;
@@ -148,7 +158,7 @@ class IncomingQRController extends GetxController {
 
   @override
   void onInit() {
-    //  getTransactionApi(markedId);
+      getTransactionApi(markedId);
     super.onInit();
   }
 
@@ -164,9 +174,95 @@ class IncomingQRController extends GetxController {
   List<Uint8List> compressedImages = [];
   getTransactionApi(id) async {
     loader.value = true;
+    getTransactionModel = [];
+    barcodeData = [
+      {
+        'name': 'l1',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'l2',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'l3',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'l4',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'l5',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'r1',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'r2',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'r3',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'r4',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'r5',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'f1',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'f2',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'b1',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+      {
+        'name': 'b2',
+        'image': '',
+        "value": '',
+        'apiQRImage': '',
+      },
+    ];
     getTransactionModel = await GetTransactionApi.getTransactionApi(id);
-    print(getTransactionModel[0].b2);
-    print("''''''''");
+
     barcodeData = [
       {
         'name': 'l1',
@@ -338,7 +434,7 @@ class IncomingQRController extends GetxController {
       },
     ];
 
-    await compressImages();
+   // await compressImages();
     dp1 =
         (getTransactionModel[0].dp1 != null && getTransactionModel[0].dp1 != '')
             ? getTransactionModel[0].dp1?.split(",")[1] ?? ''
@@ -384,27 +480,28 @@ class IncomingQRController extends GetxController {
     //await Future.delayed(Duration(seconds: 30), () {
       loader.value = false;
    // });
-    print(materialPhoto);
+
     update(['incomingQr']);
   }
 
   Future<void> compressImages() async {
-    for (var base64String in barcodeData) {
-      Uint8List bytes = base64Decode(base64String["image"]);
-      List<int> compressedBytes = await FlutterImageCompress.compressWithList(
-        bytes,
-        minWidth: 800,
-        minHeight: 600,
-        quality: 80,
-      );
-      compressedImages.add(Uint8List.fromList(compressedBytes));
-    }
+    // for (var base64String in barcodeData) {
+    //   Uint8List bytes = base64Decode(base64String["image"]);
+    //   List<int> compressedBytes = await FlutterImageCompress.compressWithList(
+    //     bytes,
+    //     minWidth: 800,
+    //     minHeight: 600,
+    //     quality: 80,
+    //   );
+    //   compressedImages.add(Uint8List.fromList(compressedBytes));
+    // }
   }
 
   qrView() {
+
     return QRView(
         cameraFacing: CameraFacing.back,
-        key: qrKey,
+        key: qrKey1,
         onQRViewCreated: initialIndex == 0
             ? onQRViewCreatedL1
             : initialIndex == 1
@@ -450,7 +547,7 @@ class IncomingQRController extends GetxController {
         barcodeDataImage[index] = '';
 
         imageFileList[index] = File('');
-        print(barcodeDataImage);
+
         errorToast('Barcode does not match');
       }
 
@@ -470,9 +567,8 @@ class IncomingQRController extends GetxController {
     this.controller = controller;
     controller!.scannedDataStream.listen(
       (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -483,13 +579,12 @@ class IncomingQRController extends GetxController {
 
       //  barcodeData[initialIndex]['value'] = resultData;
         barcodeDataImage[initialIndex] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
+
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[initialIndex]['name'],
             'barcode_value': resultData,
@@ -500,11 +595,12 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,initialIndex);
           }
         } else {
-          debugPrint("qr code give error");
+
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -517,9 +613,8 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
-        update(["incomingQr"]);
+        //update(["incomingQr"]);
         result = scanData;
-        debugPrint(isScanHandled.toString());
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -530,13 +625,11 @@ class IncomingQRController extends GetxController {
 
         //barcodeData[0]['value'] = resultData;
         barcodeDataImage[0] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+          controller.dispose();
           map = {
             'barcode': barcodeData[0]['name'],
             'barcode_value': resultData,
@@ -547,11 +640,12 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,0);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+
+        update(["incomingQr"]);
       },
     );
   }
@@ -563,9 +657,9 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
+
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -576,13 +670,11 @@ class IncomingQRController extends GetxController {
 
         //barcodeData[1]['value'] = resultData;
         barcodeDataImage[1] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[1]['name'],
             'barcode_value': resultData,
@@ -593,11 +685,11 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,1);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -609,9 +701,9 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
+
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -622,13 +714,11 @@ class IncomingQRController extends GetxController {
 
         //barcodeData[2]['value'] = resultData;
         barcodeDataImage[2] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[2]['name'],
             'barcode_value': resultData,
@@ -639,14 +729,15 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,2);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
+
   void onQRViewCreatedL4(QRViewController controller) {
     this.controller = controller;
 
@@ -655,9 +746,9 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
+
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -668,13 +759,11 @@ class IncomingQRController extends GetxController {
 
         //barcodeData[3]['value'] = resultData;
         barcodeDataImage[3] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[3]['name'],
             'barcode_value': resultData,
@@ -685,11 +774,11 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,3);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -701,9 +790,9 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
+
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -714,13 +803,11 @@ class IncomingQRController extends GetxController {
 
         //barcodeData[4]['value'] = resultData;
         barcodeDataImage[4] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[4]['name'],
             'barcode_value': resultData,
@@ -731,11 +818,11 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,4);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -747,9 +834,9 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
+
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -760,13 +847,11 @@ class IncomingQRController extends GetxController {
 
         //barcodeData[5]['value'] = resultData;
         barcodeDataImage[5] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[5]['name'],
             'barcode_value': resultData,
@@ -777,11 +862,11 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,5);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -793,9 +878,9 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
           (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
+
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -806,13 +891,11 @@ class IncomingQRController extends GetxController {
 
         //barcodeData[6]['value'] = resultData;
         barcodeDataImage[6] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[6]['name'],
             'barcode_value': resultData,
@@ -823,11 +906,11 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,6);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -839,9 +922,9 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
           (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
+
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -852,13 +935,11 @@ class IncomingQRController extends GetxController {
 
         //barcodeData[7]['value'] = resultData;
         barcodeDataImage[7] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[7]['name'],
             'barcode_value': resultData,
@@ -869,11 +950,11 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,7);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -885,9 +966,8 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
           (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -897,14 +977,11 @@ class IncomingQRController extends GetxController {
         // };
 
         //barcodeData[8]['value'] = resultData;
-        barcodeDataImage[8] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[8]['name'],
             'barcode_value': resultData,
@@ -915,11 +992,11 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,8);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -931,9 +1008,8 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
           (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -944,13 +1020,11 @@ class IncomingQRController extends GetxController {
 
         //barcodeData[9]['value'] = resultData;
         barcodeDataImage[9] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[9]['name'],
             'barcode_value': resultData,
@@ -961,11 +1035,11 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,9);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -977,9 +1051,7 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
           (scanData) async {
-        update(["incomingQr"]);
-        result = scanData;
-        debugPrint(isScanHandled.toString());
+        update(["incomingQr"]);        result = scanData;
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -990,13 +1062,11 @@ class IncomingQRController extends GetxController {
 
        // barcodeData[10]['value'] = resultData;
         barcodeDataImage[10] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[10]['name'],
             'barcode_value': resultData,
@@ -1007,11 +1077,11 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,10);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -1023,9 +1093,8 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
           (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -1036,13 +1105,11 @@ class IncomingQRController extends GetxController {
 
         //barcodeData[11]['value'] = resultData;
         barcodeDataImage[11] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[11]['name'],
             'barcode_value': resultData,
@@ -1053,11 +1120,11 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,11);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -1069,9 +1136,8 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
           (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -1082,13 +1148,11 @@ class IncomingQRController extends GetxController {
 
         //barcodeData[12]['value'] = resultData;
         barcodeDataImage[12] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[12]['name'],
             'barcode_value': resultData,
@@ -1099,11 +1163,11 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,12);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -1115,9 +1179,8 @@ class IncomingQRController extends GetxController {
     } else {}
     controller!.scannedDataStream.listen(
           (scanData) async {
-        update(["incomingQr"]);
+
         result = scanData;
-        debugPrint(isScanHandled.toString());
         String resultData = result?.code ?? "";
 
         // barcodeData[initialIndex] = {
@@ -1128,13 +1191,11 @@ class IncomingQRController extends GetxController {
 
         //barcodeData[13]['value'] = resultData;
         barcodeDataImage[13] = resultData;
-        debugPrint("----------------------------------------$resultData");
-        update(["incomingQr"]);
+
         isScanHandled = true;
         if (result != null) {
-          debugPrint("$result");
           isBarcode = false;
-          update(["incomingQr"]);
+
           map = {
             'barcode': barcodeData[13]['name'],
             'barcode_value': resultData,
@@ -1145,11 +1206,11 @@ class IncomingQRController extends GetxController {
             await markedVerifiedAPi(map,13);
           }
         } else {
-          debugPrint("qr code give error");
 
           Get.snackbar('Error', 'QR not found!',
               colorText: Colors.white, backgroundColor: Colors.red);
         }
+        update(["incomingQr"]);
       },
     );
   }
@@ -1167,7 +1228,6 @@ class IncomingQRController extends GetxController {
   Future<void> convertImageToFile() async {
     File imageFile = await base64ToFile(barcodeDataImage[0]);
     String imagePath = imageFile.path;
-    debugPrint("======================: ${imagePath}");
   }
 
   completeTransactionApi() async {
@@ -1251,7 +1311,7 @@ class IncomingQRController extends GetxController {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
                   final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                      source: ImageSource.camera, imageQuality: 30, );
 
                   if (image != null) {
                     imageFileList[0] = File(image.path);
@@ -2424,4 +2484,6 @@ class IncomingQRController extends GetxController {
           );
         });
   }
+
+
 }

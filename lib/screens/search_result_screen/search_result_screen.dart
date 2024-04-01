@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project/common/widgets/button.dart';
 import 'package:new_project/common/widgets/new_appbar.dart';
+import 'package:new_project/global.dart';
 import 'package:new_project/screens/search_result_screen/search_result_controller.dart';
 import 'package:new_project/utils/color_res.dart';
 import 'package:new_project/utils/fonts.dart';
@@ -26,13 +27,15 @@ class SearchResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Global().toggle();
+
     final SearchResultController searchResultController =
         Get.put(SearchResultController(id: id, orgIdMain: orgId));
     searchResultController.orgid = orgId;
 // searchResultController.onInit();
     return WillPopScope(
       onWillPop: ()async{
-        return false;
+        return searchResultController.isBarcode?true:false;
       },
       child: Scaffold(
           backgroundColor: ColorRes.white,
@@ -67,7 +70,7 @@ class SearchResultScreen extends StatelessWidget {
                                   },
                                   ontap2: () {},
                                 ),
-                                GestureDetector(
+                            /*    GestureDetector(
                                   onTap: () async {
                                     controller.isMainFlash = true;
                                     if (controller.homeFlash == true) {
@@ -90,7 +93,7 @@ class SearchResultScreen extends StatelessWidget {
                                             size: 30,
                                           ),
                                   ),
-                                ),
+                                ),*/
                               ],
                             ),
                             const SizedBox(
@@ -141,6 +144,7 @@ class SearchResultScreen extends StatelessWidget {
                                               controller
                                                   .imageDialogForDevicePhotos(
                                                       context, 1);
+                                              Global().toggle();
                                             },
                                             child: controller
                                                     .devicePhoto1.path.isEmpty
@@ -203,6 +207,7 @@ class SearchResultScreen extends StatelessWidget {
                                               controller
                                                   .imageDialogForDevicePhotos(
                                                       context, 2);
+                                              Global().toggle();
                                             },
                                             child: controller
                                                     .devicePhoto2.path.isEmpty
@@ -315,6 +320,7 @@ class SearchResultScreen extends StatelessWidget {
                                                     controller
                                                         .imageDialogForMaterialPhotos(
                                                             context, index);
+                                                    Global().toggle();
                                                   },
                                                   child: Container(
                                                     height: 100,
@@ -976,7 +982,7 @@ class SearchResultScreen extends StatelessWidget {
                                       width: Get.width,
                                       child: controller.qrView(),
                                     ),
-                                    Padding(
+                                   Padding(
                                       padding: const EdgeInsets.only(
                                           top: 40, right: 20),
                                       child: GestureDetector(
