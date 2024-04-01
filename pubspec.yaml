@@ -47,7 +47,7 @@ dependencies:
   camera: ^0.10.5+9
   torch_light: ^1.0.0
   flutter_image_compress: ^2.2.0
-
+  light: ^3.0.1
 
 dev_dependencies:
   flutter_test:

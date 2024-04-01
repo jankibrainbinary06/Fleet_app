@@ -17,7 +17,7 @@ class DashBoardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Global().toggle();
+
     return WillPopScope(
       onWillPop: ()async{
         return false;

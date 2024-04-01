@@ -14,7 +14,9 @@ import 'package:new_project/apis/get_transaction_api.dart';
 import 'package:new_project/apis/mark_transaction_as_complete_api.dart';
 import 'package:new_project/apis/marked_verified_api.dart';
 import 'package:new_project/apis/update_transtion.dart';
+import 'package:new_project/camera.dart';
 import 'package:new_project/common/widgets/toasts.dart';
+import 'package:new_project/global.dart';
 import 'package:new_project/models/create_transaction_model.dart';
 import 'package:new_project/models/get_transaction_model.dart';
 import 'package:new_project/models/marked_verified_model.dart';
@@ -40,7 +42,7 @@ class IncomingQRController extends GetxController {
   RxBool loader = false.obs;
   int initialIndex = 0;
   bool isFlash = false;
-  bool homeFlash = false;
+  bool  homeFlash= false;
   List<String> statusList = List.generate(14, (index) => '');
   List<File> imageFileList = List.generate(14, (index) => File(''));
 
@@ -564,7 +566,11 @@ class IncomingQRController extends GetxController {
   String savedImagePath = '';
 
   void onQRViewCreated2(QRViewController controller) {
+    
     this.controller = controller;
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
 
@@ -608,7 +614,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedL1(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -629,6 +635,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
+          Global().toggle();
           controller.dispose();
           map = {
             'barcode': barcodeData[0]['name'],
@@ -652,7 +659,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedL2(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -674,7 +681,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[1]['name'],
             'barcode_value': resultData,
@@ -696,7 +703,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedL3(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -718,7 +725,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[2]['name'],
             'barcode_value': resultData,
@@ -741,7 +748,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedL4(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -763,7 +770,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[3]['name'],
             'barcode_value': resultData,
@@ -785,7 +792,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedL5(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -807,7 +814,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[4]['name'],
             'barcode_value': resultData,
@@ -829,7 +836,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedR1(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -851,7 +858,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[5]['name'],
             'barcode_value': resultData,
@@ -873,7 +880,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedR2(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -895,7 +902,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[6]['name'],
             'barcode_value': resultData,
@@ -917,7 +924,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedR3(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -939,7 +946,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[7]['name'],
             'barcode_value': resultData,
@@ -961,7 +968,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedR4(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -981,7 +988,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[8]['name'],
             'barcode_value': resultData,
@@ -1003,7 +1010,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedR5(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -1024,7 +1031,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[9]['name'],
             'barcode_value': resultData,
@@ -1046,7 +1053,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedF1(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -1066,7 +1073,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[10]['name'],
             'barcode_value': resultData,
@@ -1088,7 +1095,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedF2(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -1109,7 +1116,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[11]['name'],
             'barcode_value': resultData,
@@ -1131,7 +1138,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedB1(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -1152,7 +1159,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[12]['name'],
             'barcode_value': resultData,
@@ -1174,7 +1181,7 @@ class IncomingQRController extends GetxController {
   void onQRViewCreatedB2(QRViewController controller) {
     this.controller = controller;
 
-    if (homeFlash == true) {
+    if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
     controller!.scannedDataStream.listen(
@@ -1195,7 +1202,7 @@ class IncomingQRController extends GetxController {
         isScanHandled = true;
         if (result != null) {
           isBarcode = false;
-
+          Global().toggle();
           map = {
             'barcode': barcodeData[13]['name'],
             'barcode_value': resultData,
@@ -1310,8 +1317,9 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30, );
+                  // final image = await picker.pickImage(
+                  //     source: ImageSource.camera, imageQuality: 30, );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[0] = File(image.path);
@@ -1326,6 +1334,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[0].path != '') {
                       await markedVerifiedAPi(map,0);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -1395,8 +1404,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[1] = File(image.path);
@@ -1411,6 +1419,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[1].path != '') {
                       await markedVerifiedAPi(map,1);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -1480,8 +1489,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[2] = File(image.path);
@@ -1496,6 +1504,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[2].path != '') {
                       await markedVerifiedAPi(map,2);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -1565,8 +1574,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[3] = File(image.path);
@@ -1581,6 +1589,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[3].path != '') {
                       await markedVerifiedAPi(map,3);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -1650,8 +1659,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[4] = File(image.path);
@@ -1666,6 +1674,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[4].path != '') {
                       await markedVerifiedAPi(map,4);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -1736,8 +1745,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[5] = File(image.path);
@@ -1752,6 +1760,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[5].path != '') {
                       await markedVerifiedAPi(map,5);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -1821,8 +1830,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[6] = File(image.path);
@@ -1837,6 +1845,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[6].path != '') {
                       await markedVerifiedAPi(map,6);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -1906,8 +1915,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[7] = File(image.path);
@@ -1922,6 +1930,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[7].path != '') {
                       await markedVerifiedAPi(map,7);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -1991,8 +2000,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[8] = File(image.path);
@@ -2007,6 +2015,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[8].path != '') {
                       await markedVerifiedAPi(map,8);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -2076,8 +2085,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[9] = File(image.path);
@@ -2092,6 +2100,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[9].path != '') {
                       await markedVerifiedAPi(map,9);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -2162,8 +2171,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[10] = File(image.path);
@@ -2178,6 +2186,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[10].path != '') {
                       await markedVerifiedAPi(map,10);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -2247,8 +2256,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[11] = File(image.path);
@@ -2263,6 +2271,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[11].path != '') {
                       await markedVerifiedAPi(map,11);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -2333,9 +2342,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
-
+                  var image =await Get.to(CameraScreen());
                   if (image != null) {
                     imageFileList[12] = File(image.path);
 
@@ -2349,6 +2356,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[12].path != '') {
                       await markedVerifiedAPi(map,12);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },
@@ -2418,8 +2426,7 @@ class IncomingQRController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 30);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[13] = File(image.path);
@@ -2434,6 +2441,7 @@ class IncomingQRController extends GetxController {
                         imageFileList[13].path != '') {
                       await markedVerifiedAPi(map,13);
                     }
+                    Global().toggle();
                     update(['incomingQr']);
                   }
                 },

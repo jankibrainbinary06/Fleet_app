@@ -14,7 +14,7 @@ import 'package:new_project/utils/text_styles.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class SearchResultScreen extends StatelessWidget {
+class SearchResultScreen extends StatefulWidget {
   const SearchResultScreen(
       {super.key,
       required this.orgId,
@@ -26,13 +26,18 @@ class SearchResultScreen extends StatelessWidget {
   final String vehicleNumber;
 
   @override
+  State<SearchResultScreen> createState() => _SearchResultScreenState();
+}
+
+class _SearchResultScreenState extends State<SearchResultScreen> {
+  @override
   Widget build(BuildContext context) {
-    Global().toggle();
+
 
     final SearchResultController searchResultController =
-        Get.put(SearchResultController(id: id, orgIdMain: orgId));
-    searchResultController.orgid = orgId;
-// searchResultController.onInit();
+        Get.put(SearchResultController(id: widget.id, orgIdMain: widget.orgId));
+    searchResultController.orgid = widget.orgId;
+    Global().toggle();
     return WillPopScope(
       onWillPop: ()async{
         return searchResultController.isBarcode?true:false;
@@ -47,15 +52,15 @@ class SearchResultScreen extends StatelessWidget {
                   builder: (controller) {
                     return Stack(
                       children: [
-                        controller.isMainFlash == false
-                            ? SizedBox(
-                                height: 1,
-                                width: 1,
-                                child: QRView(
-                                    key: controller.qrKey,
-                                    onQRViewCreated: controller.onQRViewCreated2),
-                              )
-                            : const SizedBox(),
+                        // controller.isMainFlash == false
+                        //     ? SizedBox(
+                        //         height: 1,
+                        //         width: 1,
+                        //         child: QRView(
+                        //             key: controller.qrKey,
+                        //             onQRViewCreated: controller.onQRViewCreated2),
+                        //       )
+                        //     : const SizedBox(),
                         Column(
                           children: [
                             Stack(
@@ -64,7 +69,7 @@ class SearchResultScreen extends StatelessWidget {
                                 NewAppBar(
                                   text1: Strings.back,
                                   text2: '',
-                                  title: vehicleNumber,
+                                  title: widget.vehicleNumber,
                                   ontap1: () {
                                     Get.back();
                                   },
@@ -207,7 +212,7 @@ class SearchResultScreen extends StatelessWidget {
                                               controller
                                                   .imageDialogForDevicePhotos(
                                                       context, 2);
-                                              Global().toggle();
+
                                             },
                                             child: controller
                                                     .devicePhoto2.path.isEmpty
@@ -965,6 +970,12 @@ class SearchResultScreen extends StatelessWidget {
                             ? WillPopScope(
                                 onWillPop: () async {
                                   controller.isBarcode = false;
+
+                                  setState((){
+
+                                    Global().toggle();
+                                  });
+
                                   controller.update(['qr']);
                                   return false;
                                 },
@@ -982,7 +993,7 @@ class SearchResultScreen extends StatelessWidget {
                                       width: Get.width,
                                       child: controller.qrView(),
                                     ),
-                                   Padding(
+                                   /*Padding(
                                       padding: const EdgeInsets.only(
                                           top: 40, right: 20),
                                       child: GestureDetector(
@@ -1012,7 +1023,7 @@ class SearchResultScreen extends StatelessWidget {
                                                 ),
                                         ),
                                       ),
-                                    ),
+                                    ),*/
                                   ],
                                 ),
                               )
@@ -1029,7 +1040,4 @@ class SearchResultScreen extends StatelessWidget {
           })),
     );
   }
-
-
-
 }

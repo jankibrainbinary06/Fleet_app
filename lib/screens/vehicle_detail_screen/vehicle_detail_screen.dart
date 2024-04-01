@@ -28,7 +28,7 @@ class VehicleDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Global().toggle();
+
 
     vehicleDetailController.orgId = orgId;
     vehicleDetailController.vehicalNumberController.text = vehicleNumber;
@@ -157,7 +157,7 @@ class VehicleDetailScreen extends StatelessWidget {
                                                   onTap: () {
                                                     controller.imageDialog(
                                                         context, 4);
-                                                    Global().toggle();
+
                                                   },
                                                   child: controller
                                                           .vehicleNumberPath.isEmpty
@@ -232,7 +232,7 @@ class VehicleDetailScreen extends StatelessWidget {
                                                 onTap: () {
                                                   vehicleDetailController
                                                       .imageDialog(context, 1);
-                                                  Global().toggle();
+
                                                 },
                                                 child: controller
                                                         .profileImagePath.isEmpty
@@ -316,7 +316,7 @@ class VehicleDetailScreen extends StatelessWidget {
                                                   onTap: () {
                                                     controller.imageDialog(
                                                         context, 2);
-                                                    Global().toggle();
+
                                                   },
                                                   child: controller
                                                           .licenceFrontPath.isEmpty
@@ -392,7 +392,7 @@ class VehicleDetailScreen extends StatelessWidget {
                                                   onTap: () {
                                                     controller.imageDialog(
                                                         context, 3);
-                                                    Global().toggle();
+
                                                   },
                                                   child: controller
                                                           .licenceBackPath.isEmpty

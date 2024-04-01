@@ -32,11 +32,6 @@ class NewAppBar extends StatefulWidget {
 
 class _NewAppBarState extends State<NewAppBar> {
 
-@override
-  void initState() {
-
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
 
@@ -80,7 +75,7 @@ class _NewAppBarState extends State<NewAppBar> {
               ),
             ),
 
-           /* GestureDetector(
+            GestureDetector(
               onTap: () async {
                 if(Global.isEnable ?? false )
                   {
@@ -103,7 +98,7 @@ class _NewAppBarState extends State<NewAppBar> {
               Icons.flashlight_off,
               size: 30,
             ),
-            ),*/
+            ),
           ],
         ),
       ),

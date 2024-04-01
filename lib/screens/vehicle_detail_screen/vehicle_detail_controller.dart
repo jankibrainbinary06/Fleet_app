@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_project/apis/get_all_transporters_api.dart';
+import 'package:new_project/camera.dart';
 import 'package:new_project/common/widgets/toasts.dart';
+import 'package:new_project/global.dart';
 import 'package:new_project/screens/vehicle_detail_screen/api/vehical_api.dart';
 import 'package:new_project/utils/color_res.dart';
 import 'package:new_project/utils/string_res.dart';
@@ -125,10 +127,7 @@ class VehicleDetailController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 5,
-                  );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     if (i == 1) {
@@ -142,6 +141,7 @@ class VehicleDetailController extends GetxController {
                     } else {}
                     update(['vehicle']);
                   }
+                  Global().toggle();
                 },
                 child: ListTile(
                   leading: Icon(
@@ -177,7 +177,7 @@ class VehicleDetailController extends GetxController {
                   }
                 },
                 child: ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.photo_size_select_actual_outlined,
                     color: ColorRes.appPrimary,
                   ),

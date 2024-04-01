@@ -21,7 +21,7 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Global().toggle();
+
 
     return WillPopScope(
       onWillPop: ()async{

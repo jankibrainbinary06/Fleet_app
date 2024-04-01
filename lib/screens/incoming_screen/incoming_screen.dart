@@ -8,6 +8,7 @@ import 'package:new_project/global.dart';
 import 'package:new_project/screens/incoming_qr_screen/incoming_qr_controller.dart';
 import 'package:new_project/screens/incoming_qr_screen/incoming_qr_screen.dart';
 import 'package:new_project/screens/incoming_screen/incoming_controller.dart';
+import 'package:new_project/screens/search_screen/search_screen.dart';
 import 'package:new_project/utils/color_res.dart';
 import 'package:new_project/utils/string_res.dart';
 
@@ -16,7 +17,7 @@ class IncomingScreen extends StatelessWidget {
   final IncomingController incomingController = Get.put(IncomingController());
   @override
   Widget build(BuildContext context) {
-    Global().toggle();
+
     return WillPopScope(
       onWillPop: ()async{
         return false;
@@ -61,7 +62,7 @@ class IncomingScreen extends StatelessWidget {
                                       .toString());
 
 
-                                  Get.to(() => IncomingQRScreen(
+                                  Get.to( IncomingQRScreen(
                                         id: incomingController
                                             .getIncomingList[index].pk
                                             .toString(),

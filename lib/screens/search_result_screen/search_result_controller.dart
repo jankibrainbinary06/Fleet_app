@@ -10,7 +10,9 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_project/apis/create_transaction_api.dart';
 import 'package:new_project/apis/update_transtion.dart';
+import 'package:new_project/camera.dart';
 import 'package:new_project/common/widgets/toasts.dart';
+import 'package:new_project/global.dart';
 import 'package:new_project/models/create_transaction_model.dart';
 import 'package:new_project/models/update_transaction_model.dart';
 import 'package:new_project/utils/color_res.dart';
@@ -378,6 +380,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -470,6 +475,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -562,6 +570,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -654,6 +665,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -746,6 +760,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -838,6 +855,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -930,6 +950,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -1022,6 +1045,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -1114,6 +1140,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -1206,6 +1235,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -1298,6 +1330,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -1390,6 +1425,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -1482,6 +1520,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -1574,6 +1615,9 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+    if (Global.isEnable == true) {
+      controller.toggleFlash();
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         if (scanData != null) {
@@ -1740,10 +1784,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -1794,6 +1835,7 @@ class SearchResultController extends GetxController {
                     }
                   }
                   enableButton();
+                  Global().toggle();
                 },
                 child: ListTile(
                   leading: const Icon(
@@ -1895,10 +1937,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -1948,6 +1987,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -2050,10 +2090,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -2103,6 +2140,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -2205,11 +2243,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
-
+                  var image =await Get.to(CameraScreen());
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
 
@@ -2258,6 +2292,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -2360,10 +2395,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -2413,6 +2445,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -2515,10 +2548,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -2569,6 +2599,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -2671,10 +2702,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -2724,6 +2752,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -2826,11 +2855,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
-
+                  var image =await Get.to(CameraScreen());
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
 
@@ -2879,6 +2904,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -2981,10 +3007,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -3034,6 +3057,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -3136,10 +3160,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -3189,6 +3210,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -3292,11 +3314,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
-
+                  var image =await Get.to(CameraScreen());
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
 
@@ -3345,6 +3363,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -3447,10 +3466,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -3500,6 +3516,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -3603,10 +3620,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -3656,6 +3670,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -3758,10 +3773,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                    source: ImageSource.camera,
-                    imageQuality: 3,
-                  );
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -3811,6 +3823,7 @@ class SearchResultController extends GetxController {
                       update(["qr"]);
                     }
                   }
+                  Global().toggle();
                   enableButton();
                 },
                 child: ListTile(
@@ -3948,8 +3961,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 25);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     materialPhotoList[index] = File(image.path);
@@ -3965,6 +3977,7 @@ class SearchResultController extends GetxController {
 
                     update(['qr']);
                   }
+                  Global().toggle();
                 },
                 child: ListTile(
                   leading: const Icon(
@@ -4032,8 +4045,7 @@ class SearchResultController extends GetxController {
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image = await picker.pickImage(
-                      source: ImageSource.camera, imageQuality: 25);
+                  var image =await Get.to(CameraScreen());
 
                   if (image != null) {
                     if (index == 1) {
@@ -4052,6 +4064,7 @@ class SearchResultController extends GetxController {
                     } else {}
                     update(['qr']);
                   }
+                  Global().toggle();
                 },
                 child: ListTile(
                   leading: const Icon(

@@ -17,23 +17,26 @@ import 'package:new_project/utils/text_styles.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class IncomingQRScreen extends StatelessWidget {
+class IncomingQRScreen extends StatefulWidget {
   IncomingQRScreen({Key? key, required this.id, required this.vehicleNumber})
       : super(key: key);
   final String id;
   final String vehicleNumber;
 
+  @override
+  State<IncomingQRScreen> createState() => _IncomingQRScreenState();
+}
 
-bool isApply =false;
+class _IncomingQRScreenState extends State<IncomingQRScreen> {
+
+
+
+
   @override
   Widget build(BuildContext context) {
     final IncomingQRController incomingQRController =
-    Get.put(IncomingQRController(markedId: id));
-
-
-
-
-
+    Get.put(IncomingQRController(markedId: widget.id));
+Global().toggle();
     return WillPopScope(
       onWillPop: ()async{
         return (incomingQRController.isBarcode==false)?false:true;
@@ -48,23 +51,19 @@ bool isApply =false;
                   GetBuilder<IncomingQRController>(
                     id: 'incomingQr',
                     builder: (controller) {
-                      // if(Global.isEnable ??  false)
-                      // {
-                      // Global().toggle();
-                      //   incomingQRController.controller?.toggleFlash();
-                      // }
+
 
                       return Stack(
                         children: [
-                          controller.isMainFlash == false
-                              ? Container(
-                                  height: 1,
-                                  width: 1,
-                                  child: QRView(
-                                      key: controller.qrKey,
-                                      onQRViewCreated: controller.onQRViewCreated2),
-                                )
-                              : const SizedBox(),
+                          // controller.isMainFlash == false
+                          //     ? Container(
+                          //         height: 1,
+                          //         width: 1,
+                          //         child: QRView(
+                          //             key: controller.qrKey,
+                          //             onQRViewCreated: controller.onQRViewCreated2),
+                          //       )
+                          //     : const SizedBox(),
                           Column(
                             children: [
                               Stack(
@@ -75,7 +74,7 @@ bool isApply =false;
                                     child: NewAppBar(
                                       text1: Strings.back,
                                       text2: '',
-                                      title: vehicleNumber,
+                                      title: widget.vehicleNumber,
                                       ontap1: () {
                                         Get.back();
                                       },
@@ -983,7 +982,7 @@ bool isApply =false;
                                                               .update(['incomingQr']);
                                                           controller
                                                               .chooseImageUpload(context);
-                                                          Global().toggle();
+
                                                         },
                                                         child: controller
                                                                 .imageFileList[index]
@@ -1294,10 +1293,16 @@ const Spacer(),
                               ),
                             ],
                           ),
-                          controller.isBarcode
+                         controller.isBarcode
                               ? WillPopScope(
                                   onWillPop: () async {
+
+
+
                                     controller.isBarcode = false;
+                                    setState(() {
+Global().toggle();
+                                    });
                                     controller.update(['incomingQr']);
                                     return false;
                                   },
@@ -1310,37 +1315,37 @@ const Spacer(),
                                         color: Colors.transparent,
                                         child:  controller.qrView(),
                                       ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 40, right: 20),
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            controller.controller!.toggleFlash();
-                                            if (controller.isFlash == true) {
-                                              controller.isFlash = false;
-                                            } else {
-                                              controller.isFlash = true;
-                                            }
-                                            controller.update(['incomingQr']);
-                                          },
-                                          child: Container(
-                                            height: 60,
-                                            width: 50,
-                                            decoration: const BoxDecoration(
-                                                color: ColorRes.appPrimary,
-                                                shape: BoxShape.circle),
-                                            child: controller.isFlash == true
-                                                ? const Icon(
-                                                    Icons.flashlight_on_rounded,
-                                                    size: 30,
-                                                  )
-                                                : const Icon(
-                                                    Icons.flashlight_off,
-                                                    size: 30,
-                                                  ),
-                                          ),
-                                        ),
-                                      ),
+                                      // Padding(
+                                      //   padding:
+                                      //       const EdgeInsets.only(top: 40, right: 20),
+                                      //   child: GestureDetector(
+                                      //     onTap: () async {
+                                      //       controller.controller!.toggleFlash();
+                                      //       if (controller.isFlash == true) {
+                                      //         controller.isFlash = false;
+                                      //       } else {
+                                      //         controller.isFlash = true;
+                                      //       }
+                                      //       controller.update(['incomingQr']);
+                                      //     },
+                                      //     child: Container(
+                                      //       height: 60,
+                                      //       width: 50,
+                                      //       decoration: const BoxDecoration(
+                                      //           color: ColorRes.appPrimary,
+                                      //           shape: BoxShape.circle),
+                                      //       child: controller.isFlash == true
+                                      //           ? const Icon(
+                                      //               Icons.flashlight_on_rounded,
+                                      //               size: 30,
+                                      //             )
+                                      //           : const Icon(
+                                      //               Icons.flashlight_off,
+                                      //               size: 30,
+                                      //             ),
+                                      //     ),
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 )
