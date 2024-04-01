@@ -16,79 +16,84 @@ class DashBoardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorRes.white,
-      body: Container(
-        height: Get.height,
-        width: Get.width,
-        color: ColorRes.appPrimary.withOpacity(0.2),
-        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          SizedBox(
-            height: 10,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                AssetRes.truck,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(() => IncomingScreen());
-                },
-                child: Container(
-                  height: 55,
-                  width: Get.width * 0.8,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: ColorRes.appPrimary),
-                    color: ColorRes.appPrimary,
-                    borderRadius: BorderRadius.circular(
-                      8,
-                    ),
-                  ),
-                  child: Text(
-                    Strings.incoming,
-                    style:
-                        subTitle.copyWith(color: ColorRes.white, fontSize: 19),
-                  ),
-                  alignment: Alignment.center,
+    return WillPopScope(
+      onWillPop: ()async{
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: ColorRes.white,
+        body: Container(
+          height: Get.height,
+          width: Get.width,
+          color: ColorRes.appPrimary.withOpacity(0.2),
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            SizedBox(
+              height: 10,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  AssetRes.truck,
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Or',
-                style:
-                    subTitle.copyWith(color: Color(0xff395d3b), fontSize: 22),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(() => SearchScreen());
-                },
-                child: Container(
-                  height: 55,
-                  width: Get.width * 0.8,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: ColorRes.appPrimary),
-                    borderRadius: BorderRadius.circular(
-                      8,
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => IncomingScreen());
+                  },
+                  child: Container(
+                    height: 55,
+                    width: Get.width * 0.8,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: ColorRes.appPrimary),
+                      color: ColorRes.appPrimary,
+                      borderRadius: BorderRadius.circular(
+                        8,
+                      ),
                     ),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    Strings.outGoing,
-                    style: subTitle.copyWith(
-                        color: ColorRes.appPrimary, fontSize: 19),
+                    child: Text(
+                      Strings.incoming,
+                      style:
+                          subTitle.copyWith(color: ColorRes.white, fontSize: 19),
+                    ),
+                    alignment: Alignment.center,
                   ),
                 ),
-              ),
-            ],
-          ),
-        ]),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'Or',
+                  style:
+                      subTitle.copyWith(color: Color(0xff395d3b), fontSize: 22),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => SearchScreen());
+                  },
+                  child: Container(
+                    height: 55,
+                    width: Get.width * 0.8,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: ColorRes.appPrimary),
+                      borderRadius: BorderRadius.circular(
+                        8,
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      Strings.outGoing,
+                      style: subTitle.copyWith(
+                          color: ColorRes.appPrimary, fontSize: 19),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ]),
+        ),
       ),
     );
   }

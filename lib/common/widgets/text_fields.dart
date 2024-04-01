@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:new_project/utils/color_res.dart';
 import 'package:new_project/utils/fonts.dart';
 import 'package:new_project/utils/string_res.dart';
@@ -7,6 +8,7 @@ class CommonTextField extends StatelessWidget {
   const CommonTextField({
     super.key,
     this.hintText,
+    this.isNumberPlat,
     this.controller,
     this.isSuffixIcon,
     this.onSuffixTap,
@@ -21,6 +23,7 @@ class CommonTextField extends StatelessWidget {
   });
   final String? hintText;
   final bool? isVisible;
+  final bool? isNumberPlat;
   final VoidCallback? onSuffixTap;
   final TextEditingController? controller;
   final bool? isSuffixIcon;
@@ -42,6 +45,10 @@ class CommonTextField extends StatelessWidget {
       onTap: onTap,
       onChanged: onChanged,
       focusNode: focusNode,
+        inputFormatters:((isNumberPlat ?? false) ==true) ?[
+          UpperCaseTextFormatter(),
+        ]:[],
+maxLength: (isNumberPlat ?? false) ==true?10:null,
       style: const TextStyle(
           color: ColorRes.black, fontSize: 16, fontFamily: Fonts.medium),
       decoration: InputDecoration(
@@ -91,5 +98,12 @@ class CommonTextField extends StatelessWidget {
           ),
           fillColor: ColorRes.cF6F6F6),
     );
+  }
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return newValue.copyWith(text: newValue.text.toUpperCase());
   }
 }

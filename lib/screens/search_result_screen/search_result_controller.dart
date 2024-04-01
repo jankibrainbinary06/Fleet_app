@@ -42,6 +42,7 @@ class SearchResultController extends GetxController {
   bool isMainFlash = false;
   bool homeFlash = false;
   RxBool isButtonEnabled = false.obs;
+
   String orgid = '';
   List barcodeData = [
     {

@@ -14,93 +14,98 @@ class IncomingScreen extends StatelessWidget {
   final IncomingController incomingController = Get.put(IncomingController());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorRes.white,
-      body: Obx(() {
-        return Stack(
-          children: [
-            Column(
-              children: [
-                NewAppBar(
-                  text1: Strings.back,
-                  text2: '',
-                  title: Strings.incoming,
-                  ontap1: () {
-                    Get.back();
-                  },
-                  ontap2: () {},
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      children: [
-                        ListView.separated(
-                          separatorBuilder: (context, index) => SizedBox(
-                            height: 10,
-                          ),
-                          shrinkWrap: true,
-                          itemCount: incomingController.getIncomingList.length,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Get.to(() => IncomingQRScreen(
-                                      id: incomingController
-                                          .getIncomingList[index].pk
-                                          .toString(),
-                                      vehicleNumber: incomingController
-                                              .getIncomingList[index]
-                                              .vehicleVehicleNo ??
-                                          '',
-                                    ));
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                height: 70,
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: ColorRes.appPrimary.withOpacity(0.2),
-                                  border: Border.all(
-                                    color: ColorRes.appPrimary,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '${Strings.pk} : ${incomingController.getIncomingList[index].pk.toString() ?? ''}',
-                                      style:
-                                          const TextStyle(color: Colors.black),
-                                    ),
-                                    SizedBox(
-                                      height: 3,
-                                    ),
-                                    Text(
-                                      '${Strings.vehicleNUmber} : ${incomingController.getIncomingList[index].vehicleVehicleNo ?? ''}',
-                                      style:
-                                          const TextStyle(color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+    return WillPopScope(
+      onWillPop: ()async{
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: ColorRes.white,
+        body: Obx(() {
+          return Stack(
+            children: [
+              Column(
+                children: [
+                  NewAppBar(
+                    text1: Strings.back,
+                    text2: '',
+                    title: Strings.incoming,
+                    ontap1: () {
+                      Get.back();
+                    },
+                    ontap2: () {},
                   ),
-                )
-              ],
-            ),
-            incomingController.loader.value
-                ? Center(child: const FullScreenLoader())
-                : SizedBox(),
-          ],
-        );
-      }),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        children: [
+                          ListView.separated(
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: 10,
+                            ),
+                            shrinkWrap: true,
+                            itemCount: incomingController.getIncomingList.length,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.to(() => IncomingQRScreen(
+                                        id: incomingController
+                                            .getIncomingList[index].pk
+                                            .toString(),
+                                        vehicleNumber: incomingController
+                                                .getIncomingList[index]
+                                                .vehicleVehicleNo ??
+                                            '',
+                                      ));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  height: 70,
+                                  alignment: Alignment.centerLeft,
+                                  decoration: BoxDecoration(
+                                    color: ColorRes.appPrimary.withOpacity(0.2),
+                                    border: Border.all(
+                                      color: ColorRes.appPrimary,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '${Strings.pk} : ${incomingController.getIncomingList[index].pk.toString() ?? ''}',
+                                        style:
+                                            const TextStyle(color: Colors.black),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        '${Strings.vehicleNUmber} : ${incomingController.getIncomingList[index].vehicleVehicleNo ?? ''}',
+                                        style:
+                                            const TextStyle(color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              incomingController.loader.value
+                  ? Center(child: const FullScreenLoader())
+                  : SizedBox(),
+            ],
+          );
+        }),
+      ),
     );
   }
 }
