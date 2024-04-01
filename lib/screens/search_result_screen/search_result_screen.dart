@@ -1,30 +1,24 @@
-import 'dart:typed_data';
-
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_project/common/widgets/button.dart';
-import 'package:new_project/common/widgets/loader.dart';
 import 'package:new_project/common/widgets/new_appbar.dart';
 import 'package:new_project/screens/search_result_screen/search_result_controller.dart';
-import 'package:new_project/screens/search_screen/search_screen_controller.dart';
 import 'package:new_project/utils/color_res.dart';
 import 'package:new_project/utils/fonts.dart';
 import 'package:new_project/utils/string_res.dart';
 import 'package:new_project/utils/text_styles.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:torch_light/torch_light.dart';
 
 class SearchResultScreen extends StatelessWidget {
-  SearchResultScreen(
-      {Key? key,
+  const SearchResultScreen(
+      {super.key,
       required this.orgId,
       required this.id,
-      required this.vehicleNumber})
-      : super(key: key);
+      required this.vehicleNumber});
 
   final String id;
   final String orgId;
@@ -33,7 +27,7 @@ class SearchResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SearchResultController searchResultController =
-        Get.put(SearchResultController(id: id, orgIdMain:orgId ));
+        Get.put(SearchResultController(id: id, orgIdMain: orgId));
     searchResultController.orgid = orgId;
 // searchResultController.onInit();
     return Scaffold(
@@ -47,14 +41,14 @@ class SearchResultScreen extends StatelessWidget {
                   return Stack(
                     children: [
                       controller.isMainFlash == false
-                          ? Container(
+                          ? SizedBox(
                               height: 1,
                               width: 1,
                               child: QRView(
                                   key: controller.qrKey,
                                   onQRViewCreated: controller.onQRViewCreated2),
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                       Column(
                         children: [
                           Stack(
@@ -80,14 +74,14 @@ class SearchResultScreen extends StatelessWidget {
                                   controller.update(['qr']);
                                 },
                                 child: Padding(
-                                  padding:
-                                      EdgeInsets.only(right: 10, bottom: 23),
+                                  padding: const EdgeInsets.only(
+                                      right: 10, bottom: 23),
                                   child: controller.homeFlash == true
-                                      ? Icon(
+                                      ? const Icon(
                                           Icons.flashlight_on_rounded,
                                           size: 30,
                                         )
-                                      : Icon(
+                                      : const Icon(
                                           Icons.flashlight_off,
                                           size: 30,
                                         ),
@@ -122,7 +116,7 @@ class SearchResultScreen extends StatelessWidget {
                                                 color: ColorRes.white),
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 15,
                                         ),
                                         Text(
@@ -133,7 +127,7 @@ class SearchResultScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     Row(
@@ -197,7 +191,7 @@ class SearchResultScreen extends StatelessWidget {
                                                       )),
                                                 ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 10,
                                         ),
                                         GestureDetector(
@@ -261,7 +255,7 @@ class SearchResultScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 20,
                                     ),
                                     Row(
@@ -280,7 +274,7 @@ class SearchResultScreen extends StatelessWidget {
                                                 color: ColorRes.white),
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 15,
                                         ),
                                         Text(
@@ -291,7 +285,7 @@ class SearchResultScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     GridView.builder(
@@ -299,9 +293,10 @@ class SearchResultScreen extends StatelessWidget {
                                       itemCount:
                                           controller.materialPhotoList.length,
                                       shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 3,
                                         crossAxisSpacing: 10,
                                         mainAxisSpacing: 10,
@@ -371,7 +366,7 @@ class SearchResultScreen extends StatelessWidget {
                                               );
                                       },
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 20,
                                     ),
                                     Container(
@@ -501,7 +496,7 @@ class SearchResultScreen extends StatelessWidget {
                                     //     : const SizedBox(),
                                     ListView.separated(
                                       separatorBuilder: (context, index) =>
-                                          SizedBox(
+                                          const SizedBox(
                                         height: 10,
                                       ),
                                       shrinkWrap: true,
@@ -526,7 +521,7 @@ class SearchResultScreen extends StatelessWidget {
                                               height: 100,
                                               child: Row(
                                                 children: [
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 10,
                                                   ),
                                                   Text(
@@ -542,7 +537,7 @@ class SearchResultScreen extends StatelessWidget {
                                                             Fonts.semiBold,
                                                         fontSize: 18),
                                                   ),
-                                                  SizedBox(width: 10),
+                                                  const SizedBox(width: 10),
                                                   controller.barcodeDataImage[
                                                               index] !=
                                                           ''
@@ -580,9 +575,11 @@ class SearchResultScreen extends StatelessWidget {
                                                         )
                                                       : GestureDetector(
                                                           onTap: () async {
-
-                                                            controller.isMainFlash = true;
-                                                            controller.update(['qr']);
+                                                            controller
+                                                                    .isMainFlash =
+                                                                true;
+                                                            controller
+                                                                .update(['qr']);
 
                                                             controller
                                                                 .selectedData = controller
@@ -607,6 +604,7 @@ class SearchResultScreen extends StatelessWidget {
                                                                       .isFlash =
                                                                   false;
                                                             }
+
                                                             controller
                                                                 .update(['qr']);
                                                           },
@@ -641,8 +639,8 @@ class SearchResultScreen extends StatelessWidget {
                                                   controller.barcodeDataImage[
                                                               index] !=
                                                           ''
-                                                      ? SizedBox(width: 0)
-                                                      : SizedBox(
+                                                      ? const SizedBox(width: 0)
+                                                      : const SizedBox(
                                                           width: 10,
                                                         ),
                                                   GestureDetector(
@@ -651,7 +649,7 @@ class SearchResultScreen extends StatelessWidget {
                                                           index;
                                                       controller.update(['qr']);
                                                       controller
-                                                          .imageDialog(context);
+                                                          .chooseImageUpload(context);
                                                     },
                                                     child: controller
                                                             .imageFileList[
@@ -718,19 +716,21 @@ class SearchResultScreen extends StatelessWidget {
                                                                 )),
                                                           ),
                                                   ),
-                                                  SizedBox(width: 5),
+                                                  const SizedBox(width: 5),
                                                   Expanded(
                                                     child: GestureDetector(
                                                       onTap: () {
-                                                        controller.isMainFlash = true;
-                                                        controller.update(['qr']);
+                                                        controller.isMainFlash =
+                                                            true;
+                                                        controller
+                                                            .update(['qr']);
                                                         controller
                                                                 .selectedData =
                                                             controller
                                                                     .barcodeData[
                                                                 index]['name'];
                                                         controller
-                                                                            .initialIndex =
+                                                                .initialIndex =
                                                             index;
                                                         controller.isBarcode =
                                                             true;
@@ -772,43 +772,42 @@ class SearchResultScreen extends StatelessWidget {
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 7,
                                                   ),
                                                   controller.statusList[
                                                               index] ==
                                                           'error'
-                                                      ? Icon(
+                                                      ? const Icon(
                                                           Icons.cancel,
                                                           color: Colors.red,
                                                         )
                                                       : controller.statusList[
                                                                   index] ==
                                                               'loader'
-                                                          ? CupertinoActivityIndicator(
+                                                          ? const CupertinoActivityIndicator(
                                                               color:
                                                                   Colors.black,
                                                             )
                                                           : controller.statusList[
                                                                       index] ==
                                                                   'verified'
-                                                              ?
-                                                                    Icon(
+                                                              ? const Icon(
                                                                   Icons
                                                                       .check_circle,
                                                                   color: Colors
                                                                       .green,
                                                                 )
-                                                              : SizedBox(
+                                                              : const SizedBox(
                                                                   width: 25,
                                                                 ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 10,
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 5,
                                             ),
                                             controller.barcodeDataImage[
@@ -829,7 +828,7 @@ class SearchResultScreen extends StatelessWidget {
                                                     height: 70,
                                                     child: Row(
                                                       children: [
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           width: 10,
                                                         ),
                                                         // controller.barcodeDataImage[
@@ -897,38 +896,52 @@ class SearchResultScreen extends StatelessWidget {
                                                             style: subTitle,
                                                           ),
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           width: 10,
                                                         ),
                                                       ],
                                                     ),
                                                   )
-                                                : SizedBox(),
+                                                : const SizedBox(),
                                           ],
                                         );
                                       },
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 20,
                                     ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        CommonButton(
-                                          width: 200,
-                                          text: Strings.save,
-                                          onTap: () {
-                                            Get.back();
-                                            final SearchController1 search = Get.put(SearchController1());
-                                            search.searchController.clear();
-                                            search.update(['search']);
-                                            // controller.validation();
-                                          },
-                                        ),
+                                        Obx(() {
+                                          return CommonButton(
+                                            width: 200,
+                                            text: Strings.save,
+                                            color:
+                                                controller.isButtonEnabled.value
+                                                    ? ColorRes.appPrimary
+                                                    : ColorRes.cBDBDBD,
+                                            onTap: controller
+                                                    .isButtonEnabled.value
+                                                ? () {
+                                                    log(controller.barcodeData
+                                                        .toString());
+
+                                                    print(
+                                                        "```````````````` */*/*/*/*/*/*/*/*/ ````````````````````");
+                                                    // Get.back();
+                                                    // final SearchController1 search = Get.put(SearchController1());
+                                                    // search.searchController.clear();
+                                                    // search.update(['search']);
+                                                    controller.validation();
+                                                  }
+                                                : () {},
+                                          );
+                                        }),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 20,
                                     ),
                                   ],
@@ -957,11 +970,7 @@ class SearchResultScreen extends StatelessWidget {
                                     ),
                                     height: Get.height,
                                     width: Get.width,
-                                    child: QRView(
-                                        cameraFacing: CameraFacing.back,
-                                        key: controller.qrKey,
-                                        onQRViewCreated:
-                                            controller.onQRViewCreated),
+                                    child: controller.qrView(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -979,15 +988,15 @@ class SearchResultScreen extends StatelessWidget {
                                       child: Container(
                                         height: 60,
                                         width: 50,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                             color: ColorRes.appPrimary,
                                             shape: BoxShape.circle),
                                         child: controller.isFlash == true
-                                            ? Icon(
+                                            ? const Icon(
                                                 Icons.flashlight_on_rounded,
                                                 size: 30,
                                               )
-                                            : Icon(
+                                            : const Icon(
                                                 Icons.flashlight_off,
                                                 size: 30,
                                               ),
@@ -997,16 +1006,19 @@ class SearchResultScreen extends StatelessWidget {
                                 ],
                               ),
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                     ],
                   );
                 },
               ),
               searchResultController.loader.value
-                  ? SizedBox()
-                  : SizedBox(),
+                  ? const SizedBox()
+                  : const SizedBox(),
             ],
           );
         }));
   }
+
+
+
 }

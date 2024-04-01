@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_project/screens/search_result_screen/search_result_screen.dart';
 
 import 'package:new_project/screens/splash_screen/splash_screen.dart';
 import 'package:new_project/services/pref_service.dart';

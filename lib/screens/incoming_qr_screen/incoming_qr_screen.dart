@@ -74,19 +74,10 @@ class IncomingQRScreen extends StatelessWidget {
                               onTap: () async {
                                 controller.isMainFlash = true;
 
-
-
-
-
-                                if (controller.homeFlash == true  ) {
-
-                                    controller.homeFlash= false  ;
-
+                                if (controller.homeFlash == true) {
+                                  controller.homeFlash = false;
                                 } else {
-
-
-                                  controller.homeFlash= true ;
-
+                                  controller.homeFlash = true;
                                 }
                                 controller.update(['incomingQr']);
                               },
@@ -356,19 +347,19 @@ class IncomingQRScreen extends StatelessWidget {
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  Container(
-                                    height: 45,
-                                    width: 170,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: ColorRes.appPrimary,
-                                        borderRadius: BorderRadius.circular(8)),
-                                    child: Text(
-                                      'Barcode section',
-                                      style: subTitle.copyWith(
-                                          color: ColorRes.white),
-                                    ),
-                                  ),
+                                  // Container(
+                                  //   height: 45,
+                                  //   width: 170,
+                                  //   alignment: Alignment.center,
+                                  //   decoration: BoxDecoration(
+                                  //       color: ColorRes.appPrimary,
+                                  //       borderRadius: BorderRadius.circular(8)),
+                                  //   child: Text(
+                                  //     'Barcode section',
+                                  //     style: subTitle.copyWith(
+                                  //         color: ColorRes.white),
+                                  //   ),
+                                  // ),
 
                                   /// ---Qr ---
                                   ListView.separated(
@@ -922,14 +913,14 @@ class IncomingQRScreen extends StatelessWidget {
                                                           controller.isBarcode =
                                                               true;
 
-
-                                                          if(controller.homeFlash== true ){
+                                                          if (controller
+                                                                  .homeFlash ==
+                                                              true) {
                                                             controller.isFlash =
-                                                                true ;
-                                                          }
-                                                          else {
+                                                                true;
+                                                          } else {
                                                             controller.isFlash =
-                                                            false  ;
+                                                                false;
                                                           }
 
                                                           controller.update(
@@ -1067,13 +1058,12 @@ class IncomingQRScreen extends StatelessWidget {
                                                         index;
                                                     controller.isBarcode = true;
 
-                                                    if(controller.homeFlash== true ){
+                                                    if (controller.homeFlash ==
+                                                        true) {
+                                                      controller.isFlash = true;
+                                                    } else {
                                                       controller.isFlash =
-                                                      true ;
-                                                    }
-                                                    else {
-                                                      controller.isFlash =
-                                                      false  ;
+                                                          false;
                                                     }
                                                     controller
                                                         .update(['incomingQr']);

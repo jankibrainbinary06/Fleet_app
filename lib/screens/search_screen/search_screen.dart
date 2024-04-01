@@ -52,8 +52,8 @@ class SearchScreen extends StatelessWidget {
                       controller.update(['search']);
                     },
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16),
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       height: 47,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(
@@ -73,8 +73,8 @@ class SearchScreen extends StatelessWidget {
                                     ? Colors.black
                                     : ColorRes.appPrimary),
                           ),
-                          Spacer(),
-                          Icon(
+                          const Spacer(),
+                          const Icon(
                             Icons.arrow_drop_down_sharp,
                             size: 30,
                             color: Colors.black,
@@ -103,12 +103,13 @@ class SearchScreen extends StatelessWidget {
                                 },
                               ),
                             )
-
-                          : SizedBox(),
+                          : const SizedBox(),
                       controller.isDrop == true
                           ? Container(
-                              margin: EdgeInsets.symmetric(horizontal: 16),
-                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(
                                     5,
@@ -119,7 +120,7 @@ class SearchScreen extends StatelessWidget {
                               child: ListView.separated(
                                   padding: EdgeInsets.zero,
                                   shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
@@ -128,7 +129,8 @@ class SearchScreen extends StatelessWidget {
                                                 .companyName ??
                                             "";
                                         controller.selectedOrgId = controller
-                                            .getAllOrgModel[index].pk.toString() ??
+                                                .getAllOrgModel[index].pk
+                                                ?.toString() ??
                                             "";
                                         controller.isDrop = false;
                                         controller.update(['search']);
@@ -169,10 +171,12 @@ class SearchScreen extends StatelessWidget {
                         ? controller.vehicalSearchList.value.isNotEmpty
                             ? Expanded(
                                 child: ListView.separated(
-                                separatorBuilder: (context, index) => SizedBox(
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
                                   height: 10,
                                 ),
-                                padding: EdgeInsets.symmetric(horizontal: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 shrinkWrap: true,
                                 itemCount:
                                     controller.vehicalSearchList.value.length,
@@ -180,7 +184,7 @@ class SearchScreen extends StatelessWidget {
                                   return GestureDetector(
                                     onTap: () {
                                       Get.to(() => SearchResultScreen(
-                                        orgId:  controller.selectedOrgId,
+                                            orgId: controller.selectedOrgId,
                                             id: controller
                                                     .vehicalSearchList[index].pk
                                                     .toString() ??
@@ -219,12 +223,12 @@ class SearchScreen extends StatelessWidget {
                                   height: 50,
                                   text: Strings.createVehicle,
                                   onTap: () {
-
-                                    Get.to(() => VehicleDetailScreen(
-                                      orgId:  controller.selectedOrgId,
-                                          vehicleNumber:
-                                              controller.searchController.text,
-                                        ),
+                                    Get.to(
+                                      () => VehicleDetailScreen(
+                                        orgId: controller.selectedOrgId,
+                                        vehicleNumber:
+                                            controller.searchController.text,
+                                      ),
                                     );
 
                                     // controller.searchController.clear();
@@ -236,7 +240,9 @@ class SearchScreen extends StatelessWidget {
                 ],
               ),
               Obx(() => controller.loader.value
-                  ? FullScreenLoader(enableBgColor: true,)
+                  ? const FullScreenLoader(
+                      enableBgColor: true,
+                    )
                   : const SizedBox()),
             ],
           );

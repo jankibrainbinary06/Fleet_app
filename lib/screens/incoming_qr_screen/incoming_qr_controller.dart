@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
@@ -34,97 +35,96 @@ class IncomingQRController extends GetxController {
   int initialIndex = 0;
   String markedId = '';
   bool isFlash = false;
-  bool homeFlash = false ;
+  bool homeFlash = false;
   List<String> statusList = List.generate(14, (index) => '');
   List<File> imageFileList = List.generate(14, (index) => File(''));
 
-  List<String> apiImageForQr =List.generate(14, (index) => '');
-
+  List<String> apiImageForQr = List.generate(14, (index) => '');
 
   List barcodeData = [
     {
       'name': 'l1',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'l2',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'l3',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'l4',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'l5',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'r1',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'r2',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'r3',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'r4',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'r5',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'f1',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'f2',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'b1',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
     {
       'name': 'b2',
       'image': '',
       "value": '',
-      'apiQRImage':'',
+      'apiQRImage': '',
     },
   ];
 
@@ -134,162 +134,260 @@ class IncomingQRController extends GetxController {
 
   @override
   void onInit() {
-  //  getTransactionApi(markedId);
+    //  getTransactionApi(markedId);
     super.onInit();
   }
 
-  String dp1 ='';
-  String dp2 ='';
+  String dp1 = '';
+  String dp2 = '';
   bool isMainFlash = false;
-  List materialPhoto =[];
+  List materialPhoto = [];
 
   Map<String, dynamic> map = {};
   String updateid = '';
   MarkedVerifiedModel markedVerifiedModel = MarkedVerifiedModel();
-  List<GetTransactionModel> getTransactionModel  = [];
+  List<GetTransactionModel> getTransactionModel = [];
+  List<Uint8List> compressedImages = [];
   getTransactionApi(id) async {
     loader.value = true;
     getTransactionModel = await GetTransactionApi.getTransactionApi(id);
-    barcodeData =[
+    print(getTransactionModel[0].b2);
+    print("''''''''");
+    barcodeData = [
       {
         'name': 'l1',
-        'image': (getTransactionModel[0].l1 != null && getTransactionModel[0].l1 !='')?getTransactionModel[0].l1 ?? '':"",
+        'image': (getTransactionModel[0].l1 != null &&
+                getTransactionModel[0].l1 != '')
+            ? getTransactionModel[0].l1 ?? ''
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].l1Qr != null && getTransactionModel[0].l1Qr !='')?getTransactionModel[0].l1Qr ?? '':"",
+        'apiQRImage': (getTransactionModel[0].l1Qr != null &&
+                getTransactionModel[0].l1Qr != '')
+            ? getTransactionModel[0].l1Qr ?? ''
+            : "",
       },
       {
         'name': 'l2',
-        'image': (getTransactionModel[0].l2 != null && getTransactionModel[0].l2 !='')?getTransactionModel[0].l2 ?? '':"",
+        'image': (getTransactionModel[0].l2 != null &&
+                getTransactionModel[0].l2 != '')
+            ? getTransactionModel[0].l2 ?? ''
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].l2Qr != null && getTransactionModel[0].l2Qr !='')?getTransactionModel[0].l2Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].l2Qr != null &&
+                getTransactionModel[0].l2Qr != '')
+            ? getTransactionModel[0].l2Qr ?? ''
+            : "",
       },
       {
         'name': 'l3',
-        'image': (getTransactionModel[0].l3 != null && getTransactionModel[0].l3 !='')?getTransactionModel[0].l3 :"",
+        'image': (getTransactionModel[0].l3 != null &&
+                getTransactionModel[0].l3 != '')
+            ? getTransactionModel[0].l3
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].l3Qr != null && getTransactionModel[0].l3Qr !='')?getTransactionModel[0].l3Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].l3Qr != null &&
+                getTransactionModel[0].l3Qr != '')
+            ? getTransactionModel[0].l3Qr ?? ''
+            : "",
       },
       {
         'name': 'l4',
-        'image': (getTransactionModel[0].l4 != null && getTransactionModel[0].l4 !='')?getTransactionModel[0].l4:"",
+        'image': (getTransactionModel[0].l4 != null &&
+                getTransactionModel[0].l4 != '')
+            ? getTransactionModel[0].l4
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].l4Qr != null && getTransactionModel[0].l4Qr !='')?getTransactionModel[0].l4Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].l4Qr != null &&
+                getTransactionModel[0].l4Qr != '')
+            ? getTransactionModel[0].l4Qr ?? ''
+            : "",
       },
       {
         'name': 'l5',
-        'image': (getTransactionModel[0].l5 != null && getTransactionModel[0].l5 !='')?getTransactionModel[0].l5:"",
-
+        'image': (getTransactionModel[0].l5 != null &&
+                getTransactionModel[0].l5 != '')
+            ? getTransactionModel[0].l5
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].l5Qr != null && getTransactionModel[0].l5Qr !='')?getTransactionModel[0].l5Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].l5Qr != null &&
+                getTransactionModel[0].l5Qr != '')
+            ? getTransactionModel[0].l5Qr ?? ''
+            : "",
       },
       {
         'name': 'r1',
-        'image': (getTransactionModel[0].r1 != null && getTransactionModel[0].r1 !='')?getTransactionModel[0].r1:"",
+        'image': (getTransactionModel[0].r1 != null &&
+                getTransactionModel[0].r1 != '')
+            ? getTransactionModel[0].r1
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].r1Qr != null && getTransactionModel[0].r1Qr !='')?getTransactionModel[0].r1Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].r1Qr != null &&
+                getTransactionModel[0].r1Qr != '')
+            ? getTransactionModel[0].r1Qr ?? ''
+            : "",
       },
       {
         'name': 'r2',
-        'image': (getTransactionModel[0].r2 != null && getTransactionModel[0].r2 !='')?getTransactionModel[0].r2:"",
+        'image': (getTransactionModel[0].r2 != null &&
+                getTransactionModel[0].r2 != '')
+            ? getTransactionModel[0].r2
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].r2Qr != null && getTransactionModel[0].r2Qr !='')?getTransactionModel[0].r2Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].r2Qr != null &&
+                getTransactionModel[0].r2Qr != '')
+            ? getTransactionModel[0].r2Qr ?? ''
+            : "",
       },
       {
         'name': 'r3',
-        'image': (getTransactionModel[0].r3 != null && getTransactionModel[0].r3 !='')?getTransactionModel[0].r3:"",
+        'image': (getTransactionModel[0].r3 != null &&
+                getTransactionModel[0].r3 != '')
+            ? getTransactionModel[0].r3
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].r3Qr != null && getTransactionModel[0].r3Qr !='')?getTransactionModel[0].r3Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].r3Qr != null &&
+                getTransactionModel[0].r3Qr != '')
+            ? getTransactionModel[0].r3Qr ?? ''
+            : "",
       },
       {
         'name': 'r4',
-        'image': (getTransactionModel[0].r4 != null && getTransactionModel[0].r4 !='')?getTransactionModel[0].r4:"",
+        'image': (getTransactionModel[0].r4 != null &&
+                getTransactionModel[0].r4 != '')
+            ? getTransactionModel[0].r4
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].r4Qr != null && getTransactionModel[0].r4Qr !='')?getTransactionModel[0].r4Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].r4Qr != null &&
+                getTransactionModel[0].r4Qr != '')
+            ? getTransactionModel[0].r4Qr ?? ''
+            : "",
       },
       {
         'name': 'r5',
-        'image': (getTransactionModel[0].r5 != null && getTransactionModel[0].r5 !='')?getTransactionModel[0].r5:"",
+        'image': (getTransactionModel[0].r5 != null &&
+                getTransactionModel[0].r5 != '')
+            ? getTransactionModel[0].r5
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].r5Qr != null && getTransactionModel[0].r5Qr !='')?getTransactionModel[0].r5Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].r5Qr != null &&
+                getTransactionModel[0].r5Qr != '')
+            ? getTransactionModel[0].r5Qr ?? ''
+            : "",
       },
       {
         'name': 'f1',
-        'image': (getTransactionModel[0].f1 != null && getTransactionModel[0].f1 !='')?getTransactionModel[0].f1:"",
+        'image': (getTransactionModel[0].f1 != null &&
+                getTransactionModel[0].f1 != '')
+            ? getTransactionModel[0].f1
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].f1Qr != null && getTransactionModel[0].f1Qr !='')?getTransactionModel[0].f1Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].f1Qr != null &&
+                getTransactionModel[0].f1Qr != '')
+            ? getTransactionModel[0].f1Qr ?? ''
+            : "",
       },
       {
         'name': 'f2',
-        'image': (getTransactionModel[0].f2 != null && getTransactionModel[0].f2 !='')?getTransactionModel[0].f2:"",
+        'image': (getTransactionModel[0].f2 != null &&
+                getTransactionModel[0].f2 != '')
+            ? getTransactionModel[0].f2
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].f2Qr != null && getTransactionModel[0].f2Qr !='')?getTransactionModel[0].f2Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].f2Qr != null &&
+                getTransactionModel[0].f2Qr != '')
+            ? getTransactionModel[0].f2Qr ?? ''
+            : "",
       },
       {
         'name': 'b1',
-        'image': (getTransactionModel[0].b1 != null && getTransactionModel[0].b1 !='')?getTransactionModel[0].b1:"",
+        'image': (getTransactionModel[0].b1 != null &&
+                getTransactionModel[0].b1 != '')
+            ? getTransactionModel[0].b1
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].b1Qr != null && getTransactionModel[0].b1Qr !='')?getTransactionModel[0].b1Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].b1Qr != null &&
+                getTransactionModel[0].b1Qr != '')
+            ? getTransactionModel[0].b1Qr ?? ''
+            : "",
       },
       {
         'name': 'b2',
-        'image': (getTransactionModel[0].b2 != null && getTransactionModel[0].b2 !='')?getTransactionModel[0]:"",
+        'image': (getTransactionModel[0].b2 != null &&
+                getTransactionModel[0].b2 != '')
+            ? getTransactionModel[0].b2
+            : "",
         "value": "",
-        'apiQRImage':(getTransactionModel[0].b2Qr != null && getTransactionModel[0].b2Qr !='')?getTransactionModel[0].b2Qr ?? '':"",
-
+        'apiQRImage': (getTransactionModel[0].b2Qr != null &&
+                getTransactionModel[0].b2Qr != '')
+            ? getTransactionModel[0].b2Qr ?? ''
+            : "",
       },
     ];
-// dp1 =  (getTransactionModel[0].dp1 != null && getTransactionModel[0].dp1 !='')?getTransactionModel[0].dp1?.split(",")[1] ??'':'';
-// dp2 =  (getTransactionModel[0].dp2 != null && getTransactionModel[0].dp2 !='')?getTransactionModel[0].dp2?.split(",")[1] ??'':'';
-// materialPhoto= [];
-// if(getTransactionModel[0].mp1 != null && getTransactionModel[0].mp1 !='')
-//   {
-//     materialPhoto.add(getTransactionModel[0].mp1?.split(",")[1] ??'');
-//   }
-// if(getTransactionModel[0].mp2 != null && getTransactionModel[0].mp2 !='')
-//   {
-//     materialPhoto.add(getTransactionModel[0].mp2?.split(",")[1] ??'');
-//   }
-// if(getTransactionModel[0].mp3 != null && getTransactionModel[0].mp3 !='')
-//   {
-//     materialPhoto.add(getTransactionModel[0].mp3?.split(",")[1] ??'');
-//   }
-// if(getTransactionModel[0].mp4 != null && getTransactionModel[0].mp4 !='')
-//   {
-//     materialPhoto.add(getTransactionModel[0].mp4?.split(",")[1] ??'');
-//   }
-// if(getTransactionModel[0].mp5 != null && getTransactionModel[0].mp5 !='')
-//   {
-//     materialPhoto.add(getTransactionModel[0].mp5?.split(",")[1] ??'');
-//   }
-// if(getTransactionModel[0].mp6 != null && getTransactionModel[0].mp6 !='')
-//   {
-//     materialPhoto.add(getTransactionModel[0].mp6?.split(",")[1] ??'');
-//   }
-// if(getTransactionModel[0].mp7 != null && getTransactionModel[0].mp7 !='')
-//   {
-//     materialPhoto.add(getTransactionModel[0].mp7?.split(",")[1] ??'');
-//   }
-// if(getTransactionModel[0].mp8 != null && getTransactionModel[0].mp8 !='')
-//   {
-//     materialPhoto.add(getTransactionModel[0].mp8?.split(",")[1] ??'');
-//   }
 
-    loader.value = false;
-print(materialPhoto);
+    await compressImages();
+    dp1 =
+        (getTransactionModel[0].dp1 != null && getTransactionModel[0].dp1 != '')
+            ? getTransactionModel[0].dp1?.split(",")[1] ?? ''
+            : '';
+    dp2 =
+        (getTransactionModel[0].dp2 != null && getTransactionModel[0].dp2 != '')
+            ? getTransactionModel[0].dp2?.split(",")[1] ?? ''
+            : '';
+    materialPhoto = [];
+    if (getTransactionModel[0].mp1 != null &&
+        getTransactionModel[0].mp1 != '') {
+      materialPhoto.add(getTransactionModel[0].mp1?.split(",")[1] ?? '');
+    }
+    if (getTransactionModel[0].mp2 != null &&
+        getTransactionModel[0].mp2 != '') {
+      materialPhoto.add(getTransactionModel[0].mp2?.split(",")[1] ?? '');
+    }
+    if (getTransactionModel[0].mp3 != null &&
+        getTransactionModel[0].mp3 != '') {
+      materialPhoto.add(getTransactionModel[0].mp3?.split(",")[1] ?? '');
+    }
+    if (getTransactionModel[0].mp4 != null &&
+        getTransactionModel[0].mp4 != '') {
+      materialPhoto.add(getTransactionModel[0].mp4?.split(",")[1] ?? '');
+    }
+    if (getTransactionModel[0].mp5 != null &&
+        getTransactionModel[0].mp5 != '') {
+      materialPhoto.add(getTransactionModel[0].mp5?.split(",")[1] ?? '');
+    }
+    if (getTransactionModel[0].mp6 != null &&
+        getTransactionModel[0].mp6 != '') {
+      materialPhoto.add(getTransactionModel[0].mp6?.split(",")[1] ?? '');
+    }
+    if (getTransactionModel[0].mp7 != null &&
+        getTransactionModel[0].mp7 != '') {
+      materialPhoto.add(getTransactionModel[0].mp7?.split(",")[1] ?? '');
+    }
+    if (getTransactionModel[0].mp8 != null &&
+        getTransactionModel[0].mp8 != '') {
+      materialPhoto.add(getTransactionModel[0].mp8?.split(",")[1] ?? '');
+    }
+
+    await Future.delayed(Duration(seconds: 30), () {
+      loader.value = false;
+    });
+    print(materialPhoto);
     update(['incomingQr']);
   }
+
+  Future<void> compressImages() async {
+    for (var base64String in barcodeData) {
+      Uint8List bytes = base64Decode(base64String["image"]);
+      List<int> compressedBytes = await FlutterImageCompress.compressWithList(
+        bytes,
+        minWidth: 800,
+        minHeight: 600,
+        quality: 80,
+      );
+      compressedImages.add(Uint8List.fromList(compressedBytes));
+    }
+  }
+
+
 
   markedVerifiedAPi(body) async {
     try {
@@ -337,7 +435,7 @@ print(materialPhoto);
         //   'image': resultData,
         // };
 
-        barcodeData[initialIndex]['value'] =resultData;
+        barcodeData[initialIndex]['value'] = resultData;
         barcodeDataImage[initialIndex] = resultData;
         debugPrint("----------------------------------------$resultData");
         update(["incomingQr"]);
@@ -352,7 +450,7 @@ print(materialPhoto);
             "barcode_image": imageFileList[initialIndex].path
           };
 
-          if(imageFileList[initialIndex].path !='') {
+          if (imageFileList[initialIndex].path != '') {
             await markedVerifiedAPi(map);
           }
         } else {
@@ -363,16 +461,14 @@ print(materialPhoto);
         }
       },
     );
-  } void onQRViewCreated(QRViewController controller)  {
+  }
+
+  void onQRViewCreated(QRViewController controller) {
     this.controller = controller;
 
-    if( homeFlash == true  ){
+    if (homeFlash == true) {
       controller.toggleFlash();
-
-    }
-    else {
-
-    }
+    } else {}
     controller!.scannedDataStream.listen(
       (scanData) async {
         update(["incomingQr"]);
@@ -386,7 +482,7 @@ print(materialPhoto);
         //   'image': resultData,
         // };
 
-        barcodeData[initialIndex]['value'] =resultData;
+        barcodeData[initialIndex]['value'] = resultData;
         barcodeDataImage[initialIndex] = resultData;
         debugPrint("----------------------------------------$resultData");
         update(["incomingQr"]);
@@ -401,7 +497,7 @@ print(materialPhoto);
             "barcode_image": imageFileList[initialIndex].path
           };
 
-          if(imageFileList[initialIndex].path !='') {
+          if (imageFileList[initialIndex].path != '') {
             await markedVerifiedAPi(map);
           }
         } else {
@@ -432,13 +528,14 @@ print(materialPhoto);
 
   completeTransactionApi() async {
     loader.value = true;
-   bool isComplete =  await CompleteTransactionApi.completeTransactionApi(markedId, );
-   if(isComplete == true)
-     {
-       await Future.delayed(Duration(seconds: 3),(){
-         Get.back();
-       });
-     }
+    bool isComplete = await CompleteTransactionApi.completeTransactionApi(
+      markedId,
+    );
+    if (isComplete == true) {
+      await Future.delayed(Duration(seconds: 3), () {
+        Get.back();
+      });
+    }
     loader.value = false;
   }
 
@@ -475,8 +572,8 @@ print(materialPhoto);
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image =
-                      await picker.pickImage(source: ImageSource.camera,imageQuality: 30);
+                  final image = await picker.pickImage(
+                      source: ImageSource.camera, imageQuality: 30);
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -487,7 +584,8 @@ print(materialPhoto);
                       "barcode_image": imageFileList[initialIndex].path
                     };
 
-                    if(barcodeDataImage[initialIndex]!='' && imageFileList[initialIndex].path !='') {
+                    if (barcodeDataImage[initialIndex] != '' &&
+                        imageFileList[initialIndex].path != '') {
                       await markedVerifiedAPi(map);
                     }
                     update(['incomingQr']);
@@ -510,8 +608,8 @@ print(materialPhoto);
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image =
-                      await picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
+                  final image = await picker.pickImage(
+                      source: ImageSource.gallery, imageQuality: 30);
 
                   if (image != null) {
                     imageFileList[initialIndex] = File(image.path);
@@ -521,7 +619,8 @@ print(materialPhoto);
                       "barcode_image": imageFileList[initialIndex].path
                     };
 
-                    if(barcodeDataImage[initialIndex]!='' && imageFileList[initialIndex].path !='') {
+                    if (barcodeDataImage[initialIndex] != '' &&
+                        imageFileList[initialIndex].path != '') {
                       await markedVerifiedAPi(map);
                     }
                     update(['incomingQr']);

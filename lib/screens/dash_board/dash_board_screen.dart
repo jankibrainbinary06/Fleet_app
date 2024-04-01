@@ -48,8 +48,8 @@ class DashBoardScreen extends StatelessWidget {
                   ),
                   child: Text(
                     Strings.incoming,
-                    style: subTitle.copyWith(
-                        color: ColorRes.white, fontSize: 19),
+                    style:
+                        subTitle.copyWith(color: ColorRes.white, fontSize: 19),
                   ),
                   alignment: Alignment.center,
                 ),

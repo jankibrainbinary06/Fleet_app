@@ -23,25 +23,20 @@ class VehicleDetailController extends GetxController {
   RxBool loader = false.obs;
   List<String> extensionList = [];
   List<String> imagebase64List = [];
-  bool isDrop = false ;
-  String selectedName ='Select';
+  bool isDrop = false;
+  String selectedName = 'Select';
 
   bool validation() {
     if (vehicalNumberController.text.isEmpty) {
       errorToast("Please enter vehicle number");
       return false;
-    }
-else if(selectedName=="Select"){
+    } else if (selectedName == "Select") {
       errorToast("Please select transporter name");
       return false;
-    }
-
-    else if (vehicleNumberPath.isEmpty) {
+    } else if (vehicleNumberPath.isEmpty) {
       errorToast("Please select vehicle number photo");
       return false;
-    }
-
-    else if (profileImagePath.isEmpty) {
+    } else if (profileImagePath.isEmpty) {
       errorToast("Please select driver photo");
       return false;
     } else if (licenceFrontPath.isEmpty) {
@@ -55,10 +50,7 @@ else if(selectedName=="Select"){
     }
   }
 
-
-
-  Future<void> fileToBase64() async
-  {
+  Future<void> fileToBase64() async {
     extensionList.clear();
     imagebase64List.clear();
 
@@ -82,25 +74,23 @@ else if(selectedName=="Select"){
     imagebase64List.add(base64Encode(image4Bytes));
   }
 
-
   Future<void> saveVehical() async {
     try {
       loader.value = true;
       await fileToBase64();
       Map<String, String> body = {
         "vehicle_no": vehicalNumberController.text,
-        "driver_photo":imagebase64List[0],
+        "driver_photo": imagebase64List[0],
         "license_front": imagebase64List[1],
         "license_back": imagebase64List[2],
         'number_plate': imagebase64List[3],
         'transporter_name': selectedName,
       };
-      await VehicalApi.saveVehicalApi(
-        body: body,
-        orgId:orgId
-        // imagebase64: imagebase64List,
-        // imageExtensionList: extensionList
-      ).then((value) {
+      await VehicalApi.saveVehicalApi(body: body, orgId: orgId
+              // imagebase64: imagebase64List,
+              // imageExtensionList: extensionList
+              )
+          .then((value) {
         if (value != null) {
           debugPrint("-------------:${value.message}");
           profileImagePath = "";
@@ -135,8 +125,10 @@ else if(selectedName=="Select"){
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image =
-                      await picker.pickImage(source: ImageSource.camera, imageQuality: 5,);
+                  final image = await picker.pickImage(
+                    source: ImageSource.camera,
+                    imageQuality: 5,
+                  );
 
                   if (image != null) {
                     if (i == 1) {
@@ -168,8 +160,8 @@ else if(selectedName=="Select"){
                 onTap: () async {
                   Get.back();
                   final ImagePicker picker = ImagePicker();
-                  final image =
-                      await picker.pickImage(source: ImageSource.gallery,imageQuality: 5);
+                  final image = await picker.pickImage(
+                      source: ImageSource.gallery, imageQuality: 5);
 
                   if (image != null) {
                     if (i == 1) {
@@ -197,12 +189,12 @@ else if(selectedName=="Select"){
         });
   }
 
-
   @override
   void onInit() {
     getTransportersApi();
     super.onInit();
   }
+
   List getTransporters = [];
   getTransportersApi() async {
     try {
