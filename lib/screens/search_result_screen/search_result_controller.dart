@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -21,6 +23,7 @@ import 'package:new_project/utils/text_styles.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:screenshot/screenshot.dart';
 
 class SearchResultController extends GetxController {
   final String? id;
@@ -118,7 +121,7 @@ class SearchResultController extends GetxController {
       "value": '',
     },
   ];
-  List<String> barcodeDataImage = List.generate(14, (index) => '');
+  List<Uint8List?> barcodeDataImage = List.generate(14, (index) => null);
   List byteImageList = List.generate(14, (index) => []);
   CreateTransactionModel createTransactionModel = CreateTransactionModel();
   List<File> materialPhotoList = List.generate(1, (index) => File(''));
@@ -340,10 +343,10 @@ class SearchResultController extends GetxController {
           'value': resultData,
           'image': resultData,
         };
-        barcodeDataImage[initialIndex] = resultData;
+         
         debugPrint("----------------------------------------$resultData");
-        update(["qr"]);
         isScanHandled = true;
+        update(["qr"]);
         if (result != null) {
           debugPrint("$result");
           isBarcode = false;
@@ -372,6 +375,27 @@ class SearchResultController extends GetxController {
     );
   }
 
+var image = null;
+  captureAndSave() async {
+    try {
+      screenshotController.capture().then((value) async {
+        barcodeDataImage[initialIndex] = value;
+        
+        
+        await Future.delayed(const Duration(seconds: 1),(){});
+        isBarcode = false;
+
+
+
+        update(['qr']);
+      });
+      
+
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
   void onQRViewCreatedL1(QRViewController controller) {
     this.controller = controller;
     // if( homeFlash == false  ){
@@ -380,6 +404,7 @@ class SearchResultController extends GetxController {
     // else {
     //   controller.toggleFlash();
     // }
+
     if (Global.isEnable == true) {
       controller.toggleFlash();
     } else {}
@@ -388,7 +413,6 @@ class SearchResultController extends GetxController {
         if (scanData != null) {
           update(["qr"]);
           result = scanData;
-          debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
           barcodeData[initialIndex] = {
@@ -396,14 +420,14 @@ class SearchResultController extends GetxController {
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
+
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[0] = 'loader';
@@ -491,14 +515,14 @@ class SearchResultController extends GetxController {
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
+
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[1] = 'loader';
@@ -581,19 +605,19 @@ class SearchResultController extends GetxController {
           debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
-          barcodeData[initialIndex] = {
+         barcodeData[initialIndex] = {
             'name': barcodeData[initialIndex]['name'],
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+          await captureAndSave();
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
+
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[2] = 'loader';
@@ -676,19 +700,19 @@ class SearchResultController extends GetxController {
           debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
-          barcodeData[initialIndex] = {
+         barcodeData[initialIndex] = {
             'name': barcodeData[initialIndex]['name'],
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
+
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[3] = 'loader';
@@ -771,19 +795,19 @@ class SearchResultController extends GetxController {
           debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
-          barcodeData[initialIndex] = {
+         barcodeData[initialIndex] = {
             'name': barcodeData[initialIndex]['name'],
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
+
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[4] = 'loader';
@@ -866,19 +890,18 @@ class SearchResultController extends GetxController {
           debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
-          barcodeData[initialIndex] = {
+         barcodeData[initialIndex] = {
             'name': barcodeData[initialIndex]['name'],
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[5] = 'loader';
@@ -961,19 +984,19 @@ class SearchResultController extends GetxController {
           debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
-          barcodeData[initialIndex] = {
+         barcodeData[initialIndex] = {
             'name': barcodeData[initialIndex]['name'],
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
+
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[6] = 'loader';
@@ -1056,19 +1079,19 @@ class SearchResultController extends GetxController {
           debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
-          barcodeData[initialIndex] = {
+         barcodeData[initialIndex] = {
             'name': barcodeData[initialIndex]['name'],
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
+
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[7] = 'loader';
@@ -1151,19 +1174,19 @@ class SearchResultController extends GetxController {
           debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
-          barcodeData[initialIndex] = {
+         barcodeData[initialIndex] = {
             'name': barcodeData[initialIndex]['name'],
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
+
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[8] = 'loader';
@@ -1246,19 +1269,18 @@ class SearchResultController extends GetxController {
           debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
-          barcodeData[initialIndex] = {
+         barcodeData[initialIndex] = {
             'name': barcodeData[initialIndex]['name'],
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[9] = 'loader';
@@ -1341,19 +1363,19 @@ class SearchResultController extends GetxController {
           debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
-          barcodeData[initialIndex] = {
+         barcodeData[initialIndex] = {
             'name': barcodeData[initialIndex]['name'],
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
+
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[10] = 'loader';
@@ -1436,19 +1458,19 @@ class SearchResultController extends GetxController {
           debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
-          barcodeData[initialIndex] = {
+         barcodeData[initialIndex] = {
             'name': barcodeData[initialIndex]['name'],
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
+
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[11] = 'loader';
@@ -1531,19 +1553,19 @@ class SearchResultController extends GetxController {
           debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
-          barcodeData[initialIndex] = {
+         barcodeData[initialIndex] = {
             'name': barcodeData[initialIndex]['name'],
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
+
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[12] = 'loader';
@@ -1626,19 +1648,19 @@ class SearchResultController extends GetxController {
           debugPrint(isScanHandled.toString());
           String resultData = result?.code ?? "";
 
-          barcodeData[initialIndex] = {
+         barcodeData[initialIndex] = {
             'name': barcodeData[initialIndex]['name'],
             'value': resultData,
             'image': resultData,
           };
-          barcodeDataImage[initialIndex] = resultData;
+          await captureAndSave();
+           
           debugPrint("----------------------------------------$resultData");
           update(["qr"]);
           isScanHandled = true;
           if (result != null) {
             debugPrint("$result");
-            isBarcode = false;
-            update(["qr"]);
+
 
             if (imageFileList[initialIndex].path.isNotEmpty) {
               statusList[13] = 'loader';
@@ -1701,38 +1723,41 @@ class SearchResultController extends GetxController {
       },
     );
   }
-
+ScreenshotController screenshotController =ScreenshotController();
   qrView() {
-    return QRView(
-        cameraFacing: CameraFacing.back,
-        key: qrKey,
-        onQRViewCreated: initialIndex == 0
-            ? onQRViewCreatedL1
-            : initialIndex == 1
-                ? onQRViewCreatedL2
-                : initialIndex == 2
-                    ? onQRViewCreatedL3
-                    : initialIndex == 3
-                        ? onQRViewCreatedL4
-                        : initialIndex == 4
-                            ? onQRViewCreatedL5
-                            : initialIndex == 5
-                                ? onQRViewCreatedR1
-                                : initialIndex == 6
-                                    ? onQRViewCreatedR2
-                                    : initialIndex == 7
-                                        ? onQRViewCreatedR3
-                                        : initialIndex == 8
-                                            ? onQRViewCreatedR4
-                                            : initialIndex == 9
-                                                ? onQRViewCreatedR5
-                                                : initialIndex == 10
-                                                    ? onQRViewCreatedF1
-                                                    : initialIndex == 11
-                                                        ? onQRViewCreatedF2
-                                                        : initialIndex == 12
-                                                            ? onQRViewCreatedB1
-                                                            : onQRViewCreatedB2);
+    return Screenshot(
+      controller:screenshotController,
+      child: QRView(
+          cameraFacing: CameraFacing.back,
+          key: qrKey,
+          onQRViewCreated: initialIndex == 0
+              ? onQRViewCreatedL1
+              : initialIndex == 1
+                  ? onQRViewCreatedL2
+                  : initialIndex == 2
+                      ? onQRViewCreatedL3
+                      : initialIndex == 3
+                          ? onQRViewCreatedL4
+                          : initialIndex == 4
+                              ? onQRViewCreatedL5
+                              : initialIndex == 5
+                                  ? onQRViewCreatedR1
+                                  : initialIndex == 6
+                                      ? onQRViewCreatedR2
+                                      : initialIndex == 7
+                                          ? onQRViewCreatedR3
+                                          : initialIndex == 8
+                                              ? onQRViewCreatedR4
+                                              : initialIndex == 9
+                                                  ? onQRViewCreatedR5
+                                                  : initialIndex == 10
+                                                      ? onQRViewCreatedF1
+                                                      : initialIndex == 11
+                                                          ? onQRViewCreatedF2
+                                                          : initialIndex == 12
+                                                              ? onQRViewCreatedB1
+                                                              : onQRViewCreatedB2),
+    );
   }
 
   Future<File> base64ToFile(String base64String) async {
@@ -1746,9 +1771,9 @@ class SearchResultController extends GetxController {
   }
 
   Future<void> convertImageToFile() async {
-    File imageFile = await base64ToFile(barcodeDataImage[0]);
-    String imagePath = imageFile.path;
-    debugPrint("======================: ${imagePath}");
+    // File imageFile = await base64ToFile(barcodeDataImage[0]);
+    // String imagePath = imageFile.path;
+    // debugPrint("======================: ${imagePath}");
   }
 
   Future<ByteData?> _generateQRCodeImage(String data) async {

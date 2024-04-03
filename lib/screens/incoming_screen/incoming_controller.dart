@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:new_project/apis/get_incoming_api.dart';
 import 'package:new_project/models/get_incoming.dart';
@@ -8,9 +9,10 @@ class IncomingController extends GetxController {
     getIncomingAPi();
     super.onInit();
   }
-
+TextEditingController searchController = TextEditingController();
   RxBool loader = false.obs;
   List<GetIncomingModel> getIncomingList = [];
+  List<GetIncomingModel> getIncomingListSearch = [];
   getIncomingAPi() async {
     try {
       loader.value = true;
@@ -21,5 +23,11 @@ class IncomingController extends GetxController {
       print(e.toString());
       loader.value = false;
     }
+  }
+
+
+  onChange(val){
+
+    getIncomingListSearch =  getIncomingList.where((element) => element.vehicleVehicleNo!.toLowerCase().contains(val.toString().toLowerCase())).toList();
   }
 }

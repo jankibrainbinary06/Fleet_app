@@ -450,6 +450,13 @@
             </list>
           </value>
         </entry>
+        <entry key="screenshot">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/screenshot-2.3.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="shared_preferences">
           <value>
             <list>
@@ -696,6 +703,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/qr_code_scanner-1.0.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/qr_flutter-4.1.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/rxdart-0.27.7/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/screenshot-2.3.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/shared_preferences-2.2.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/shared_preferences_android-2.2.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/shared_preferences_foundation-2.3.5/lib" />

@@ -26,6 +26,7 @@ import 'package:new_project/utils/text_styles.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:screenshot/screenshot.dart';
 
 class IncomingQRController extends GetxController {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -154,7 +155,8 @@ class IncomingQRController extends GetxController {
     },
   ];
 
-  List<String> barcodeDataImage = List.generate(14, (index) => '');
+  List<Uint8List?> barcodeDataImage = List.generate(14, (index) => null);
+
   List byteImageList = List.generate(14, (index) => []);
   CreateTransactionModel createTransactionModel = CreateTransactionModel();
 
@@ -498,39 +500,42 @@ class IncomingQRController extends GetxController {
     //   compressedImages.add(Uint8List.fromList(compressedBytes));
     // }
   }
-
+ScreenshotController screenshotController = ScreenshotController();
   qrView() {
 
-    return QRView(
-        cameraFacing: CameraFacing.back,
-        key: qrKey1,
-        onQRViewCreated: initialIndex == 0
-            ? onQRViewCreatedL1
-            : initialIndex == 1
-            ? onQRViewCreatedL2
-            : initialIndex == 2
-            ? onQRViewCreatedL3
-            : initialIndex == 3
-            ? onQRViewCreatedL4
-            : initialIndex == 4
-            ? onQRViewCreatedL5
-            : initialIndex == 5
-            ? onQRViewCreatedR1
-            : initialIndex == 6
-            ? onQRViewCreatedR2
-            : initialIndex == 7
-            ? onQRViewCreatedR3
-            : initialIndex == 8
-            ? onQRViewCreatedR4
-            : initialIndex == 9
-            ? onQRViewCreatedR5
-            : initialIndex == 10
-            ? onQRViewCreatedF1
-            : initialIndex == 11
-            ? onQRViewCreatedF2
-            : initialIndex == 12
-            ? onQRViewCreatedB1
-            : onQRViewCreatedB2);
+    return Screenshot(
+      controller: screenshotController,
+      child: QRView(
+          cameraFacing: CameraFacing.back,
+          key: qrKey1,
+          onQRViewCreated: initialIndex == 0
+              ? onQRViewCreatedL1
+              : initialIndex == 1
+              ? onQRViewCreatedL2
+              : initialIndex == 2
+              ? onQRViewCreatedL3
+              : initialIndex == 3
+              ? onQRViewCreatedL4
+              : initialIndex == 4
+              ? onQRViewCreatedL5
+              : initialIndex == 5
+              ? onQRViewCreatedR1
+              : initialIndex == 6
+              ? onQRViewCreatedR2
+              : initialIndex == 7
+              ? onQRViewCreatedR3
+              : initialIndex == 8
+              ? onQRViewCreatedR4
+              : initialIndex == 9
+              ? onQRViewCreatedR5
+              : initialIndex == 10
+              ? onQRViewCreatedF1
+              : initialIndex == 11
+              ? onQRViewCreatedF2
+              : initialIndex == 12
+              ? onQRViewCreatedB1
+              : onQRViewCreatedB2),
+    );
   }
 
   markedVerifiedAPi(body,index) async {
@@ -546,7 +551,7 @@ class IncomingQRController extends GetxController {
         showToast('Barcode verified successfully');
       } else {
         statusList[index] = 'error';
-        barcodeDataImage[index] = '';
+        barcodeDataImage[index] = null;
 
         imageFileList[index] = File('');
 
@@ -557,13 +562,30 @@ class IncomingQRController extends GetxController {
       update(['incomingQr']);
     } catch (e) {
       statusList[index] = '';
-      barcodeDataImage[index] = '';
+      barcodeDataImage[index] = null;
       imageFileList[index] = File('');
       loader.value = false;
     }
   }
 
   String savedImagePath = '';
+  captureAndSave() async {
+    try {
+      screenshotController.capture().then((value) async {
+        barcodeDataImage[initialIndex] = value;
+        await Future.delayed(Duration(seconds: 1),(){});
+        isBarcode = false;
+
+
+
+        update(['incomingQr']);
+      });
+
+
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
 
   void onQRViewCreated2(QRViewController controller) {
     
@@ -583,8 +605,7 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-      //  barcodeData[initialIndex]['value'] = resultData;
-        barcodeDataImage[initialIndex] = resultData;
+       barcodeData[initialIndex]['value'] = resultData;
 
         isScanHandled = true;
         if (result != null) {
@@ -629,13 +650,15 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[0]['value'] = resultData;
-        barcodeDataImage[0] = resultData;
+        barcodeData[0]['value'] = resultData;
+        //barcodeDataImage[0] = resultData;
+
+
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+         await captureAndSave();
+
           controller.dispose();
           map = {
             'barcode': barcodeData[0]['name'],
@@ -675,13 +698,13 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[1]['value'] = resultData;
-        barcodeDataImage[1] = resultData;
+        barcodeData[1]['value'] = resultData;
+       // barcodeDataImage[1] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[1]['name'],
             'barcode_value': resultData,
@@ -719,13 +742,13 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[2]['value'] = resultData;
-        barcodeDataImage[2] = resultData;
+        barcodeData[2]['value'] = resultData;
+       // barcodeDataImage[2] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[2]['name'],
             'barcode_value': resultData,
@@ -764,13 +787,13 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[3]['value'] = resultData;
-        barcodeDataImage[3] = resultData;
+        barcodeData[3]['value'] = resultData;
+        //barcodeDataImage[3] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[3]['name'],
             'barcode_value': resultData,
@@ -808,13 +831,13 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[4]['value'] = resultData;
-        barcodeDataImage[4] = resultData;
+        barcodeData[4]['value'] = resultData;
+        //barcodeDataImage[4] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[4]['name'],
             'barcode_value': resultData,
@@ -852,13 +875,13 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[5]['value'] = resultData;
-        barcodeDataImage[5] = resultData;
+        barcodeData[5]['value'] = resultData;
+        //barcodeDataImage[5] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[5]['name'],
             'barcode_value': resultData,
@@ -896,13 +919,13 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[6]['value'] = resultData;
-        barcodeDataImage[6] = resultData;
+        barcodeData[6]['value'] = resultData;
+       // barcodeDataImage[6] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[6]['name'],
             'barcode_value': resultData,
@@ -940,13 +963,13 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[7]['value'] = resultData;
-        barcodeDataImage[7] = resultData;
+        barcodeData[7]['value'] = resultData;
+       // barcodeDataImage[7] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[7]['name'],
             'barcode_value': resultData,
@@ -983,12 +1006,12 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[8]['value'] = resultData;
+        barcodeData[8]['value'] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[8]['name'],
             'barcode_value': resultData,
@@ -1025,13 +1048,13 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[9]['value'] = resultData;
-        barcodeDataImage[9] = resultData;
+        barcodeData[9]['value'] = resultData;
+       // barcodeDataImage[9] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[9]['name'],
             'barcode_value': resultData,
@@ -1067,13 +1090,13 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-       // barcodeData[10]['value'] = resultData;
-        barcodeDataImage[10] = resultData;
+        barcodeData[10]['value'] = resultData;
+       // barcodeDataImage[10] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[10]['name'],
             'barcode_value': resultData,
@@ -1110,13 +1133,13 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[11]['value'] = resultData;
-        barcodeDataImage[11] = resultData;
+        barcodeData[11]['value'] = resultData;
+      //  barcodeDataImage[11] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[11]['name'],
             'barcode_value': resultData,
@@ -1153,13 +1176,13 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[12]['value'] = resultData;
-        barcodeDataImage[12] = resultData;
+        barcodeData[12]['value'] = resultData;
+       // barcodeDataImage[12] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[12]['name'],
             'barcode_value': resultData,
@@ -1196,13 +1219,13 @@ class IncomingQRController extends GetxController {
         //   'image': resultData,
         // };
 
-        //barcodeData[13]['value'] = resultData;
-        barcodeDataImage[13] = resultData;
+        barcodeData[13]['value'] = resultData;
+       // barcodeDataImage[13] = resultData;
 
         isScanHandled = true;
         if (result != null) {
-          isBarcode = false;
-          Global().toggle();
+          await captureAndSave();
+
           map = {
             'barcode': barcodeData[13]['name'],
             'barcode_value': resultData,
@@ -1211,6 +1234,7 @@ class IncomingQRController extends GetxController {
 
           if (imageFileList[13].path != '') {
             await markedVerifiedAPi(map,13);
+
           }
         } else {
 
@@ -1233,8 +1257,8 @@ class IncomingQRController extends GetxController {
   }
 
   Future<void> convertImageToFile() async {
-    File imageFile = await base64ToFile(barcodeDataImage[0]);
-    String imagePath = imageFile.path;
+    // File imageFile = await base64ToFile(barcodeDataImage[0]);
+    // String imagePath = imageFile.path;
   }
 
   completeTransactionApi() async {
@@ -1326,11 +1350,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[0]['name'],
-                      'barcode_value': barcodeDataImage[0],
+                      'barcode_value': barcodeData[0]['value'],
                       "barcode_image": imageFileList[0].path
                     };
 
-                    if (barcodeDataImage[0] != '' &&
+                    if (barcodeDataImage[0] != null &&
                         imageFileList[0].path != '') {
                       await markedVerifiedAPi(map,0);
                     }
@@ -1362,11 +1386,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[0] = File(image.path);
                     map = {
                       'barcode': barcodeData[0]['name'],
-                      'barcode_value': barcodeDataImage[0],
+                      'barcode_value': barcodeData[0]['value'],
                       "barcode_image": imageFileList[0].path
                     };
 
-                    if (barcodeDataImage[0] != '' &&
+                    if (barcodeDataImage[0] != null &&
                         imageFileList[0].path != '') {
                       await markedVerifiedAPi(map,0);
                     }
@@ -1411,11 +1435,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[1]['name'],
-                      'barcode_value': barcodeDataImage[1],
+                      'barcode_value': barcodeData[1]['value'],
                       "barcode_image": imageFileList[1].path
                     };
 
-                    if (barcodeDataImage[1] != '' &&
+                    if (barcodeDataImage[1] != null &&
                         imageFileList[1].path != '') {
                       await markedVerifiedAPi(map,1);
                     }
@@ -1447,11 +1471,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[1] = File(image.path);
                     map = {
                       'barcode': barcodeData[1]['name'],
-                      'barcode_value': barcodeDataImage[1],
+                      'barcode_value': barcodeData[0]['value'],
                       "barcode_image": imageFileList[1].path
                     };
 
-                    if (barcodeDataImage[1] != '' &&
+                    if (barcodeDataImage[1] != null &&
                         imageFileList[1].path != '') {
                       await markedVerifiedAPi(map,1);
                     }
@@ -1496,11 +1520,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[2]['name'],
-                      'barcode_value': barcodeDataImage[2],
+                      'barcode_value': barcodeData[2]['value'],
                       "barcode_image": imageFileList[2].path
                     };
 
-                    if (barcodeDataImage[2] != '' &&
+                    if (barcodeDataImage[2] != null &&
                         imageFileList[2].path != '') {
                       await markedVerifiedAPi(map,2);
                     }
@@ -1532,11 +1556,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[2] = File(image.path);
                     map = {
                       'barcode': barcodeData[2]['name'],
-                      'barcode_value': barcodeDataImage[2],
+                      'barcode_value': barcodeData[2]['value'],
                       "barcode_image": imageFileList[2].path
                     };
 
-                    if (barcodeDataImage[2] != '' &&
+                    if (barcodeDataImage[2] != null &&
                         imageFileList[2].path != '') {
                       await markedVerifiedAPi(map,2);
                     }
@@ -1581,11 +1605,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[3]['name'],
-                      'barcode_value': barcodeDataImage[3],
+                      'barcode_value': barcodeData[3]['value'],
                       "barcode_image": imageFileList[3].path
                     };
 
-                    if (barcodeDataImage[3] != '' &&
+                    if (barcodeDataImage[3] != null &&
                         imageFileList[3].path != '') {
                       await markedVerifiedAPi(map,3);
                     }
@@ -1617,11 +1641,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[3] = File(image.path);
                     map = {
                       'barcode': barcodeData[3]['name'],
-                      'barcode_value': barcodeDataImage[3],
+                      'barcode_value':barcodeData[3]['value'],
                       "barcode_image": imageFileList[3].path
                     };
 
-                    if (barcodeDataImage[3] != '' &&
+                    if (barcodeDataImage[3] != null &&
                         imageFileList[3].path != '') {
                       await markedVerifiedAPi(map,3);
                     }
@@ -1666,11 +1690,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[4]['name'],
-                      'barcode_value': barcodeDataImage[4],
+                      'barcode_value': barcodeData[4]['value'],
                       "barcode_image": imageFileList[4].path
                     };
 
-                    if (barcodeDataImage[4] != '' &&
+                    if (barcodeDataImage[4] != null &&
                         imageFileList[4].path != '') {
                       await markedVerifiedAPi(map,4);
                     }
@@ -1702,11 +1726,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[4] = File(image.path);
                     map = {
                       'barcode': barcodeData[4]['name'],
-                      'barcode_value': barcodeDataImage[4],
+                      'barcode_value': barcodeData[4]['value'],
                       "barcode_image": imageFileList[4].path
                     };
 
-                    if (barcodeDataImage[4] != '' &&
+                    if (barcodeDataImage[4] != null &&
                         imageFileList[4].path != '') {
                       await markedVerifiedAPi(map,4);
                     }
@@ -1752,11 +1776,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[5]['name'],
-                      'barcode_value': barcodeDataImage[5],
+                      'barcode_value': barcodeData[5]['value'],
                       "barcode_image": imageFileList[5].path
                     };
 
-                    if (barcodeDataImage[5] != '' &&
+                    if (barcodeDataImage[5] != null &&
                         imageFileList[5].path != '') {
                       await markedVerifiedAPi(map,5);
                     }
@@ -1788,11 +1812,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[5] = File(image.path);
                     map = {
                       'barcode': barcodeData[5]['name'],
-                      'barcode_value': barcodeDataImage[5],
+                      'barcode_value': barcodeData[5]['value'],
                       "barcode_image": imageFileList[5].path
                     };
 
-                    if (barcodeDataImage[5] != '' &&
+                    if (barcodeDataImage[5] != null &&
                         imageFileList[5].path != '') {
                       await markedVerifiedAPi(map,5);
                     }
@@ -1837,11 +1861,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[6]['name'],
-                      'barcode_value': barcodeDataImage[6],
+                      'barcode_value': barcodeData[6]['value'],
                       "barcode_image": imageFileList[6].path
                     };
 
-                    if (barcodeDataImage[6] != '' &&
+                    if (barcodeDataImage[6] != null &&
                         imageFileList[6].path != '') {
                       await markedVerifiedAPi(map,6);
                     }
@@ -1873,11 +1897,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[6] = File(image.path);
                     map = {
                       'barcode': barcodeData[6]['name'],
-                      'barcode_value': barcodeDataImage[6],
+                      'barcode_value': barcodeData[6]['value'],
                       "barcode_image": imageFileList[6].path
                     };
 
-                    if (barcodeDataImage[6] != '' &&
+                    if (barcodeDataImage[6] != null &&
                         imageFileList[6].path != '') {
                       await markedVerifiedAPi(map,6);
                     }
@@ -1922,11 +1946,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[7]['name'],
-                      'barcode_value': barcodeDataImage[7],
+                      'barcode_value': barcodeData[7]['value'],
                       "barcode_image": imageFileList[7].path
                     };
 
-                    if (barcodeDataImage[7] != '' &&
+                    if (barcodeDataImage[7] != null &&
                         imageFileList[7].path != '') {
                       await markedVerifiedAPi(map,7);
                     }
@@ -1958,11 +1982,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[7] = File(image.path);
                     map = {
                       'barcode': barcodeData[7]['name'],
-                      'barcode_value': barcodeDataImage[7],
+                      'barcode_value': barcodeData[7]['value'],
                       "barcode_image": imageFileList[7].path
                     };
 
-                    if (barcodeDataImage[7] != '' &&
+                    if (barcodeDataImage[7] != null &&
                         imageFileList[7].path != '') {
                       await markedVerifiedAPi(map,7);
                     }
@@ -2007,11 +2031,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[8]['name'],
-                      'barcode_value': barcodeDataImage[8],
+                      'barcode_value': barcodeData[8]['value'],
                       "barcode_image": imageFileList[8].path
                     };
 
-                    if (barcodeDataImage[8] != '' &&
+                    if (barcodeDataImage[8] !=null &&
                         imageFileList[8].path != '') {
                       await markedVerifiedAPi(map,8);
                     }
@@ -2043,11 +2067,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[8] = File(image.path);
                     map = {
                       'barcode': barcodeData[8]['name'],
-                      'barcode_value': barcodeDataImage[8],
+                      'barcode_value': barcodeData[8]['value'],
                       "barcode_image": imageFileList[8].path
                     };
 
-                    if (barcodeDataImage[8] != '' &&
+                    if (barcodeDataImage[8] != null &&
                         imageFileList[8].path != '') {
                       await markedVerifiedAPi(map,8);
                     }
@@ -2092,11 +2116,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[9]['name'],
-                      'barcode_value': barcodeDataImage[9],
+                      'barcode_value': barcodeData[9]['value'],
                       "barcode_image": imageFileList[9].path
                     };
 
-                    if (barcodeDataImage[9] != '' &&
+                    if (barcodeDataImage[9] != null &&
                         imageFileList[9].path != '') {
                       await markedVerifiedAPi(map,9);
                     }
@@ -2128,11 +2152,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[9] = File(image.path);
                     map = {
                       'barcode': barcodeData[9]['name'],
-                      'barcode_value': barcodeDataImage[9],
+                      'barcode_value':barcodeData[9]['value'],
                       "barcode_image": imageFileList[9].path
                     };
 
-                    if (barcodeDataImage[9] != '' &&
+                    if (barcodeDataImage[9] != null &&
                         imageFileList[9].path != '') {
                       await markedVerifiedAPi(map,9);
                     }
@@ -2178,11 +2202,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[10]['name'],
-                      'barcode_value': barcodeDataImage[10],
+                      'barcode_value': barcodeData[10]['value'],
                       "barcode_image": imageFileList[10].path
                     };
 
-                    if (barcodeDataImage[10] != '' &&
+                    if (barcodeDataImage[10] != null &&
                         imageFileList[10].path != '') {
                       await markedVerifiedAPi(map,10);
                     }
@@ -2214,11 +2238,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[10] = File(image.path);
                     map = {
                       'barcode': barcodeData[10]['name'],
-                      'barcode_value': barcodeDataImage[10],
+                      'barcode_value': barcodeData[10]['value'],
                       "barcode_image": imageFileList[10].path
                     };
 
-                    if (barcodeDataImage[10] != '' &&
+                    if (barcodeDataImage[10] != null &&
                         imageFileList[10].path != '') {
                       await markedVerifiedAPi(map,10);
                     }
@@ -2263,11 +2287,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[11]['name'],
-                      'barcode_value': barcodeDataImage[11],
+                      'barcode_value': barcodeData[11]['value'],
                       "barcode_image": imageFileList[11].path
                     };
 
-                    if (barcodeDataImage[11] != '' &&
+                    if (barcodeDataImage[11] != null &&
                         imageFileList[11].path != '') {
                       await markedVerifiedAPi(map,11);
                     }
@@ -2299,11 +2323,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[11] = File(image.path);
                     map = {
                       'barcode': barcodeData[11]['name'],
-                      'barcode_value': barcodeDataImage[11],
+                      'barcode_value': barcodeData[11]['value'],
                       "barcode_image": imageFileList[11].path
                     };
 
-                    if (barcodeDataImage[11] != '' &&
+                    if (barcodeDataImage[11] != null &&
                         imageFileList[11].path != '') {
                       await markedVerifiedAPi(map,11);
                     }
@@ -2348,11 +2372,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[12]['name'],
-                      'barcode_value': barcodeDataImage[12],
+                      'barcode_value': barcodeData[12]['value'],
                       "barcode_image": imageFileList[12].path
                     };
 
-                    if (barcodeDataImage[12] != '' &&
+                    if (barcodeDataImage[12] != null &&
                         imageFileList[12].path != '') {
                       await markedVerifiedAPi(map,12);
                     }
@@ -2384,11 +2408,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[12] = File(image.path);
                     map = {
                       'barcode': barcodeData[12]['name'],
-                      'barcode_value': barcodeDataImage[12],
+                      'barcode_value': barcodeData[12]['value'],
                       "barcode_image": imageFileList[12].path
                     };
 
-                    if (barcodeDataImage[12] != '' &&
+                    if (barcodeDataImage[12] != null &&
                         imageFileList[12].path != '') {
                       await markedVerifiedAPi(map,12);
                     }
@@ -2433,11 +2457,11 @@ class IncomingQRController extends GetxController {
 
                     map = {
                       'barcode': barcodeData[13]['name'],
-                      'barcode_value': barcodeDataImage[13],
+                      'barcode_value': barcodeData[13]['value'],
                       "barcode_image": imageFileList[13].path
                     };
 
-                    if (barcodeDataImage[13] != '' &&
+                    if (barcodeDataImage[13] != null &&
                         imageFileList[13].path != '') {
                       await markedVerifiedAPi(map,13);
                     }
@@ -2469,11 +2493,11 @@ class IncomingQRController extends GetxController {
                     imageFileList[13] = File(image.path);
                     map = {
                       'barcode': barcodeData[13]['name'],
-                      'barcode_value': barcodeDataImage[13],
+                      'barcode_value': barcodeData[13]['value'],
                       "barcode_image": imageFileList[13].path
                     };
 
-                    if (barcodeDataImage[13] != '' &&
+                    if (barcodeDataImage[13] != null &&
                         imageFileList[13].path != '') {
                       await markedVerifiedAPi(map,13);
                     }

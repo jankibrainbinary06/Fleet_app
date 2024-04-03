@@ -32,15 +32,13 @@ class SearchResultScreen extends StatefulWidget {
 class _SearchResultScreenState extends State<SearchResultScreen> {
   @override
   Widget build(BuildContext context) {
-
-
     final SearchResultController searchResultController =
         Get.put(SearchResultController(id: widget.id, orgIdMain: widget.orgId));
     searchResultController.orgid = widget.orgId;
     Global().toggle();
     return WillPopScope(
-      onWillPop: ()async{
-        return searchResultController.isBarcode?true:false;
+      onWillPop: () async {
+        return searchResultController.isBarcode ? true : false;
       },
       child: Scaffold(
           backgroundColor: ColorRes.white,
@@ -75,7 +73,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                   },
                                   ontap2: () {},
                                 ),
-                            /*    GestureDetector(
+                                /*    GestureDetector(
                                   onTap: () async {
                                     controller.isMainFlash = true;
                                     if (controller.homeFlash == true) {
@@ -107,10 +105,11 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                             Expanded(
                               child: SingleChildScrollView(
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 20),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -157,10 +156,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                     height: 100,
                                                     width: 100,
                                                     decoration: BoxDecoration(
-                                                        color: ColorRes.appPrimary
+                                                        color: ColorRes
+                                                            .appPrimary
                                                             .withOpacity(0.1),
                                                         borderRadius:
-                                                            BorderRadius.circular(
+                                                            BorderRadius
+                                                                .circular(
                                                           8,
                                                         ),
                                                         border: Border.all(
@@ -171,7 +172,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                                     0.6))),
                                                     child: const Icon(
                                                       Icons.add,
-                                                      color: ColorRes.appPrimary,
+                                                      color:
+                                                          ColorRes.appPrimary,
                                                       size: 30,
                                                     ),
                                                   )
@@ -183,23 +185,26 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                     child: Container(
                                                         height: 100,
                                                         width: 100,
-                                                        decoration: BoxDecoration(
-                                                            color: ColorRes
-                                                                .appPrimary
-                                                                .withOpacity(0.1),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                              8,
-                                                            ),
-                                                            border: Border.all(
-                                                                width: 0.5,
+                                                        decoration:
+                                                            BoxDecoration(
                                                                 color: ColorRes
                                                                     .appPrimary
                                                                     .withOpacity(
-                                                                        0.6))),
+                                                                        0.1),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  8,
+                                                                ),
+                                                                border: Border.all(
+                                                                    width: 0.5,
+                                                                    color: ColorRes
+                                                                        .appPrimary
+                                                                        .withOpacity(
+                                                                            0.6))),
                                                         child: Image.file(
-                                                          controller.devicePhoto1,
+                                                          controller
+                                                              .devicePhoto1,
                                                           fit: BoxFit.cover,
                                                         )),
                                                   ),
@@ -212,7 +217,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                               controller
                                                   .imageDialogForDevicePhotos(
                                                       context, 2);
-
                                             },
                                             child: controller
                                                     .devicePhoto2.path.isEmpty
@@ -220,10 +224,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                     height: 100,
                                                     width: 100,
                                                     decoration: BoxDecoration(
-                                                        color: ColorRes.appPrimary
+                                                        color: ColorRes
+                                                            .appPrimary
                                                             .withOpacity(0.1),
                                                         borderRadius:
-                                                            BorderRadius.circular(
+                                                            BorderRadius
+                                                                .circular(
                                                           8,
                                                         ),
                                                         border: Border.all(
@@ -234,7 +240,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                                     0.6))),
                                                     child: const Icon(
                                                       Icons.add,
-                                                      color: ColorRes.appPrimary,
+                                                      color:
+                                                          ColorRes.appPrimary,
                                                       size: 30,
                                                     ),
                                                   )
@@ -246,23 +253,26 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                     child: Container(
                                                         height: 100,
                                                         width: 100,
-                                                        decoration: BoxDecoration(
-                                                            color: ColorRes
-                                                                .appPrimary
-                                                                .withOpacity(0.1),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                              8,
-                                                            ),
-                                                            border: Border.all(
-                                                                width: 0.5,
+                                                        decoration:
+                                                            BoxDecoration(
                                                                 color: ColorRes
                                                                     .appPrimary
                                                                     .withOpacity(
-                                                                        0.6))),
+                                                                        0.1),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  8,
+                                                                ),
+                                                                border: Border.all(
+                                                                    width: 0.5,
+                                                                    color: ColorRes
+                                                                        .appPrimary
+                                                                        .withOpacity(
+                                                                            0.6))),
                                                         child: Image.file(
-                                                          controller.devicePhoto2,
+                                                          controller
+                                                              .devicePhoto2,
                                                           fit: BoxFit.cover,
                                                         )),
                                                   ),
@@ -331,10 +341,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                     height: 100,
                                                     width: 100,
                                                     decoration: BoxDecoration(
-                                                        color: ColorRes.appPrimary
+                                                        color: ColorRes
+                                                            .appPrimary
                                                             .withOpacity(0.1),
                                                         borderRadius:
-                                                            BorderRadius.circular(
+                                                            BorderRadius
+                                                                .circular(
                                                           8,
                                                         ),
                                                         border: Border.all(
@@ -345,7 +357,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                                     0.6))),
                                                     child: const Icon(
                                                       Icons.add,
-                                                      color: ColorRes.appPrimary,
+                                                      color:
+                                                          ColorRes.appPrimary,
                                                       size: 30,
                                                     ),
                                                   ),
@@ -359,10 +372,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                     height: 100,
                                                     width: 100,
                                                     decoration: BoxDecoration(
-                                                        color: ColorRes.appPrimary
+                                                        color: ColorRes
+                                                            .appPrimary
                                                             .withOpacity(0.1),
                                                         borderRadius:
-                                                            BorderRadius.circular(
+                                                            BorderRadius
+                                                                .circular(
                                                           8,
                                                         ),
                                                         border: Border.all(
@@ -517,22 +532,22 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                         shrinkWrap: true,
                                         physics:
                                             const NeverScrollableScrollPhysics(),
-                                        itemCount: controller.barcodeData.length,
+                                        itemCount:
+                                            controller.barcodeData.length,
                                         itemBuilder: (context, index) {
-                                          debugPrint(
-                                              "=============: ${controller.barcodeDataImage[index]}");
                                           return Column(
                                             children: [
                                               Container(
                                                 decoration: BoxDecoration(
                                                     border: Border.all(
                                                         width: 0.5,
-                                                        color:
-                                                            ColorRes.appPrimary),
+                                                        color: ColorRes
+                                                            .appPrimary),
                                                     color: ColorRes.appPrimary
                                                         .withOpacity(0.2),
                                                     borderRadius:
-                                                        BorderRadius.circular(8)),
+                                                        BorderRadius.circular(
+                                                            8)),
                                                 height: 100,
                                                 child: Row(
                                                   children: [
@@ -555,37 +570,53 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                     const SizedBox(width: 10),
                                                     controller.barcodeDataImage[
                                                                 index] !=
-                                                            ''
+                                                            null
                                                         ? GestureDetector(
                                                             onTap: () async {
                                                               controller
                                                                   .convertImageToFile();
                                                             },
-                                                            child: SizedBox(
-                                                              height: 100,
-                                                              width: 100,
-                                                              child: Center(
-                                                                child:
-                                                                    // Image.memory(
-                                                                    //     Uint8List.fromList([64, 117, 21, 34, 4, 52, 244, 68, 80, 236, 17, 236, 17, 236, 17, 236, 17, 236, 17])
-                                                                    //
-                                                                    // )
-                                                                    QrImageView(
-                                                                  version:
-                                                                      QrVersions
-                                                                          .auto,
-                                                                  gapless: true,
-                                                                  data: controller
-                                                                          .barcodeDataImage[
-                                                                      index],
-                                                                  size:
-                                                                      Get.width *
-                                                                          .6,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                ),
-                                                              ),
+                                                            child: Container(
+                                                              height: 80,
+                                                              width: 80,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                      color: ColorRes
+                                                                          .appPrimary
+                                                                          .withOpacity(
+                                                                          0.1),
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .circular(
+                                                                        5,
+                                                                      ),
+                                                                      border: Border.all(
+                                                                          width:
+                                                                              0.5,
+                                                                          color: ColorRes.appPrimary.withOpacity(
+                                                                              0.6)),
+                                                                      image:
+                                                                          DecorationImage(
+                                                                        image: MemoryImage(
+                                                                            controller.barcodeDataImage[index]!),
+                                                                            fit: BoxFit.fill
+                                                                      )),
+
+                                                              //     QrImageView(
+                                                              //   version:
+                                                              //       QrVersions
+                                                              //           .auto,
+                                                              //   gapless: true,
+                                                              //   data: controller
+                                                              //           .barcodeDataImage[
+                                                              //       index],
+                                                              //   size:
+                                                              //       Get.width *
+                                                              //           .6,
+                                                              //   backgroundColor:
+                                                              //       Colors
+                                                              //           .transparent,
+                                                              // ),
                                                             ),
                                                           )
                                                         : GestureDetector(
@@ -593,13 +624,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                               controller
                                                                       .isMainFlash =
                                                                   true;
-                                                              controller
-                                                                  .update(['qr']);
+                                                              controller.update(
+                                                                  ['qr']);
 
-                                                              controller
-                                                                  .selectedData = controller
-                                                                      .barcodeData[
-                                                                  index]['name'];
+                                                              controller.selectedData =
+                                                                  controller.barcodeData[
+                                                                          index]
+                                                                      ['name'];
                                                               controller
                                                                       .initialIndex =
                                                                   index;
@@ -607,6 +638,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                               controller
                                                                       .isBarcode =
                                                                   true;
+                                                              controller
+                                                                      .isScanHandled =
+                                                                  false;
 
                                                               if (controller
                                                                       .homeFlash ==
@@ -620,8 +654,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                                     false;
                                                               }
 
-                                                              controller
-                                                                  .update(['qr']);
+                                                              controller.update(
+                                                                  ['qr']);
                                                             },
                                                             child: Container(
                                                               height: 80,
@@ -643,28 +677,35 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                                           color: ColorRes
                                                                               .appPrimary
                                                                               .withOpacity(0.6))),
-                                                              alignment: Alignment
-                                                                  .center,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
                                                               child: Text(
                                                                 'Scan',
                                                                 style: subTitle,
                                                               ),
                                                             ),
                                                           ),
-                                                    controller.barcodeDataImage[
-                                                                index] !=
-                                                            ''
-                                                        ? const SizedBox(width: 0)
-                                                        : const SizedBox(
-                                                            width: 10,
-                                                          ),
+                                                    const SizedBox(width: 10),
+
+                                                    // controller.barcodeDataImage[
+                                                    //             index] !=
+                                                    //         null
+                                                    //     ? const SizedBox(
+                                                    //         width: 0)
+                                                    //     : const SizedBox(
+                                                    //         width: 10,
+                                                    //       ),
                                                     GestureDetector(
                                                       onTap: () {
-                                                        controller.initialIndex =
-                                                            index;
-                                                        controller.update(['qr']);
                                                         controller
-                                                            .chooseImageUpload(context);
+                                                                .initialIndex =
+                                                            index;
+                                                        controller
+                                                            .update(['qr']);
+                                                        controller
+                                                            .chooseImageUpload(
+                                                                context);
                                                       },
                                                       child: controller
                                                               .imageFileList[
@@ -707,13 +748,10 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                                   width: 80,
                                                                   decoration:
                                                                       BoxDecoration(
-                                                                          color: ColorRes
-                                                                              .appPrimary
-                                                                              .withOpacity(
-                                                                                  0.1),
-                                                                          borderRadius:
-                                                                              BorderRadius
-                                                                                  .circular(
+                                                                          color: ColorRes.appPrimary.withOpacity(
+                                                                              0.1),
+                                                                          borderRadius: BorderRadius
+                                                                              .circular(
                                                                             5,
                                                                           ),
                                                                           border: Border.all(
@@ -721,8 +759,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                                                   0.5,
                                                                               color: ColorRes.appPrimary.withOpacity(
                                                                                   0.6))),
-                                                                  child:
-                                                                      Image.file(
+                                                                  child: Image
+                                                                      .file(
                                                                     controller
                                                                             .imageFileList[
                                                                         index],
@@ -735,7 +773,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                     Expanded(
                                                       child: GestureDetector(
                                                         onTap: () {
-                                                          controller.isMainFlash =
+                                                          controller
+                                                                  .isMainFlash =
                                                               true;
                                                           controller
                                                               .update(['qr']);
@@ -769,14 +808,16 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                               BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius
-                                                                    .circular(8),
+                                                                    .circular(
+                                                                        8),
                                                             border: Border.all(
                                                                 width: 0.5,
                                                                 color: ColorRes
                                                                     .appPrimary),
                                                             color: ColorRes
                                                                 .appPrimary
-                                                                .withOpacity(0.2),
+                                                                .withOpacity(
+                                                                    0.2),
                                                           ),
                                                           alignment:
                                                               Alignment.center,
@@ -801,8 +842,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                                     index] ==
                                                                 'loader'
                                                             ? const CupertinoActivityIndicator(
-                                                                color:
-                                                                    Colors.black,
+                                                                color: Colors
+                                                                    .black,
                                                               )
                                                             : controller.statusList[
                                                                         index] ==
@@ -827,7 +868,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                               ),
                                               controller.barcodeDataImage[
                                                           index] !=
-                                                      ''
+                                          null
                                                   ? Container(
                                                       decoration: BoxDecoration(
                                                           border: Border.all(
@@ -903,12 +944,15 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                                           // SizedBox(
                                                           //   width: 10,
                                                           // ),
-                                                          Expanded(
+                                                          SizedBox(
+                                                            width:Get.width *0.8,
                                                             child: Text(
-                                                              controller
-                                                                      .barcodeData[
-                                                                  index]['value'],
+                                                              controller.barcodeData[
+                                                                      index]
+                                                                  ['value'],
                                                               style: subTitle,
+                                                              maxLines: 1,
+                                                              overflow: TextOverflow.ellipsis,
                                                             ),
                                                           ),
                                                           const SizedBox(
@@ -933,10 +977,10 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                             return CommonButton(
                                               width: 200,
                                               text: Strings.save,
-                                              color:
-                                                  controller.isButtonEnabled.value
-                                                      ? ColorRes.appPrimary
-                                                      : ColorRes.cBDBDBD,
+                                              color: controller
+                                                      .isButtonEnabled.value
+                                                  ? ColorRes.appPrimary
+                                                  : ColorRes.cBDBDBD,
                                               onTap: controller
                                                       .isButtonEnabled.value
                                                   ? () {
@@ -971,8 +1015,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                 onWillPop: () async {
                                   controller.isBarcode = false;
 
-                                  setState((){
-
+                                  setState(() {
                                     Global().toggle();
                                   });
 
@@ -980,7 +1023,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                   return false;
                                 },
                                 child: Stack(
-                                  alignment: Alignment.topRight,
+                                  alignment: Alignment.bottomCenter,
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
@@ -993,7 +1036,33 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                       width: Get.width,
                                       child: controller.qrView(),
                                     ),
-                                   /*Padding(
+
+                                    /* InkWell(
+                                    onTap:() async {
+                                      if(controller.isScanHandled)
+                                        {
+
+
+                                         setState((){
+
+                                           Global().toggle();
+                                         });
+
+
+                                        }
+                                    },
+                                    child: Container(
+                                      width: Get.width *0.3,
+                                      height: 50,
+                                      alignment:Alignment.center,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(25),
+                                        color: (controller.isScanHandled)?ColorRes.appPrimary:Colors.grey
+                                      ),
+                                      child: const Text("Submit",style: TextStyle(color: Colors.white),),
+                                    ),
+                                  ),*/
+                                    /*Padding(
                                       padding: const EdgeInsets.only(
                                           top: 40, right: 20),
                                       child: GestureDetector(
